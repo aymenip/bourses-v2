@@ -1,9 +1,7 @@
 import { db } from '../../db/setup';
-import { positions, teachers, tiers } from '../../db/schema';
+import { positions, teachers } from '../../db/schema';
 import { eq } from 'drizzle-orm';
 import { CreateTeacherDTO, TeacherDTO, TeacherExportDTO, UpdateTeacherDTO } from '../dtos';
-import { createTeacherHistory } from '../../teacherHistory/repository/teacherHistory.repository';
-import { CreateTeacherHistoryDTO } from '../../teacherHistory/dtos';
 import { MatrialStatus } from '../teacher.enums';
 import { handleError } from '../../utils/errors';
 
@@ -12,10 +10,6 @@ export const createTeacher = async (createTeacher: CreateTeacherDTO): Promise<Cr
     try {
         await (await db).transaction(async (tx) => {
             const result = await (await db).insert(teachers).values(createTeacher).execute();
-            const { currentDegree, nextDegree, effectiveDate } = createTeacher;
-            const teacherId = result[0].insertId
-            const createTeacherHistoryDTO = new CreateTeacherHistoryDTO(teacherId, currentDegree, nextDegree, effectiveDate)
-            await createTeacherHistory(createTeacherHistoryDTO);
         })
         return createTeacher; // Assuming `insertId` is returned
     } catch (error) {
@@ -39,7 +33,6 @@ export const allTeachers = async (): Promise<TeacherDTO[]> => {
         result.highPostion,
         result.createdAt,
         result.updatedAt,
-        result.tierId,
         result.positionId,
     ));
 }
@@ -49,7 +42,6 @@ export const allTeachersWithDetails = async (): Promise<TeacherExportDTO[]> => {
     const results = await
         (await db).select()
             .from(teachers)
-            .leftJoin(tiers, eq(teachers.tierId, tiers.id))
             .leftJoin(positions, eq(teachers.positionId, positions.id));
     return results.map((result) => new TeacherExportDTO(
         result["teachers"].id,
@@ -63,7 +55,6 @@ export const allTeachersWithDetails = async (): Promise<TeacherExportDTO[]> => {
         result["teachers"].highPostion,
         result["teachers"].createdAt,
         result["positions"].name,
-        result["tiers"].name
     ));
 }
 
@@ -82,7 +73,6 @@ export const teacher = async (id: number): Promise<TeacherDTO> => {
         result[0].highPostion,
         result[0].createdAt,
         result[0].updatedAt,
-        result[0].tierId,
         result[0].positionId,
     );
 }

@@ -12,7 +12,6 @@ export class TeacherExportDTO {
     highPostion: boolean;
     createdAt: Date;
     position: string;
-    tier: string;
     constructor(
         id: number,
         firstname: string,
@@ -24,8 +23,7 @@ export class TeacherExportDTO {
         debt: number,
         highPostion: boolean,
         createdAt: Date,
-        position: string,
-        tier: string,
+        position: string
     ) {
         this.id = id,
             this.firstname = firstname,
@@ -37,7 +35,6 @@ export class TeacherExportDTO {
             this.debt = debt,
             this.highPostion = highPostion,
             this.createdAt = createdAt,
-            this.position = position,
-            this.tier = tier
+            this.position = position
     }
 }

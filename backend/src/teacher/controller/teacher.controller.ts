@@ -2,14 +2,11 @@ import express from "express";
 import xlsx from "xlsx";
 import fs from 'fs';
 import moment from "moment";
-import { CreateTeacherDTO, UpdateTeacherDTO, UpgradeTeacherInputDTO } from "../dtos";
+import { CreateTeacherDTO, UpdateTeacherDTO } from "../dtos";
 import { allTeachers, allTeachersWithDetails, createTeacher, deleteTeacher, teacher, updateTeacher } from "../repository/teacher.repositories";
 import { handleError } from "../../utils/errors";
-import { createTeacherFromRow, getTeacherTier, upgradeTeacherDetails } from "../utils";
-import { createTeacherHistory, teacherLastHistory } from "../../teacherHistory/repository/teacherHistory.repository";
+import { createTeacherFromRow } from "../utils";
 import { Degree, MatrialStatus } from "../teacher.enums";
-import { tier } from "../../tier/repository/tier.repositories";
-import { duration } from "../../duration/repository/duration.repository";
 
 export const CreateTeacher = async (req: express.Request, res: express.Response): Promise<CreateTeacherDTO | any> => {
     try {
@@ -216,47 +213,3 @@ export const ExportTeachersToXlsx = async (req: express.Request, res: express.Re
     }
 }
 
-
-// upgrade teacher 
-export const UpgradeTeacher = async (req: express.Request, res: express.Response): Promise<any> => {
-    try {
-        // step 1: Getting required data from the request body
-        const {
-            id,
-            southernPrivilege, // إمتياز الجنوب
-            professionalExperience, // الخبرة المهنية
-        } = req.body;
-
-        const upgradeTeacherDetailsInput = new UpgradeTeacherInputDTO(Number(id), Number(southernPrivilege), Number(professionalExperience))
-
-        const details = await upgradeTeacherDetails(upgradeTeacherDetailsInput);
-
-        if (details.upgrade) {
-
-            if (details.upgradeWithDebt) {
-                await updateTeacher({ id: id, debt: Number(details.newDebt) });
-            }
-
-            await createTeacherHistory({
-                teacherId: id,
-                effectiveDate: details.newEffectiveDate,
-                highPostion: details.highPosition,
-                currentDegree: details.currentDegree,
-                nextDegree: details.nextDegree
-            })
-
-
-            const decision = "Upgrade the teacher.";
-            const reason = "Teacher upgraded because all conditions are satisfied.";
-            return res.status(200).json({ ...details, decision, reason })
-        }
-        const decision = "Don't upgrade the teacher, conditions are not satisfied.";
-        const reason = "Nothing to add beacause months to add are less then targeted tier duration.";
-        return res.status(200).json({ ...details, decision, reason })
-
-
-    } catch (error) {
-        handleError(() => console.log(error));
-        return res.sendStatus(400);
-    }
-}

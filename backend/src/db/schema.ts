@@ -57,7 +57,6 @@ export const teachers = mysqlTable("teachers", {
     createdAt: timestamp("createdAt").defaultNow().notNull(),
     updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 
-    tierId: bigint("tierId", { mode: "number", unsigned: true }).notNull().references(() => tiers.id, { onDelete: "cascade" }),
     positionId: bigint("positionId", { mode: "number", unsigned: true }).notNull().references(() => positions.id, { onDelete: "cascade" }),
 });
 
