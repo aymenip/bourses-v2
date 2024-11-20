@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=Readex+Pro:wght@160..700&display=swap");
 
 .cairo-play-logo {
   font-family: "Cairo Play", sans-serif;
