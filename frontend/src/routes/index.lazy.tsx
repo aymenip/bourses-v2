@@ -15,7 +15,10 @@ const Box = () => {
 
 function Index() {
   return (
-    <div>
+    <div className='p-5 space-x-5 space-y-5'>
+      <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full shadow-md">
+        Browse items
+      </button>
       <Box />
     </div>
   )
