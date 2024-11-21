@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as LoginImport } from './routes/login'
 import { Route as adminTeachersIdImport } from './routes/__admin/teachers/$id'
 import { Route as adminStudentsIdImport } from './routes/__admin/students/$id'
 import { Route as adminEmployeesIdImport } from './routes/__admin/employees/$id'
@@ -25,6 +26,11 @@ const adminStudentsIndexLazyImport = createFileRoute('/__admin/students/')()
 const adminEmployeesIndexLazyImport = createFileRoute('/__admin/employees/')()
 
 // Create/Update Routes
+
+const LoginRoute = LoginImport.update({
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const adminIndexLazyRoute = adminIndexLazyImport
   .update({
@@ -79,6 +85,13 @@ const adminEmployeesIdRoute = adminEmployeesIdImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
     '/__admin/': {
       id: '/__admin/'
       path: '/'
@@ -134,6 +147,7 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren({
+  LoginRoute,
   adminIndexLazyRoute,
   adminEmployeesIdRoute,
   adminStudentsIdRoute,
@@ -151,6 +165,7 @@ export const routeTree = rootRoute.addChildren({
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/login",
         "/__admin/",
         "/__admin/employees/$id",
         "/__admin/students/$id",
@@ -159,6 +174,9 @@ export const routeTree = rootRoute.addChildren({
         "/__admin/students/",
         "/__admin/teachers/"
       ]
+    },
+    "/login": {
+      "filePath": "login.tsx"
     },
     "/__admin/": {
       "filePath": "__admin/index.lazy.tsx"
