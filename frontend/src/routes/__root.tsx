@@ -1,4 +1,4 @@
-import Header from '@/components/global/header'
+import Sidebar from '@/components/global/sidebar'
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { useTranslation } from 'react-i18next'
@@ -11,7 +11,7 @@ function Root() {
     const [_, i18n] = useTranslation("translation")
     return (
         <div dir={i18n.dir()} className='flex overflow-x-hidden'>
-            <Header collapsed={false} />
+            <Sidebar />
             <div className='p-2'>
                 <Outlet />
                 <TanStackRouterDevtools />

@@ -11,9 +11,7 @@ import { Button } from "../ui/button"
 import { motion, useAnimationControls } from "framer-motion"
 import { useEffect, useState } from "react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
-interface HeaderProps {
-    collapsed?: boolean
-}
+
 
 const containerVariants = {
     close: {
@@ -34,8 +32,8 @@ const containerVariants = {
     }
 }
 
-function Header({ collapsed = false }: HeaderProps) {
-    const [t, i18n] = useTranslation("translation")
+function Sidebar() {
+    const [t, _] = useTranslation("translation")
     const [isOpen, setIsOpen] = useState(false);
     const containerControls = useAnimationControls();
     useEffect(() => {
@@ -110,4 +108,4 @@ function Header({ collapsed = false }: HeaderProps) {
     )
 }
 
-export default Header
+export default Sidebar
