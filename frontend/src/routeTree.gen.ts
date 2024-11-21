@@ -14,16 +14,23 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as LoginImport } from './routes/login'
-import { Route as AdminTeachersIdImport } from './routes/_admin/teachers/$id'
-import { Route as AdminStudentsIdImport } from './routes/_admin/students/$id'
-import { Route as AdminEmployeesIdImport } from './routes/_admin/employees/$id'
+import { Route as AdminAdminLayoutImport } from './routes/_admin/_adminLayout'
+import { Route as AdminAdminLayoutIndexImport } from './routes/_admin/_adminLayout/index'
+import { Route as AdminAdminLayoutTeachersIdImport } from './routes/_admin/_adminLayout/teachers/$id'
+import { Route as AdminAdminLayoutStudentsIdImport } from './routes/_admin/_adminLayout/students/$id'
+import { Route as AdminAdminLayoutEmployeesIdImport } from './routes/_admin/_adminLayout/employees/$id'
 
 // Create Virtual Routes
 
-const AdminIndexLazyImport = createFileRoute('/_admin/')()
-const AdminTeachersIndexLazyImport = createFileRoute('/_admin/teachers/')()
-const AdminStudentsIndexLazyImport = createFileRoute('/_admin/students/')()
-const AdminEmployeesIndexLazyImport = createFileRoute('/_admin/employees/')()
+const AdminAdminLayoutTeachersIndexLazyImport = createFileRoute(
+  '/_admin/_adminLayout/teachers/',
+)()
+const AdminAdminLayoutStudentsIndexLazyImport = createFileRoute(
+  '/_admin/_adminLayout/students/',
+)()
+const AdminAdminLayoutEmployeesIndexLazyImport = createFileRoute(
+  '/_admin/_adminLayout/employees/',
+)()
 
 // Create/Update Routes
 
@@ -32,46 +39,65 @@ const LoginRoute = LoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AdminIndexLazyRoute = AdminIndexLazyImport.update({
+const AdminAdminLayoutRoute = AdminAdminLayoutImport.update({
+  id: '/_admin/_adminLayout',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminAdminLayoutIndexRoute = AdminAdminLayoutIndexImport.update({
   path: '/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/_admin/index.lazy').then((d) => d.Route))
-
-const AdminTeachersIndexLazyRoute = AdminTeachersIndexLazyImport.update({
-  path: '/teachers/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./routes/_admin/teachers/index.lazy').then((d) => d.Route),
-)
-
-const AdminStudentsIndexLazyRoute = AdminStudentsIndexLazyImport.update({
-  path: '/students/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./routes/_admin/students/index.lazy').then((d) => d.Route),
-)
-
-const AdminEmployeesIndexLazyRoute = AdminEmployeesIndexLazyImport.update({
-  path: '/employees/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./routes/_admin/employees/index.lazy').then((d) => d.Route),
-)
-
-const AdminTeachersIdRoute = AdminTeachersIdImport.update({
-  path: '/teachers/$id',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AdminAdminLayoutRoute,
 } as any)
 
-const AdminStudentsIdRoute = AdminStudentsIdImport.update({
-  path: '/students/$id',
-  getParentRoute: () => rootRoute,
-} as any)
+const AdminAdminLayoutTeachersIndexLazyRoute =
+  AdminAdminLayoutTeachersIndexLazyImport.update({
+    path: '/teachers/',
+    getParentRoute: () => AdminAdminLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/_admin/_adminLayout/teachers/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
-const AdminEmployeesIdRoute = AdminEmployeesIdImport.update({
-  path: '/employees/$id',
-  getParentRoute: () => rootRoute,
-} as any)
+const AdminAdminLayoutStudentsIndexLazyRoute =
+  AdminAdminLayoutStudentsIndexLazyImport.update({
+    path: '/students/',
+    getParentRoute: () => AdminAdminLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/_admin/_adminLayout/students/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const AdminAdminLayoutEmployeesIndexLazyRoute =
+  AdminAdminLayoutEmployeesIndexLazyImport.update({
+    path: '/employees/',
+    getParentRoute: () => AdminAdminLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/_admin/_adminLayout/employees/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const AdminAdminLayoutTeachersIdRoute = AdminAdminLayoutTeachersIdImport.update(
+  {
+    path: '/teachers/$id',
+    getParentRoute: () => AdminAdminLayoutRoute,
+  } as any,
+)
+
+const AdminAdminLayoutStudentsIdRoute = AdminAdminLayoutStudentsIdImport.update(
+  {
+    path: '/students/$id',
+    getParentRoute: () => AdminAdminLayoutRoute,
+  } as any,
+)
+
+const AdminAdminLayoutEmployeesIdRoute =
+  AdminAdminLayoutEmployeesIdImport.update({
+    path: '/employees/$id',
+    getParentRoute: () => AdminAdminLayoutRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -84,54 +110,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/_admin/': {
-      id: '/_admin/'
+    '/_admin/_adminLayout': {
+      id: '/_admin/_adminLayout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AdminAdminLayoutImport
+      parentRoute: typeof rootRoute
+    }
+    '/_admin/_adminLayout/': {
+      id: '/_admin/_adminLayout/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof AdminIndexLazyImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AdminAdminLayoutIndexImport
+      parentRoute: typeof AdminAdminLayoutImport
     }
-    '/_admin/employees/$id': {
-      id: '/_admin/employees/$id'
+    '/_admin/_adminLayout/employees/$id': {
+      id: '/_admin/_adminLayout/employees/$id'
       path: '/employees/$id'
       fullPath: '/employees/$id'
-      preLoaderRoute: typeof AdminEmployeesIdImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AdminAdminLayoutEmployeesIdImport
+      parentRoute: typeof AdminAdminLayoutImport
     }
-    '/_admin/students/$id': {
-      id: '/_admin/students/$id'
+    '/_admin/_adminLayout/students/$id': {
+      id: '/_admin/_adminLayout/students/$id'
       path: '/students/$id'
       fullPath: '/students/$id'
-      preLoaderRoute: typeof AdminStudentsIdImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AdminAdminLayoutStudentsIdImport
+      parentRoute: typeof AdminAdminLayoutImport
     }
-    '/_admin/teachers/$id': {
-      id: '/_admin/teachers/$id'
+    '/_admin/_adminLayout/teachers/$id': {
+      id: '/_admin/_adminLayout/teachers/$id'
       path: '/teachers/$id'
       fullPath: '/teachers/$id'
-      preLoaderRoute: typeof AdminTeachersIdImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AdminAdminLayoutTeachersIdImport
+      parentRoute: typeof AdminAdminLayoutImport
     }
-    '/_admin/employees/': {
-      id: '/_admin/employees/'
+    '/_admin/_adminLayout/employees/': {
+      id: '/_admin/_adminLayout/employees/'
       path: '/employees'
       fullPath: '/employees'
-      preLoaderRoute: typeof AdminEmployeesIndexLazyImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AdminAdminLayoutEmployeesIndexLazyImport
+      parentRoute: typeof AdminAdminLayoutImport
     }
-    '/_admin/students/': {
-      id: '/_admin/students/'
+    '/_admin/_adminLayout/students/': {
+      id: '/_admin/_adminLayout/students/'
       path: '/students'
       fullPath: '/students'
-      preLoaderRoute: typeof AdminStudentsIndexLazyImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AdminAdminLayoutStudentsIndexLazyImport
+      parentRoute: typeof AdminAdminLayoutImport
     }
-    '/_admin/teachers/': {
-      id: '/_admin/teachers/'
+    '/_admin/_adminLayout/teachers/': {
+      id: '/_admin/_adminLayout/teachers/'
       path: '/teachers'
       fullPath: '/teachers'
-      preLoaderRoute: typeof AdminTeachersIndexLazyImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AdminAdminLayoutTeachersIndexLazyImport
+      parentRoute: typeof AdminAdminLayoutImport
     }
   }
 }
@@ -140,13 +173,15 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   LoginRoute,
-  AdminIndexLazyRoute,
-  AdminEmployeesIdRoute,
-  AdminStudentsIdRoute,
-  AdminTeachersIdRoute,
-  AdminEmployeesIndexLazyRoute,
-  AdminStudentsIndexLazyRoute,
-  AdminTeachersIndexLazyRoute,
+  AdminAdminLayoutRoute: AdminAdminLayoutRoute.addChildren({
+    AdminAdminLayoutIndexRoute,
+    AdminAdminLayoutEmployeesIdRoute,
+    AdminAdminLayoutStudentsIdRoute,
+    AdminAdminLayoutTeachersIdRoute,
+    AdminAdminLayoutEmployeesIndexLazyRoute,
+    AdminAdminLayoutStudentsIndexLazyRoute,
+    AdminAdminLayoutTeachersIndexLazyRoute,
+  }),
 })
 
 /* prettier-ignore-end */
@@ -158,38 +193,51 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/login",
-        "/_admin/",
-        "/_admin/employees/$id",
-        "/_admin/students/$id",
-        "/_admin/teachers/$id",
-        "/_admin/employees/",
-        "/_admin/students/",
-        "/_admin/teachers/"
+        "/_admin/_adminLayout"
       ]
     },
     "/login": {
       "filePath": "login.tsx"
     },
-    "/_admin/": {
-      "filePath": "_admin/index.lazy.tsx"
+    "/_admin/_adminLayout": {
+      "filePath": "_admin/_adminLayout.tsx",
+      "children": [
+        "/_admin/_adminLayout/",
+        "/_admin/_adminLayout/employees/$id",
+        "/_admin/_adminLayout/students/$id",
+        "/_admin/_adminLayout/teachers/$id",
+        "/_admin/_adminLayout/employees/",
+        "/_admin/_adminLayout/students/",
+        "/_admin/_adminLayout/teachers/"
+      ]
     },
-    "/_admin/employees/$id": {
-      "filePath": "_admin/employees/$id.tsx"
+    "/_admin/_adminLayout/": {
+      "filePath": "_admin/_adminLayout/index.tsx",
+      "parent": "/_admin/_adminLayout"
     },
-    "/_admin/students/$id": {
-      "filePath": "_admin/students/$id.tsx"
+    "/_admin/_adminLayout/employees/$id": {
+      "filePath": "_admin/_adminLayout/employees/$id.tsx",
+      "parent": "/_admin/_adminLayout"
     },
-    "/_admin/teachers/$id": {
-      "filePath": "_admin/teachers/$id.tsx"
+    "/_admin/_adminLayout/students/$id": {
+      "filePath": "_admin/_adminLayout/students/$id.tsx",
+      "parent": "/_admin/_adminLayout"
     },
-    "/_admin/employees/": {
-      "filePath": "_admin/employees/index.lazy.tsx"
+    "/_admin/_adminLayout/teachers/$id": {
+      "filePath": "_admin/_adminLayout/teachers/$id.tsx",
+      "parent": "/_admin/_adminLayout"
     },
-    "/_admin/students/": {
-      "filePath": "_admin/students/index.lazy.tsx"
+    "/_admin/_adminLayout/employees/": {
+      "filePath": "_admin/_adminLayout/employees/index.lazy.tsx",
+      "parent": "/_admin/_adminLayout"
     },
-    "/_admin/teachers/": {
-      "filePath": "_admin/teachers/index.lazy.tsx"
+    "/_admin/_adminLayout/students/": {
+      "filePath": "_admin/_adminLayout/students/index.lazy.tsx",
+      "parent": "/_admin/_adminLayout"
+    },
+    "/_admin/_adminLayout/teachers/": {
+      "filePath": "_admin/_adminLayout/teachers/index.lazy.tsx",
+      "parent": "/_admin/_adminLayout"
     }
   }
 }

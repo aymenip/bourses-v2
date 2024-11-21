@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_admin/students/$id')({
+export const Route = createFileRoute('/_admin/_adminLayout/employees/$id')({
   component: Teacher
 })
 
@@ -8,6 +8,6 @@ export const Route = createFileRoute('/_admin/students/$id')({
 function Teacher() {
   const { id } = Route.useParams();
   return (
-    <div>{`Hello /__admin/students/${id}!`}</div>
+    <div>{`Hello /__admin/employees/${id}!`}</div>
   )
 }
