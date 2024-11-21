@@ -10,21 +10,21 @@ export const routes: Route[] = [
     {
         name: "dashboard",
         icon: <DashboardIcon />,
-        path: "/admin/dashboard"
+        path: "/"
     },
     {
         name: "teachers",
         icon: <PersonIcon />,
-        path: "/admin/teachers"
+        path: "/teachers"
     },
     {
         name: "students",
         icon: <PersonIcon />,
-        path: "/admin/students"
+        path: "/students"
     },
     {
         name: "employees",
         icon: <PersonIcon />,
-        path: "/admin/employees"
+        path: "/employees"
     },
 ]

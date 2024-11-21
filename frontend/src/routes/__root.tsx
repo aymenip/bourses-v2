@@ -10,10 +10,9 @@ export const Route = createRootRoute({
 function Root() {
     const [_, i18n] = useTranslation("translation")
     return (
-        <div dir={i18n.dir()} className='flex overflow-x-hidden bg-green-200'>
+        <div dir={i18n.dir()} className='flex overflow-x-hidden'>
             <Header collapsed={false} />
             <div className='p-2'>
-                Non Protected
                 <Outlet />
                 <TanStackRouterDevtools />
             </div>

@@ -1,14 +1,12 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 
-
-export const Route = createLazyFileRoute('/admin/teachers')({
+export const Route = createLazyFileRoute('/__admin/teachers/')({
   component: Teachers,
 })
 
+
 function Teachers() {
   return (
-    <div>
-      Teachers
-    </div>
+    <div>Hello /__admin/teachers/!</div>
   )
 }

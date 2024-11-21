@@ -73,7 +73,7 @@ function Header({ collapsed = false }: HeaderProps) {
                                         !isOpen ? (
                                             <TooltipProvider delayDuration={1}>
                                                 <Tooltip >
-                                                    <TooltipTrigger className="flex items-center">
+                                                    <TooltipTrigger className="flex items-center gap-x-1">
                                                         {isActive && <span className="block w-1 h-3 rounded-full bg-primary/90  neon-shadow" />}
                                                         {route.icon}
                                                     </TooltipTrigger>
