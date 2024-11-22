@@ -11,9 +11,7 @@ import { Button } from "../ui/button"
 import { motion, useAnimationControls } from "framer-motion"
 import { useEffect, useState } from "react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
-interface HeaderProps {
-    collapsed?: boolean
-}
+
 
 const containerVariants = {
     close: {
@@ -34,8 +32,8 @@ const containerVariants = {
     }
 }
 
-function Header({ collapsed = false }: HeaderProps) {
-    const [t, i18n] = useTranslation("translation")
+function Sidebar() {
+    const [t, _] = useTranslation("translation")
     const [isOpen, setIsOpen] = useState(false);
     const containerControls = useAnimationControls();
     useEffect(() => {
@@ -67,26 +65,33 @@ function Header({ collapsed = false }: HeaderProps) {
                 {
                     routes.map((route: Route) => (
                         <Link to={route.path} className="header-item header-item-active">
-                            <div className={cn("flex gap-2 items-center", { "justify-center": !isOpen })}>
-                                {
-                                    !isOpen ? (
-                                        <TooltipProvider delayDuration={1}>
-                                            <Tooltip >
-                                                <TooltipTrigger>{route.icon}</TooltipTrigger>
-                                                <TooltipContent>
-                                                    <p>{t(route.name)}</p>
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    ) : (
-                                        <>
-                                            {route.icon}
-                                            {isOpen && t(route.name)}
-                                        </>
-                                    )
-                                }
+                            {
+                                ({ isActive }) => <div className={cn("flex gap-2 items-center", { "justify-center": !isOpen })}>
+                                    {
+                                        !isOpen ? (
+                                            <TooltipProvider delayDuration={1}>
+                                                <Tooltip >
+                                                    <TooltipTrigger className="flex items-center gap-x-1">
+                                                        {isActive && <span className="block w-1 h-3 rounded-full bg-primary/90  neon-shadow" />}
+                                                        {route.icon}
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>
+                                                        <p>{t(route.name)}</p>
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
+                                        ) : (
+                                            <>
+                                                {isActive && <span className="block w-1 h-3 rounded-full bg-primary/90 neon-shadow" />}
+                                                {route.icon}
+                                                {isOpen && t(route.name)}
+                                            </>
+                                        )
+                                    }
 
-                            </div>
+                                </div>
+                            }
+
                         </Link>
                     ))
                 }
@@ -103,4 +108,4 @@ function Header({ collapsed = false }: HeaderProps) {
     )
 }
 
-export default Header
+export default Sidebar

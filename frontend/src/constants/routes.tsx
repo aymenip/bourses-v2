@@ -1,5 +1,5 @@
-import { BookOpen, FileQuestion, LayoutDashboard } from "lucide-react"
-import { DashboardIcon, PersonIcon } from "@radix-ui/react-icons"
+import { DashboardIcon, PersonIcon } from "@radix-ui/react-icons";
+
 export type Route = {
     name: string,
     path: string,
@@ -16,5 +16,15 @@ export const routes: Route[] = [
         name: "teachers",
         icon: <PersonIcon />,
         path: "/teachers"
+    },
+    {
+        name: "students",
+        icon: <PersonIcon />,
+        path: "/students"
+    },
+    {
+        name: "employees",
+        icon: <PersonIcon />,
+        path: "/employees"
     },
 ]
