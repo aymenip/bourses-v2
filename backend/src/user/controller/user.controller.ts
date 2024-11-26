@@ -72,6 +72,7 @@ export const Login = async (req: express.Request, res: express.Response): Promis
 export const Register = async (req: express.Request, res: express.Response): Promise<any> => {
     try {
         const createUserDto: CreateUserDTO = req.body;
+
         if (!createUserDto) {
             return res.sendStatus(400)
         }

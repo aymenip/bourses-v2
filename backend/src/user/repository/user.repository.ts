@@ -22,7 +22,7 @@ export const getUserByEmail = async (email: string): Promise<UserDTO | null> => 
         // Return the first user or null if none found
         return result.length > 0 ? result[0] : null;
     } catch (error) {
-        throw new Error('Failed to get User'); // Handle errors appropriately
+        return null // Handle errors appropriately
     }
 }
 
