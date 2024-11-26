@@ -169,20 +169,47 @@ export const fields = mysqlTable("fields", {
         .autoincrement()
         .primaryKey(),
     label: varchar("label", { length: 256 }),
-    type: mysqlEnum('type', ['text', 'date', 'number', 'document']),
-    value: varchar("value", { length: 2048 }),
+
     formId: bigint("formId", { mode: "number", unsigned: true })
         .references(() => forms.id)
         .notNull()
 })
 
+export const typedFields = mysqlTable("typedFields", {
+    id: bigint("id", { mode: "number", unsigned: true })
+        .notNull()
+        .primaryKey(),
+    type: mysqlEnum('type', ['text', 'date', 'number']),
+    value: varchar("value", { length: 2048 }),
+
+    fieldId: bigint("fieldId", { mode: "number", unsigned: true }).references(() => fields.id).notNull(),
+})
+
+export const typedFieldsRelations = relations(typedFields, ({ one }) => ({
+    field: one(fields, { fields: [typedFields.fieldId], references: [fields.id] }),
+}))
+
 export const sourceableFields = mysqlTable("sourceableFields", {
     id: bigint("id", { mode: "number", unsigned: true })
         .autoincrement()
         .primaryKey(),
-    type: varchar("type", { length: 256 }), // book, conference, article ...
+    source: mysqlEnum('type', ['certificate', 'book', 'article']),
 
-    fieldId: bigint("fieldId", { mode: "number", unsigned: true })
-        .references(() => fields.id)
-        .notNull()
+    documentId: bigint("documentId", { mode: "number", unsigned: true }).references(() => documents.id).notNull(),
+    fieldId: bigint("fieldId", { mode: "number", unsigned: true }).references(() => fields.id).notNull()
+})
+
+export const sourceableFieldsRelations = relations(sourceableFields, ({ one }) => ({
+    field: one(fields, { fields: [sourceableFields.fieldId], references: [fields.id] }),
+    document: one(documents, { fields: [sourceableFields.documentId], references: [documents.id] })
+}))
+
+
+
+export const documents = mysqlTable("documents", {
+    id: bigint("id", { mode: "number", unsigned: true })
+        .autoincrement()
+        .primaryKey(),
+    type: varchar("type", { length: 5 }),
+    category: mysqlEnum('type', ['certificate', 'book', 'article']),
 })
