@@ -193,8 +193,7 @@ export const sourceableFields = mysqlTable("sourceableFields", {
     id: bigint("id", { mode: "number", unsigned: true })
         .autoincrement()
         .primaryKey(),
-    source: mysqlEnum('type', ['certificate', 'book', 'article']),
-
+    source: mysqlEnum('type', ['certificate', 'book', 'article', 'conference']),
     documentId: bigint("documentId", { mode: "number", unsigned: true }).references(() => documents.id).notNull(),
     fieldId: bigint("fieldId", { mode: "number", unsigned: true }).references(() => fields.id).notNull()
 })
@@ -212,5 +211,33 @@ export const documents = mysqlTable("documents", {
         .primaryKey(),
     type: varchar("type", { length: 5 }),
     path: varchar("type", { length: 2048 }),
-    category: mysqlEnum('type', ['certificate', 'book', 'article']),
+
+})
+
+export const certificate = mysqlTable("certeficate", {
+    id: bigint("id", { mode: "number", unsigned: true })
+        .autoincrement()
+        .primaryKey(),
+    documentId: bigint("documentId", { mode: "number", unsigned: true }).references(() => documents.id).notNull(),
+})
+
+export const book = mysqlTable("book", {
+    id: bigint("id", { mode: "number", unsigned: true })
+        .autoincrement()
+        .primaryKey(),
+    documentId: bigint("documentId", { mode: "number", unsigned: true }).references(() => documents.id).notNull(),
+})
+
+export const article = mysqlTable("article", {
+    id: bigint("id", { mode: "number", unsigned: true })
+        .autoincrement()
+        .primaryKey(),
+    documentId: bigint("documentId", { mode: "number", unsigned: true }).references(() => documents.id).notNull(),
+})
+
+export const conference = mysqlTable("conference", {
+    id: bigint("id", { mode: "number", unsigned: true })
+        .autoincrement()
+        .primaryKey(),
+    documentId: bigint("documentId", { mode: "number", unsigned: true }).references(() => documents.id).notNull(),
 })
