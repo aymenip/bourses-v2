@@ -26,5 +26,6 @@
   "request-email": "Please enter your email",
   "request-password": "Please enter your password",
   "invalid-email": "Please enter a valid email",
-  "at-least-8": "At least 8 characters"
+  "at-least-8": "At least 8 characters",
+  "stats": "Stats"
 }

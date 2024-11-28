@@ -12,8 +12,10 @@ export const Route = createFileRoute('/_admin/_adminLayout')({
 
 
 function Dashboard() {
-  return <>
+  return <div className='flex'>
     <Sidebar />
-    <Outlet />
-  </>
+    <div className='m-2'>
+      <Outlet />
+    </div>
+  </div>
 }
