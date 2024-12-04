@@ -1,34 +1,23 @@
+import { MatrialStatus } from "teacher/teacher.enums";
+
 export class UpdateTeacherDTO {
     id: number;
     firstname?: string;
     lastname?: string;
     email?: string;
     dob?: Date;
-    matrialStatus?: 'متزوج' | 'أعزب';
-    age?: number; // Optional, as it might not be provided
-    debt?: number;
-    currentDegree?: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '12';
-    nextDegree?: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '12';
-    effectiveDate?: Date;
+    matrialStatus?: MatrialStatus;
     highPostion?: boolean;
     positionId?: number;
-    tierId?: number;
-
     constructor(
         id: number,
-        firstname: string,
-        lastname: string,
-        email: string,
-        dob: Date,
-        matrialStatus: 'متزوج' | 'أعزب',
-        age: number | undefined,
-        debt: number | undefined,
-        currentDegree: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '12',
-        nextDegree: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '12',
-        effectiveDate: Date,
-        highPostion: boolean = false, // Default to false if not provided
-        positionId: number,
-        tierId: number,
+        firstname?: string,
+        lastname?: string,
+        email?: string,
+        dob?: Date,
+        matrialStatus?: MatrialStatus,
+        highPostion?: boolean,
+        positionId?: number,
     ) {
         this.id = id;
         this.firstname = firstname;
@@ -36,13 +25,7 @@ export class UpdateTeacherDTO {
         this.email = email;
         this.dob = dob;
         this.matrialStatus = matrialStatus;
-        this.age = age;
-        this.debt = debt;
-        this.currentDegree = currentDegree;
-        this.nextDegree = nextDegree;
-        this.effectiveDate = effectiveDate;
         this.highPostion = highPostion;
         this.positionId = positionId;
-        this.tierId = tierId;
     }
 }

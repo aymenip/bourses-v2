@@ -7,8 +7,6 @@ export class TeacherExportDTO {
     email: string;
     dob: Date;
     matrialStatus: MatrialStatus;
-    age: number;
-    debt: number;
     highPostion: boolean;
     createdAt: Date;
     position: string;
@@ -19,8 +17,6 @@ export class TeacherExportDTO {
         email: string,
         dob: Date,
         matrialStatus: MatrialStatus,
-        age: number,
-        debt: number,
         highPostion: boolean,
         createdAt: Date,
         position: string
@@ -31,8 +27,6 @@ export class TeacherExportDTO {
             this.email = email,
             this.dob = dob,
             this.matrialStatus = matrialStatus,
-            this.age = age,
-            this.debt = debt,
             this.highPostion = highPostion,
             this.createdAt = createdAt,
             this.position = position

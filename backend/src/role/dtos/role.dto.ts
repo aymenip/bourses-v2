@@ -1,11 +1,14 @@
 export class RoleDTO {
     id: number;
-    name: string;
+    code: string;
+    title: string;
     constructor(
         id: number,
-        name: string,
+        code: string,
+        title: string,
     ) {
         this.id = id;
-        this.name = name;
+        this.code = code;
+        this.title = title;
     }
 }
