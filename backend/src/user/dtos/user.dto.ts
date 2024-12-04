@@ -1,23 +1,34 @@
+import { MatrialStatus } from "teacher/teacher.enums";
+
 export class UserDTO {
-    password: string;
     id: number;
-    name: string;
+    firstname: string;
+    lastname: string;
+    dob: Date;
+    matrialStatus: MatrialStatus;
     email: string;
+    password: string;
     createdAt: Date;
     updatedAt: Date;
     roleId: number;
     constructor(
-        password: string,
         id: number,
-        name: string,
+        firstname: string,
+        lastname: string,
+        dob: Date,
+        matrialStatus: MatrialStatus,
         email: string,
+        password: string,
         createdAt: Date,
         updatedAt: Date,
         roleId: number,
     ) {
         this.password = password;
         this.id = id;
-        this.name = name;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.dob = dob;
+        this.matrialStatus = matrialStatus;
         this.email = email;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

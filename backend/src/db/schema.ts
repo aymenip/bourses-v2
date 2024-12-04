@@ -11,7 +11,6 @@ export const users = mysqlTable("users", {
     lastname: varchar("lastname", { length: 256 }).notNull(),
     dob: date("dob", { mode: "date" }),
     matrialStatus: mysqlEnum('matrialStatus', ['متزوج', 'أعزب']),
-    age: int("age"),
     email: varchar("email", { length: 256 }).notNull().unique(),
     password: varchar("password", { length: 256 }).notNull(),
     createdAt: timestamp("createdAt").defaultNow().notNull(),
