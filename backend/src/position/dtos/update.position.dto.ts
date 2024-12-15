@@ -1,10 +1,9 @@
 export class UpdatePositionDTO {
     id: number;
     name?: string;
-
     constructor(
         id: number,
-        name: string,
+        name?: string,
     ) {
         this.id = id;
         this.name = name;

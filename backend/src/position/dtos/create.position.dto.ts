@@ -1,6 +1,5 @@
 export class CreatePositionDTO {
     name: string;
-
     constructor(
         name: string,
     ) {

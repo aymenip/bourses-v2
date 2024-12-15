@@ -28,8 +28,6 @@ export const allTeachers = async (): Promise<TeacherDTO[]> => {
         result.email,
         result.dob,
         result.matrialStatus as MatrialStatus,
-        result.age,
-        result.debt,
         result.highPostion,
         result.createdAt,
         result.updatedAt,

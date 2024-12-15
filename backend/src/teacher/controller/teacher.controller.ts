@@ -100,12 +100,6 @@ export const UpdateTeacher = async (req: express.Request, res: express.Response)
             matrialStatus,
             age,
             debt,
-            currentDegree,
-            nextDegree,
-            new Date(effectiveDate), // Ensure effectiveDate is a Date object
-            highPostion,
-            positionId,
-            tierId,
         );
         const result = await updateTeacher(updateTeacherDTO);
         return res.status(200).json(result)

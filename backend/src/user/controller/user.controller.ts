@@ -54,7 +54,7 @@ export const Login = async (req: express.Request, res: express.Response): Promis
             sub: user.id,
             email: user.email,
             role: user.roleId,
-            name: user.name,
+            fullname: `${user.firstname} ${user.lastname}`,
         };
 
         const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: process.env.EXPIRES_IN });
@@ -91,7 +91,7 @@ export const Register = async (req: express.Request, res: express.Response): Pro
             sub: createdUser.id,
             email: createdUser.email,
             role: createdUser.roleId,
-            name: createdUser.name,
+            fullname: `${user.firstname} ${user.lastname}`,
         }
 
         const token = jwt.sign(payload, process.env.SECRET_KEY);

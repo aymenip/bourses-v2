@@ -60,12 +60,13 @@ export const permissions = mysqlTable("permissions", {
 })
 
 export const adminRelations = relations(admins, ({ one }) => ({
-    role: one(permissions, { fields: [admins.permissionId], references: [permissions.id] }),
+    permission: one(permissions, { fields: [admins.permissionId], references: [permissions.id] }),
 }))
 
 export const userRelations = relations(users, ({ one }) => ({
     role: one(roles, { fields: [users.roleId], references: [roles.id] }),
 }))
+
 
 export const logsRelations = relations(logs, ({ one }) => ({
     user: one(users, { fields: [logs.userId], references: [users.id] }),
