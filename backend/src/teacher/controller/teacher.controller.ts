@@ -7,6 +7,7 @@ import { allTeachers, allTeachersWithDetails, createTeacher, deleteTeacher, teac
 import { handleError } from "../../utils/errors";
 import { createTeacherFromRow } from "../utils";
 import { Degree, MatrialStatus } from "../teacher.enums";
+import { CreateUserDTO } from "user/dtos";
 
 export const CreateTeacher = async (req: express.Request, res: express.Response): Promise<CreateTeacherDTO | any> => {
     try {
@@ -14,34 +15,28 @@ export const CreateTeacher = async (req: express.Request, res: express.Response)
             firstname,
             lastname,
             email,
+            password,
             dob,
             matrialStatus,
-            age,
-            debt,
-            currentDegree,
-            nextDegree,
-            effectiveDate,
             highPostion,
             positionId,
-            tierId,
+            roleId,
         } = req.body;
         // Create an instance of UserDTO
         const createTeacherDTO = new CreateTeacherDTO(
-            firstname,
-            lastname,
-            email,
-            new Date(dob), // Ensure dob is a Date object
-            matrialStatus,
-            age,
-            debt,
-            currentDegree,
-            nextDegree,
-            new Date(effectiveDate), // Ensure effectiveDate is a Date object
             highPostion,
             positionId,
-            tierId,
         );
-        const resutl = await createTeacher(createTeacherDTO);
+        const createUserDTO = new CreateUserDTO(
+            firstname,
+            lastname,
+            new Date(dob),
+            matrialStatus,
+            email,
+            password,
+            roleId
+        )
+        const resutl = await createTeacher(createTeacherDTO, createUserDTO);
         return res.status(200).json(resutl)
     } catch (error) {
         handleError((msg) => console.log(msg), 'An error occurred');

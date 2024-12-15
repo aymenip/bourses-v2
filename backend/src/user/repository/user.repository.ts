@@ -2,6 +2,8 @@ import { db } from '../../db/setup';
 import { users } from '../../db/schema';
 import { CreateUserDTO, UpdateUserDTO, UserDTO } from 'user/dtos';
 import { eq } from 'drizzle-orm';
+import { CAE } from 'utils/constants';
+import { MatrialStatus } from 'teacher/teacher.enums';
 
 
 export const createUser = async (createUserDto: CreateUserDTO): Promise<UserDTO> => {
@@ -12,7 +14,7 @@ export const createUser = async (createUserDto: CreateUserDTO): Promise<UserDTO>
         return user;
     } catch (error) {
         console.log(error)
-        throw new Error('Failed to create User'); // Handle errors appropriately
+        throw new Error(CAE); // Handle errors appropriately
     }
 }
 
@@ -20,7 +22,10 @@ export const getUserByEmail = async (email: string): Promise<UserDTO | null> => 
     try {
         const result = await (await db).select().from(users).where(eq(users.email, email)).execute();
         // Return the first user or null if none found
-        return result.length > 0 ? result[0] : null;
+        return result.length > 0 ? {
+            ...result[0],
+            matrialStatus: MatrialStatus
+        } : null;
     } catch (error) {
         return null // Handle errors appropriately
     }

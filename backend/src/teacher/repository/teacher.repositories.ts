@@ -4,17 +4,21 @@ import { eq } from 'drizzle-orm';
 import { CreateTeacherDTO, TeacherDTO, TeacherExportDTO, UpdateTeacherDTO } from '../dtos';
 import { MatrialStatus } from '../teacher.enums';
 import { handleError } from '../../utils/errors';
+import { CreateUserDTO } from 'user/dtos';
+import { createUser } from 'user/repository/user.repository';
+import { CAE } from 'utils/constants';
 
 // CREATE ONE TEACHER
-export const createTeacher = async (createTeacher: CreateTeacherDTO): Promise<CreateTeacherDTO> => {
+export const createTeacher = async (createTeacher: CreateTeacherDTO, createUserDTO: CreateUserDTO): Promise<CreateTeacherDTO> => {
     try {
         await (await db).transaction(async (tx) => {
-            const result = await (await db).insert(teachers).values(createTeacher).execute();
+            const user = await createUser(createUserDTO);
+            const result = await (await db).insert(teachers).values({ ...createTeacher, userId: user.id }).execute();
         })
         return createTeacher; // Assuming `insertId` is returned
     } catch (error) {
         handleError((error) => console.log(error))
-        throw new Error('Failed to create teacher'); // Handle errors appropriately
+        throw new Error(CAE); // Handle errors appropriately
     }
 };
 
