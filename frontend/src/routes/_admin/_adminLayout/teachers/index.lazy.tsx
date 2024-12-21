@@ -7,6 +7,6 @@ export const Route = createLazyFileRoute('/_admin/_adminLayout/teachers/')({
 
 function Teachers() {
   return (
-    <div className='background-gradient border themed-border'>Hello /__admin/teachers/!</div>
+    <div>Hello /__admin/teachers/!</div>
   )
 }

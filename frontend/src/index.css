@@ -59,25 +59,17 @@
 
 @layer base {
   * {
-    @apply border-border text-foreground;
+    @apply border-border;
   }
 
   body {
-    @apply font-readex bg-background text-foreground text-[#222] dark:text-[#f4f4f4];
+    @apply font-readex bg-background text-foreground w-[100dvw];
   }
 }
 
 @layer components {
   .header-background {
-    @apply background-gradient py-4 px-2 h-screen sticky overflow-y-auto flex flex-col items-start gap-4 border ltr:border-r-zinc-200 rtl:border-l-zinc-200 dark:ltr:border-r-neutral-700 dark:rtl:border-l-neutral-700;
-  }
-
-  .background-gradient {
-    @apply transition-transform shadow-lg py-4 px-2 flex flex-col items-start gap-4 bg-gradient-to-bl from-zinc-100 to-zinc-200 dark:from-neutral-800 dark:to-neutral-900;
-  }
-
-  .themed-border {
-    @apply border-zinc-200 dark:border-neutral-700;
+    @apply transition-transform shadow-lg py-4 px-2 h-screen sticky overflow-y-auto flex flex-col items-start gap-4 bg-gradient-to-bl from-zinc-100 to-zinc-200 border ltr:border-r-zinc-200 rtl:border-l-zinc-200 dark:ltr:border-r-neutral-700 dark:rtl:border-l-neutral-700 dark:from-neutral-800 dark:to-neutral-900;
   }
 
   .header-item {
