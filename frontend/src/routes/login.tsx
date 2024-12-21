@@ -29,9 +29,9 @@ function Login() {
 
   const [t, _] = useTranslation('translation');
 
-  return <div className='w-full h-[100vh] grid place-content-center'>
-    <div className='bg-secondary p-10 rounded-md shadow-md border-slate-200 dark:border-slate-600 border-2'>
-      <div className='mb-10'>
+  return <div className='w-full h-[100vh] grid  grid-cols-2 place-content-center'>
+    <div className='p-10 ltr:rounded-tr-3xl ltr:rounded-br-3xl rtl:rounded-tl-3xl rtl:rounded-bl-3xl  h-svh place-content-center z-50 bg-background w-svw md:max-w-screen-md'>
+      <div className='mb-10 pb-2 border-b-4 border-b-primary/50'>
         <H1>
           Bourses V2
         </H1>
@@ -63,6 +63,9 @@ function Login() {
           </Button>
         </div>
       </form>
+    </div>
+    <div className='h-svh bg-primary/5 absolute w-full '>
+
     </div>
   </div >
 }
