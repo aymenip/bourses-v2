@@ -6,7 +6,6 @@ import { CreateTeacherDTO, UpdateTeacherDTO } from "../dtos";
 import { allTeachers, createTeacher, deleteTeacher, teacher, updateTeacher } from "../repository/teacher.repositories";
 import { handleError } from "../../utils/errors";
 import { createTeacherFromRow } from "../utils";
-import { Degree, MatrialStatus } from "../teacher.enums";
 import { CreateUserDTO, UpdateUserDTO } from "user/dtos";
 
 export const CreateTeacher = async (req: express.Request, res: express.Response): Promise<CreateTeacherDTO | any> => {
@@ -76,7 +75,6 @@ export const UpdateTeacher = async (req: express.Request, res: express.Response)
             lastname,
             email,
             dob,
-            password,
             matrialStatus,
             highPostion,
             positionId,
