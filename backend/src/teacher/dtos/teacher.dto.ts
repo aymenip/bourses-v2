@@ -1,3 +1,5 @@
+import { MatrialStatus } from "teacher/teacher.enums";
+
 export class TeacherDTO {
     id: number;
     highPostion: boolean;
@@ -16,5 +18,42 @@ export class TeacherDTO {
             this.createdAt = createdAt,
             this.updatedAt = updatedAt,
             this.positionId = positionId
+    }
+}
+
+export class FullTeacherDTO {
+    id: number;
+    firstname: string;
+    lastname: string;
+    email: string;
+    dob: Date;
+    matrialStatus: MatrialStatus;
+    highPostion: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    positionId: number;
+
+    constructor(
+        id: number,
+        firstname: string,
+        lastname: string,
+        email: string,
+        dob: Date,
+        matrialStatus: MatrialStatus,
+        highPostion: boolean,
+        createdAt: Date,
+        updatedAt: Date,
+        positionId: number
+    ) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.dob = dob;
+        this.matrialStatus = matrialStatus;
+        this.highPostion = highPostion;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.positionId = positionId;
     }
 }

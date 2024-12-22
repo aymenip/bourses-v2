@@ -1,10 +1,10 @@
 import { db } from '../../db/setup';
-import { positions, teachers } from '../../db/schema';
+import { positions, teachers, users } from '../../db/schema';
 import { eq } from 'drizzle-orm';
-import { CreateTeacherDTO, TeacherDTO, TeacherExportDTO, UpdateTeacherDTO } from '../dtos';
+import { CreateTeacherDTO, FullTeacherDTO, TeacherDTO, TeacherExportDTO, UpdateTeacherDTO } from '../dtos';
 import { MatrialStatus } from '../teacher.enums';
 import { handleError } from '../../utils/errors';
-import { CreateUserDTO } from 'user/dtos';
+import { CreateUserDTO, UpdateUserDTO } from 'user/dtos';
 import { createUser } from 'user/repository/user.repository';
 import { CAE } from 'utils/constants';
 
@@ -23,66 +23,92 @@ export const createTeacher = async (createTeacher: CreateTeacherDTO, createUserD
 };
 
 /// GET ALL TEACHERS
-export const allTeachers = async (): Promise<TeacherDTO[]> => {
-    const results = await (await db).select().from(teachers);
-    return results.map((result) => new TeacherDTO(
-        result.id,
-        result.firstname,
-        result.lastname,
-        result.email,
-        result.dob,
-        result.matrialStatus as MatrialStatus,
-        result.highPostion,
-        result.createdAt,
-        result.updatedAt,
-        result.positionId,
-    ));
-}
+export const allTeachers = async (): Promise<FullTeacherDTO[]> => {
+    const dbInstance = await db;
+    const results = await dbInstance
+        .select({
+            teacherId: teachers.id,
+            highPosition: teachers.highPostion,
+            createdAt: teachers.createdAt,
+            updatedAt: teachers.updatedAt,
+            positionId: teachers.positionId,
+            firstname: users.firstname,
+            lastname: users.lastname,
+            email: users.email,
+            dob: users.dob,
+            matrialStatus: users.matrialStatus,
+        })
+        .from(teachers)
+        .innerJoin(users, eq(teachers.userId, users.id));
 
-// GET ALL TEACHERS WITH DETAILS (JOINING)
-export const allTeachersWithDetails = async (): Promise<TeacherExportDTO[]> => {
-    const results = await
-        (await db).select()
-            .from(teachers)
-            .leftJoin(positions, eq(teachers.positionId, positions.id));
-    return results.map((result) => new TeacherExportDTO(
-        result["teachers"].id,
-        result["teachers"].firstname,
-        result["teachers"].lastname,
-        result["teachers"].email,
-        result["teachers"].dob,
-        result["teachers"].matrialStatus as MatrialStatus,
-        result["teachers"].age,
-        result["teachers"].debt,
-        result["teachers"].highPostion,
-        result["teachers"].createdAt,
-        result["positions"].name,
-    ));
-}
+    return results.map((result) =>
+        new FullTeacherDTO(
+            result.teacherId,
+            result.firstname,
+            result.lastname,
+            result.email,
+            result.dob,
+            result.matrialStatus as MatrialStatus,
+            result.highPosition,
+            result.createdAt,
+            result.updatedAt,
+            result.positionId
+        )
+    );
+};
+
+
+
 
 /// GET ONE TEACHER
-export const teacher = async (id: number): Promise<TeacherDTO> => {
-    const result = await (await db).select().from(teachers).where(eq(teachers.id, id));
-    return new TeacherDTO(
-        result[0].id,
-        result[0].firstname,
-        result[0].lastname,
-        result[0].email,
-        result[0].dob,
-        result[0].matrialStatus as MatrialStatus,
-        result[0].age,
-        result[0].debt,
-        result[0].highPostion,
-        result[0].createdAt,
-        result[0].updatedAt,
-        result[0].positionId,
+export const teacher = async (id: number): Promise<FullTeacherDTO> => {
+    const dbInstance = await db;
+    const result = await dbInstance
+        .select({
+            teacherId: teachers.id,
+            highPosition: teachers.highPostion,
+            createdAt: teachers.createdAt,
+            updatedAt: teachers.updatedAt,
+            positionId: teachers.positionId,
+            firstname: users.firstname,
+            lastname: users.lastname,
+            email: users.email,
+            dob: users.dob,
+            matrialStatus: users.matrialStatus,
+        })
+        .from(teachers)
+        .innerJoin(users, eq(teachers.userId, users.id))
+        .where(eq(teachers.id, id))
+        .limit(1); // Ensures only one result is fetched
+
+    if (result.length === 0) {
+        throw new Error(`Teacher with ID ${id} not found`);
+    }
+
+    const teacher = result[0];
+    return new FullTeacherDTO(
+        teacher.teacherId,
+        teacher.firstname,
+        teacher.lastname,
+        teacher.email,
+        teacher.dob,
+        teacher.matrialStatus as MatrialStatus,
+        teacher.highPosition,
+        teacher.createdAt,
+        teacher.updatedAt,
+        teacher.positionId
     );
-}
+};
 
 
 /// UPDATE ONE TEACHER
-export const updateTeacher = async (updateTeacherDTO: UpdateTeacherDTO): Promise<TeacherDTO> => {
-    await (await db).update(teachers).set(updateTeacherDTO).where(eq(teachers.id, updateTeacherDTO.id)).execute()
+export const updateTeacher = async (updateTeacherDTO: UpdateTeacherDTO, updateUserDto: UpdateUserDTO): Promise<TeacherDTO> => {
+
+    await (await db).transaction(async (tx) => {
+        const updatedUser = await (await db).update(users).set(updateUserDto).where(eq(users.id, updateUserDto.id)).execute();
+        const updatedTeacher = await (await db).update(teachers).set(updateTeacherDTO).where(eq(teachers.id, updateTeacherDTO.id)).execute()
+    })
+
     return await teacher(updateTeacherDTO.id);
 }
 

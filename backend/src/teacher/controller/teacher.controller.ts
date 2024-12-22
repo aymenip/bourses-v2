@@ -3,11 +3,11 @@ import xlsx from "xlsx";
 import fs from 'fs';
 import moment from "moment";
 import { CreateTeacherDTO, UpdateTeacherDTO } from "../dtos";
-import { allTeachers, allTeachersWithDetails, createTeacher, deleteTeacher, teacher, updateTeacher } from "../repository/teacher.repositories";
+import { allTeachers, createTeacher, deleteTeacher, teacher, updateTeacher } from "../repository/teacher.repositories";
 import { handleError } from "../../utils/errors";
 import { createTeacherFromRow } from "../utils";
 import { Degree, MatrialStatus } from "../teacher.enums";
-import { CreateUserDTO } from "user/dtos";
+import { CreateUserDTO, UpdateUserDTO } from "user/dtos";
 
 export const CreateTeacher = async (req: express.Request, res: express.Response): Promise<CreateTeacherDTO | any> => {
     try {
@@ -70,33 +70,34 @@ export const Teacher = async (req: express.Request, res: express.Response): Prom
 export const UpdateTeacher = async (req: express.Request, res: express.Response): Promise<any> => {
     try {
         const {
-            id,
+            userId,
+            teacherId,
+            firstname,
+            lastname,
+            email,
+            dob,
+            password,
+            matrialStatus,
+            highPostion,
+            positionId,
+        } = req.body;
+        // Create an instance of UserDTO
+        const updateTeacherDTO = new UpdateTeacherDTO(
+            teacherId,
+            Boolean(highPostion),
+            Number(positionId),
+        );
+
+        const updateUserDto = new UpdateUserDTO(
+            userId,
             firstname,
             lastname,
             email,
             dob,
             matrialStatus,
-            age,
-            debt,
-            currentDegree,
-            nextDegree,
-            effectiveDate,
-            highPostion,
-            positionId,
-            tierId,
-        } = req.body;
-        // Create an instance of UserDTO
-        const updateTeacherDTO = new UpdateTeacherDTO(
-            id,
-            firstname,
-            lastname,
-            email,
-            new Date(dob), // Ensure dob is a Date object
-            matrialStatus,
-            age,
-            debt,
         );
-        const result = await updateTeacher(updateTeacherDTO);
+
+        const result = await updateTeacher(updateTeacherDTO, updateUserDto);
         return res.status(200).json(result)
     } catch (error) {
 
@@ -124,7 +125,6 @@ export const ImportTeachersXlsx = async (req: express.Request, res: express.Resp
         const filePath = req.file.path;
         const {
             highPosition,
-            tierId,
             positionId,
             worksheetIndex,
         } = req.query;
@@ -135,19 +135,8 @@ export const ImportTeachersXlsx = async (req: express.Request, res: express.Resp
         for (const _ of csvData) {
             const row = _.split(",");
             const createTeacherDto = new CreateTeacherDTO(
-                row[2],
-                row[3],
-                row[28] || null,
-                new Date(row[5]) || null,
-                row[6] as MatrialStatus || null,
-                Number(row[7]),
-                undefined,
-                row[9] as Degree,
-                row[10] as Degree,
-                new Date(row[11]),
                 Boolean(highPosition),
                 Number(positionId),
-                Number(tierId),
             );
             try {
                 await createTeacherFromRow(createTeacherDto);
@@ -171,7 +160,7 @@ export const ImportTeachersXlsx = async (req: express.Request, res: express.Resp
 // Export teachers
 export const ExportTeachersToXlsx = async (req: express.Request, res: express.Response): Promise<any> => {
     try {
-        const teachers = await allTeachersWithDetails();
+        const teachers = await allTeachers();
 
         if (!teachers || teachers.length === 0) {
             return res.status(404).send("No teachers found.");
