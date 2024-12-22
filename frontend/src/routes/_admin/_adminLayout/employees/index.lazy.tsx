@@ -1,12 +1,12 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 
 export const Route = createLazyFileRoute('/_admin/_adminLayout/employees/')({
-  component: Epmloyees,
+  component: Teachers,
 })
 
 
-function Epmloyees() {
+function Teachers() {
   return (
-    <div className='background-gradient border themed-border'>Hello /__admin/employees/!</div>
+    <div>Hello /__admin/employees/!</div>
   )
 }

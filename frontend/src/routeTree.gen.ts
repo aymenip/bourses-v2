@@ -35,6 +35,7 @@ const AdminAdminLayoutEmployeesIndexLazyImport = createFileRoute(
 // Create/Update Routes
 
 const LoginRoute = LoginImport.update({
+  id: '/login',
   path: '/login',
   getParentRoute: () => rootRoute,
 } as any)
@@ -45,12 +46,14 @@ const AdminAdminLayoutRoute = AdminAdminLayoutImport.update({
 } as any)
 
 const AdminAdminLayoutIndexRoute = AdminAdminLayoutIndexImport.update({
+  id: '/',
   path: '/',
   getParentRoute: () => AdminAdminLayoutRoute,
 } as any)
 
 const AdminAdminLayoutTeachersIndexLazyRoute =
   AdminAdminLayoutTeachersIndexLazyImport.update({
+    id: '/teachers/',
     path: '/teachers/',
     getParentRoute: () => AdminAdminLayoutRoute,
   } as any).lazy(() =>
@@ -61,6 +64,7 @@ const AdminAdminLayoutTeachersIndexLazyRoute =
 
 const AdminAdminLayoutStudentsIndexLazyRoute =
   AdminAdminLayoutStudentsIndexLazyImport.update({
+    id: '/students/',
     path: '/students/',
     getParentRoute: () => AdminAdminLayoutRoute,
   } as any).lazy(() =>
@@ -71,6 +75,7 @@ const AdminAdminLayoutStudentsIndexLazyRoute =
 
 const AdminAdminLayoutEmployeesIndexLazyRoute =
   AdminAdminLayoutEmployeesIndexLazyImport.update({
+    id: '/employees/',
     path: '/employees/',
     getParentRoute: () => AdminAdminLayoutRoute,
   } as any).lazy(() =>
@@ -81,6 +86,7 @@ const AdminAdminLayoutEmployeesIndexLazyRoute =
 
 const AdminAdminLayoutTeachersIdRoute = AdminAdminLayoutTeachersIdImport.update(
   {
+    id: '/teachers/$id',
     path: '/teachers/$id',
     getParentRoute: () => AdminAdminLayoutRoute,
   } as any,
@@ -88,6 +94,7 @@ const AdminAdminLayoutTeachersIdRoute = AdminAdminLayoutTeachersIdImport.update(
 
 const AdminAdminLayoutStudentsIdRoute = AdminAdminLayoutStudentsIdImport.update(
   {
+    id: '/students/$id',
     path: '/students/$id',
     getParentRoute: () => AdminAdminLayoutRoute,
   } as any,
@@ -95,6 +102,7 @@ const AdminAdminLayoutStudentsIdRoute = AdminAdminLayoutStudentsIdImport.update(
 
 const AdminAdminLayoutEmployeesIdRoute =
   AdminAdminLayoutEmployeesIdImport.update({
+    id: '/employees/$id',
     path: '/employees/$id',
     getParentRoute: () => AdminAdminLayoutRoute,
   } as any)
@@ -171,18 +179,117 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({
-  LoginRoute,
-  AdminAdminLayoutRoute: AdminAdminLayoutRoute.addChildren({
-    AdminAdminLayoutIndexRoute,
-    AdminAdminLayoutEmployeesIdRoute,
-    AdminAdminLayoutStudentsIdRoute,
-    AdminAdminLayoutTeachersIdRoute,
+interface AdminAdminLayoutRouteChildren {
+  AdminAdminLayoutIndexRoute: typeof AdminAdminLayoutIndexRoute
+  AdminAdminLayoutEmployeesIdRoute: typeof AdminAdminLayoutEmployeesIdRoute
+  AdminAdminLayoutStudentsIdRoute: typeof AdminAdminLayoutStudentsIdRoute
+  AdminAdminLayoutTeachersIdRoute: typeof AdminAdminLayoutTeachersIdRoute
+  AdminAdminLayoutEmployeesIndexLazyRoute: typeof AdminAdminLayoutEmployeesIndexLazyRoute
+  AdminAdminLayoutStudentsIndexLazyRoute: typeof AdminAdminLayoutStudentsIndexLazyRoute
+  AdminAdminLayoutTeachersIndexLazyRoute: typeof AdminAdminLayoutTeachersIndexLazyRoute
+}
+
+const AdminAdminLayoutRouteChildren: AdminAdminLayoutRouteChildren = {
+  AdminAdminLayoutIndexRoute: AdminAdminLayoutIndexRoute,
+  AdminAdminLayoutEmployeesIdRoute: AdminAdminLayoutEmployeesIdRoute,
+  AdminAdminLayoutStudentsIdRoute: AdminAdminLayoutStudentsIdRoute,
+  AdminAdminLayoutTeachersIdRoute: AdminAdminLayoutTeachersIdRoute,
+  AdminAdminLayoutEmployeesIndexLazyRoute:
     AdminAdminLayoutEmployeesIndexLazyRoute,
+  AdminAdminLayoutStudentsIndexLazyRoute:
     AdminAdminLayoutStudentsIndexLazyRoute,
+  AdminAdminLayoutTeachersIndexLazyRoute:
     AdminAdminLayoutTeachersIndexLazyRoute,
-  }),
-})
+}
+
+const AdminAdminLayoutRouteWithChildren =
+  AdminAdminLayoutRoute._addFileChildren(AdminAdminLayoutRouteChildren)
+
+export interface FileRoutesByFullPath {
+  '/login': typeof LoginRoute
+  '': typeof AdminAdminLayoutRouteWithChildren
+  '/': typeof AdminAdminLayoutIndexRoute
+  '/employees/$id': typeof AdminAdminLayoutEmployeesIdRoute
+  '/students/$id': typeof AdminAdminLayoutStudentsIdRoute
+  '/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
+  '/employees': typeof AdminAdminLayoutEmployeesIndexLazyRoute
+  '/students': typeof AdminAdminLayoutStudentsIndexLazyRoute
+  '/teachers': typeof AdminAdminLayoutTeachersIndexLazyRoute
+}
+
+export interface FileRoutesByTo {
+  '/login': typeof LoginRoute
+  '/': typeof AdminAdminLayoutIndexRoute
+  '/employees/$id': typeof AdminAdminLayoutEmployeesIdRoute
+  '/students/$id': typeof AdminAdminLayoutStudentsIdRoute
+  '/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
+  '/employees': typeof AdminAdminLayoutEmployeesIndexLazyRoute
+  '/students': typeof AdminAdminLayoutStudentsIndexLazyRoute
+  '/teachers': typeof AdminAdminLayoutTeachersIndexLazyRoute
+}
+
+export interface FileRoutesById {
+  __root__: typeof rootRoute
+  '/login': typeof LoginRoute
+  '/_admin/_adminLayout': typeof AdminAdminLayoutRouteWithChildren
+  '/_admin/_adminLayout/': typeof AdminAdminLayoutIndexRoute
+  '/_admin/_adminLayout/employees/$id': typeof AdminAdminLayoutEmployeesIdRoute
+  '/_admin/_adminLayout/students/$id': typeof AdminAdminLayoutStudentsIdRoute
+  '/_admin/_adminLayout/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
+  '/_admin/_adminLayout/employees/': typeof AdminAdminLayoutEmployeesIndexLazyRoute
+  '/_admin/_adminLayout/students/': typeof AdminAdminLayoutStudentsIndexLazyRoute
+  '/_admin/_adminLayout/teachers/': typeof AdminAdminLayoutTeachersIndexLazyRoute
+}
+
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/login'
+    | ''
+    | '/'
+    | '/employees/$id'
+    | '/students/$id'
+    | '/teachers/$id'
+    | '/employees'
+    | '/students'
+    | '/teachers'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/login'
+    | '/'
+    | '/employees/$id'
+    | '/students/$id'
+    | '/teachers/$id'
+    | '/employees'
+    | '/students'
+    | '/teachers'
+  id:
+    | '__root__'
+    | '/login'
+    | '/_admin/_adminLayout'
+    | '/_admin/_adminLayout/'
+    | '/_admin/_adminLayout/employees/$id'
+    | '/_admin/_adminLayout/students/$id'
+    | '/_admin/_adminLayout/teachers/$id'
+    | '/_admin/_adminLayout/employees/'
+    | '/_admin/_adminLayout/students/'
+    | '/_admin/_adminLayout/teachers/'
+  fileRoutesById: FileRoutesById
+}
+
+export interface RootRouteChildren {
+  LoginRoute: typeof LoginRoute
+  AdminAdminLayoutRoute: typeof AdminAdminLayoutRouteWithChildren
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  LoginRoute: LoginRoute,
+  AdminAdminLayoutRoute: AdminAdminLayoutRouteWithChildren,
+}
+
+export const routeTree = rootRoute
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* prettier-ignore-end */
 

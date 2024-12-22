@@ -1,11 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_admin/_adminLayout/employees/$id')({
-  component: Employee
+  component: Teacher
 })
 
 
-function Employee() {
+function Teacher() {
   const { id } = Route.useParams();
   return (
     <div>{`Hello /__admin/employees/${id}!`}</div>
