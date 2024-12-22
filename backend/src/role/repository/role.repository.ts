@@ -16,9 +16,9 @@ export const createRole = async (createRoleDTO: CreateRoleDTO): Promise<RoleDTO>
     }
 }
 
-export const getRoleByName = async (name: string): Promise<RoleDTO | null> => {
+export const getRoleByCode = async (code: string): Promise<RoleDTO | null> => {
     try {
-        const result = await (await db).select().from(roles).where(eq(roles.name, name)).execute();
+        const result = await (await db).select().from(roles).where(eq(roles.code, code)).execute();
         // Return the first role or null if none found
         return result.length > 0 ? result[0] : null;
     } catch (error) {

@@ -1,12 +1,12 @@
 import { db } from '../../db/setup';
-import { positions, teachers, users } from '../../db/schema';
+import { teachers, users } from '../../db/schema';
 import { eq } from 'drizzle-orm';
-import { CreateTeacherDTO, FullTeacherDTO, TeacherDTO, TeacherExportDTO, UpdateTeacherDTO } from '../dtos';
+import { CreateTeacherDTO, FullTeacherDTO, TeacherDTO, UpdateTeacherDTO } from '../dtos';
 import { MatrialStatus } from '../teacher.enums';
 import { handleError } from '../../utils/errors';
-import { CreateUserDTO, UpdateUserDTO } from 'user/dtos';
-import { createUser } from 'user/repository/user.repository';
-import { CAE } from 'utils/constants';
+import { CreateUserDTO, UpdateUserDTO } from '../../user/dtos';
+import { createUser } from '../../user/repository/user.repository';
+import { CAE } from '../../utils/constants';
 
 // CREATE ONE TEACHER
 export const createTeacher = async (createTeacher: CreateTeacherDTO, createUserDTO: CreateUserDTO): Promise<CreateTeacherDTO> => {

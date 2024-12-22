@@ -1,5 +1,5 @@
 import express from "express";
-import { createRole, getRoleByName } from "../repository/role.repository";
+import { createRole, getRoleByCode } from "../repository/role.repository";
 import { handleError } from "../../utils/errors";
 import dotenv from "dotenv";
 import { CreateRoleDTO } from "role/dtos";
@@ -15,7 +15,7 @@ export const CreateRole = async (req: express.Request, res: express.Response): P
             return res.sendStatus(400)
         }
 
-        const role = await getRoleByName(createRoleDto.name);
+        const role = await getRoleByCode(createRoleDto.code);
 
         if (role) {
             return res.sendStatus(400)

@@ -1,4 +1,4 @@
-import { MatrialStatus } from "teacher/teacher.enums";
+import { MatrialStatus } from "../../teacher/teacher.enums";
 
 export class UpdateUserDTO {
     id: number;
