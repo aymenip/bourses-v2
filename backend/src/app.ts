@@ -6,6 +6,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import router from "./routes";
 
+
 dotenv.config();
 
 const app = express();
@@ -25,9 +26,12 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true, }));
 
+
+
 const server = http.createServer(app);
 
 app.use("/", router())
+
 
 server.listen(port, () => {
     console.log(`server running on http://localhost:${port}/`);

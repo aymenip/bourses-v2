@@ -72,17 +72,16 @@ export const Login = async (req: express.Request, res: express.Response): Promis
 export const Register = async (req: express.Request, res: express.Response): Promise<any> => {
     try {
         const createUserDto: CreateUserDTO = req.body;
-
         if (!createUserDto) {
             return res.sendStatus(400)
         }
-
+        
         const user = await getUserByEmail(createUserDto.email);
-
+        
         if (user) {
             return res.sendStatus(400)
         }
-
+        
         const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
 
         const createdUser = await createUser({ ...createUserDto, password: hashedPassword });

@@ -18,14 +18,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 export default (router: express.Router) => {
-    // CRUD
     router.post("/teacher/create", verifyToken, CreateTeacher);
     router.get("/teacher/all", verifyToken, AllTeachers);
     router.get("/teacher/:id", verifyToken, Teacher);
     router.put("/teacher/update", verifyToken, UpdateTeacher);
     router.delete("/teacher/delete/:id", verifyToken, DeleteTeacher);
-
-
     // Import
     // router.post("/teacher/import/xlsx", verifyToken, upload.single("file"), ImportTeachersXlsx);
 
