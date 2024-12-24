@@ -103,10 +103,10 @@ export const teacher = async (id: number): Promise<FullTeacherDTO> => {
 
 /// UPDATE ONE TEACHER
 export const updateTeacher = async (updateTeacherDTO: UpdateTeacherDTO, updateUserDto: UpdateUserDTO): Promise<TeacherDTO> => {
-
-    await (await db).transaction(async (tx) => {
-        const updatedUser = await (await db).update(users).set(updateUserDto).where(eq(users.id, updateUserDto.id)).execute();
-        const updatedTeacher = await (await db).update(teachers).set(updateTeacherDTO).where(eq(teachers.id, updateTeacherDTO.id)).execute()
+    const dbInstance = await db;
+    await dbInstance.transaction(async (tx) => {
+        const updatedUser = await dbInstance.update(users).set(updateUserDto).where(eq(users.id, updateUserDto.id)).execute();
+        const updatedTeacher = await dbInstance.update(teachers).set(updateTeacherDTO).where(eq(teachers.id, updateTeacherDTO.id)).execute()
     })
 
     return await teacher(updateTeacherDTO.id);
@@ -115,7 +115,8 @@ export const updateTeacher = async (updateTeacherDTO: UpdateTeacherDTO, updateUs
 
 /// DELETE ONE TEACHER
 export const deleteTeacher = async (id: number): Promise<number> => {
-    const resutl = (await (await db).delete(teachers).where(eq(teachers.id, id)).execute())[0].insertId;
-    return resutl;
+    const dbInstance = await db;
+    const resutl = await dbInstance.delete(teachers).where(eq(teachers.id, id)).execute();
+    return resutl[0].insertId;
 }
 

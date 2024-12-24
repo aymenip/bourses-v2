@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 import { handleError } from "../../utils/errors";
 import dotenv from "dotenv";
+import { UAE } from "../../utils/constants";
 
 dotenv.config()
 
@@ -75,13 +76,13 @@ export const Register = async (req: express.Request, res: express.Response): Pro
         if (!createUserDto) {
             return res.sendStatus(400)
         }
-        
+
         const user = await getUserByEmail(createUserDto.email);
-        
+
         if (user) {
-            return res.sendStatus(400)
+            return res.json({ "message": UAE }).status(400).send()
         }
-        
+
         const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
 
         const createdUser = await createUser({ ...createUserDto, password: hashedPassword });
@@ -90,7 +91,7 @@ export const Register = async (req: express.Request, res: express.Response): Pro
             sub: createdUser.id,
             email: createdUser.email,
             role: createdUser.roleId,
-            fullname: `${user.firstname} ${user.lastname}`,
+            fullname: `${createdUser.firstname} ${createdUser.lastname}`,
         }
 
         const token = jwt.sign(payload, process.env.SECRET_KEY);

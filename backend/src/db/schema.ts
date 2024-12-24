@@ -175,11 +175,12 @@ export const fields = mysqlTable("fields", {
         .notNull()
 })
 
+
 export const typedFields = mysqlTable("typedFields", {
     id: bigint("id", { mode: "number", unsigned: true })
         .autoincrement()
         .primaryKey(),
-    type: mysqlEnum('type', ['text', 'date', 'number']),
+    type: mysqlEnum('type', ['text', 'date', 'number', 'url', 'email']),
     value: varchar("value", { length: 2048 }),
 
     fieldId: bigint("fieldId", { mode: "number", unsigned: true }).references(() => fields.id).notNull(),
