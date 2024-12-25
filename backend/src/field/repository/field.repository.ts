@@ -3,7 +3,7 @@ import { fields } from '../../db/schema';
 import { eq } from 'drizzle-orm';
 import { CAE } from '../../utils/constants';
 import { and } from 'drizzle-orm';
-import { CreateFieldDTO } from 'field/dtos/create.field.dto';
+import { CreateFieldDTO } from '../../field/dtos/create.field.dto';
 import { FieldDTO } from '../../field/dtos/field.dto';
 import { UpdateFieldDTO } from '../../field/dtos/update.field.dto';
 

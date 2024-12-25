@@ -1,9 +1,9 @@
 import express from "express";
 import { handleError } from "../../utils/errors";
 import { SW } from "../../utils/constants";
-import { CreateTypedFieldDTO } from "field/dtos/typedField";
-import { createTypedField, updateTypedField } from "field/repository/typedField.repository";
-import { UpdateTypedFieldDTO } from "field/dtos/typedField/update.typedField.dto";
+import { CreateTypedFieldDTO } from "../../field/dtos/typedField";
+import { createTypedField, updateTypedField } from "../../field/repository/typedField.repository";
+import { UpdateTypedFieldDTO } from "../../field/dtos/typedField/update.typedField.dto";
 
 
 
@@ -13,9 +13,8 @@ export const CreateTypedField = async (req: express.Request, res: express.Respon
     try {
 
         const createTypedFieldDTO: CreateTypedFieldDTO = req.body;
-        const userId = req.user.sub;
 
-
+        
         if (!createTypedFieldDTO) {
             return res.status(400).json({ "message": SW });
         }

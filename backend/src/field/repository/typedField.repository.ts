@@ -1,17 +1,17 @@
 import { db } from '../../db/setup';
-import { fields, typedFields } from '../../db/schema';
+import { typedFields } from '../../db/schema';
 import { eq } from 'drizzle-orm';
 import { CAE } from '../../utils/constants';
 import { and } from 'drizzle-orm';
-import { CreateTypedFieldDTO, TypedFieldDTO } from 'field/dtos/typedField';
-import { UpdateTypedFieldDTO } from 'field/dtos/typedField/update.typedField.dto';
+import { CreateTypedFieldDTO, TypedFieldDTO } from '../../field/dtos/typedField';
+import { UpdateTypedFieldDTO } from '../../field/dtos/typedField/update.typedField.dto';
 
 
-export const createTypedField = async (CreateTypedFieldDTO: CreateTypedFieldDTO): Promise<TypedFieldDTO> => {
+export const createTypedField = async (createTypedFieldDTO: CreateTypedFieldDTO): Promise<TypedFieldDTO> => {
 
     try {
         const dbInstance = await db;
-        const result = await dbInstance.insert(typedFields).values(CreateTypedFieldDTO).execute();
+        const result = await dbInstance.insert(typedFields).values(createTypedFieldDTO).execute();
         const typedField = await getTypedFieldById(result[0].insertId);
         return typedField;
     } catch (error) {
@@ -56,7 +56,6 @@ export const getTypedFieldById = async (id: number): Promise<TypedFieldDTO | nul
         return new TypedFieldDTO(
             typedField.id,
             typedField.type,
-            typedField.value,
             typedField.fieldId
         );
 

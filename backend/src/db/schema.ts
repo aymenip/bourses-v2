@@ -181,9 +181,8 @@ export const typedFields = mysqlTable("typedFields", {
         .autoincrement()
         .primaryKey(),
     type: mysqlEnum('type', ['text', 'date', 'number', 'url', 'email']),
-    value: varchar("value", { length: 2048 }),
 
-    fieldId: bigint("fieldId", { mode: "number", unsigned: true }).references(() => fields.id).notNull(),
+    fieldId: bigint("fieldId", { mode: "number", unsigned: true }).references(() => fields.id).notNull()
 })
 
 export const typedFieldsRelations = relations(typedFields, ({ one }) => ({
