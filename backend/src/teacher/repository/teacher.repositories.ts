@@ -1,122 +1,152 @@
-import { db } from '../../db/setup';
-import { teachers, users } from '../../db/schema';
-import { eq } from 'drizzle-orm';
-import { CreateTeacherDTO, FullTeacherDTO, TeacherDTO, UpdateTeacherDTO } from '../dtos';
-import { MatrialStatus } from '../teacher.enums';
-import { handleError } from '../../utils/errors';
-import { CreateUserDTO, UpdateUserDTO } from '../../user/dtos';
-import { createUser } from '../../user/repository/user.repository';
-import { CAE } from '../../utils/constants';
+import { db } from "../../db/setup";
+import { teachers, users } from "../../db/schema";
+import { eq } from "drizzle-orm";
+import {
+  CreateTeacherDTO,
+  FullTeacherDTO,
+  TeacherDTO,
+  UpdateTeacherDTO,
+} from "../dtos";
+import { MatrialStatus } from "../teacher.enums";
+import { handleError } from "../../utils/errors";
+import { CreateUserDTO, UpdateUserDTO, UserDTO } from "../../user/dtos";
+import { createUser } from "../../user/repository/user.repository";
+import { CAE } from "../../utils/constants";
+import { MySqlTransaction } from "drizzle-orm/mysql-core";
 
 // CREATE ONE TEACHER
-export const createTeacher = async (createTeacher: CreateTeacherDTO, createUserDTO: CreateUserDTO): Promise<CreateTeacherDTO> => {
-    try {
-        await (await db).transaction(async (tx) => {
-            const user = await createUser(createUserDTO);
-            const result = await (await db).insert(teachers).values({ ...createTeacher, userId: user.id }).execute();
-        })
-        return createTeacher; // Assuming `insertId` is returned
-    } catch (error) {
-        handleError((error) => console.log(error))
-        throw new Error(CAE); // Handle errors appropriately
-    }
+export const createTeacher = async (
+  createTeacher: CreateTeacherDTO,
+  createUserDTO: CreateUserDTO
+): Promise<TeacherDTO & UserDTO> => {
+  try {
+    const dbInstance = await db;
+
+    const teacherId = await dbInstance.transaction(
+      async (tx: MySqlTransaction<any, any>) => {
+        const userId = await createUser(createUserDTO, tx);
+        const result = await tx
+          .insert(teachers)
+          .values({ ...createTeacher, userId: userId })
+          .execute();
+        return result[0].insertId;
+      }
+    );
+
+    const createdTeacher = await teacher(teacherId);
+    return createdTeacher; // Assuming `insertId` is returned
+  } catch (error) {
+    handleError((error) => console.log(error));
+    throw new Error(CAE); // Handle errors appropriately
+  }
 };
 
 /// GET ALL TEACHERS
-export const allTeachers = async (): Promise<FullTeacherDTO[]> => {
-    const dbInstance = await db;
-    const results = await dbInstance
-        .select({
-            teacherId: teachers.id,
-            highPosition: teachers.highPostion,
-            createdAt: teachers.createdAt,
-            updatedAt: teachers.updatedAt,
-            positionId: teachers.positionId,
-            firstname: users.firstname,
-            lastname: users.lastname,
-            email: users.email,
-            dob: users.dob,
-            matrialStatus: users.matrialStatus,
-        })
-        .from(teachers)
-        .innerJoin(users, eq(teachers.userId, users.id));
+export const allTeachers = async (): Promise<(TeacherDTO & UserDTO)[]> => {
+  const dbInstance = await db;
 
-    return results.map((result) =>
-        new FullTeacherDTO(
-            result.teacherId,
-            result.firstname,
-            result.lastname,
-            result.email,
-            result.dob,
-            result.matrialStatus as MatrialStatus,
-            result.highPosition,
-            result.createdAt,
-            result.updatedAt,
-            result.positionId
-        )
+  const results = await dbInstance
+    .select()
+    .from(teachers)
+    .innerJoin(users, eq(teachers.userId, users.id));
+
+  return results.map((result) => {
+    const teacherData = result.teachers;
+    const userData = result.users;
+
+    const teacherDTO = new TeacherDTO(
+      teacherData.id,
+      teacherData.highPostion,
+      teacherData.createdAt,
+      teacherData.updatedAt,
+      teacherData.positionId
     );
+
+    const userDTO = new UserDTO(
+      userData.id,
+      userData.firstname,
+      userData.lastname,
+      userData.dob,
+      userData.matrialStatus as MatrialStatus,
+      userData.email,
+      null, // Ensure password is not returned
+      userData.createdAt,
+      userData.updatedAt,
+      userData.roleId
+    );
+
+    return { ...teacherDTO, ...userDTO };
+  });
 };
-
-
-
 
 /// GET ONE TEACHER
-export const teacher = async (id: number): Promise<FullTeacherDTO> => {
-    const dbInstance = await db;
-    const result = await dbInstance
-        .select({
-            teacherId: teachers.id,
-            highPosition: teachers.highPostion,
-            createdAt: teachers.createdAt,
-            updatedAt: teachers.updatedAt,
-            positionId: teachers.positionId,
-            firstname: users.firstname,
-            lastname: users.lastname,
-            email: users.email,
-            dob: users.dob,
-            matrialStatus: users.matrialStatus,
-        })
-        .from(teachers)
-        .innerJoin(users, eq(teachers.userId, users.id))
-        .where(eq(teachers.id, id))
-        .limit(1); // Ensures only one result is fetched
+export const teacher = async (id: number): Promise<TeacherDTO & UserDTO> => {
+  const dbInstance = await db;
 
-    if (result.length === 0) {
-        throw new Error(`Teacher with ID ${id} not found`);
-    }
+  const result = await dbInstance
+    .select()
+    .from(teachers)
+    .innerJoin(users, eq(teachers.userId, users.id))
+    .where(eq(teachers.id, id))
+    .limit(1); // Ensures only one result is fetched
 
-    const teacher = result[0];
-    return new FullTeacherDTO(
-        teacher.teacherId,
-        teacher.firstname,
-        teacher.lastname,
-        teacher.email,
-        teacher.dob,
-        teacher.matrialStatus as MatrialStatus,
-        teacher.highPosition,
-        teacher.createdAt,
-        teacher.updatedAt,
-        teacher.positionId
-    );
+  if (result.length === 0) {
+    throw new Error(`Teacher with ID ${id} not found`);
+  }
+
+  const teacherData = result[0].teachers;
+  const userData = result[0].users;
+  const teacherDTO = new TeacherDTO(
+    teacherData.id,
+    teacherData.highPostion,
+    teacherData.createdAt,
+    teacherData.updatedAt,
+    teacherData.positionId
+  );
+  const userDTO = new UserDTO(
+    userData.id,
+    userData.firstname,
+    userData.lastname,
+    userData.dob,
+    userData.matrialStatus as MatrialStatus,
+    userData.email,
+    (userData.password = null),
+    userData.createdAt,
+    userData.updatedAt,
+    userData.roleId
+  );
+
+  return { ...teacherDTO, ...userDTO };
 };
 
-
 /// UPDATE ONE TEACHER
-export const updateTeacher = async (updateTeacherDTO: UpdateTeacherDTO, updateUserDto: UpdateUserDTO): Promise<TeacherDTO> => {
-    const dbInstance = await db;
-    await dbInstance.transaction(async (tx) => {
-        const updatedUser = await dbInstance.update(users).set(updateUserDto).where(eq(users.id, updateUserDto.id)).execute();
-        const updatedTeacher = await dbInstance.update(teachers).set(updateTeacherDTO).where(eq(teachers.id, updateTeacherDTO.id)).execute()
-    })
+export const updateTeacher = async (
+  updateTeacherDTO: UpdateTeacherDTO,
+  updateUserDto: UpdateUserDTO
+): Promise<TeacherDTO> => {
+  const dbInstance = await db;
+  await dbInstance.transaction(async (tx) => {
+    const updatedUser = await dbInstance
+      .update(users)
+      .set(updateUserDto)
+      .where(eq(users.id, updateUserDto.id))
+      .execute();
+    const updatedTeacher = await dbInstance
+      .update(teachers)
+      .set(updateTeacherDTO)
+      .where(eq(teachers.id, updateTeacherDTO.id))
+      .execute();
+  });
 
-    return await teacher(updateTeacherDTO.id);
-}
-
+  return await teacher(updateTeacherDTO.id);
+};
 
 /// DELETE ONE TEACHER
 export const deleteTeacher = async (id: number): Promise<number> => {
-    const dbInstance = await db;
-    const resutl = await dbInstance.delete(teachers).where(eq(teachers.id, id)).execute();
-    return resutl[0].insertId;
-}
-
+  const dbInstance = await db;
+  const resutl = await dbInstance
+    .delete(teachers)
+    .where(eq(teachers.id, id))
+    .execute();
+  return resutl[0].insertId;
+};

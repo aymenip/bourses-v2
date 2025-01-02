@@ -1,43 +1,39 @@
-CREATE TABLE `admins` (
+CREATE TABLE `students` (
 	`id` bigint unsigned AUTO_INCREMENT NOT NULL,
-	`firstname` varchar(256) NOT NULL,
-	`lastname` varchar(256) NOT NULL,
-	`email` varchar(256) NOT NULL,
-	`password` varchar(256) NOT NULL,
 	`createdAt` timestamp NOT NULL DEFAULT (now()),
 	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
-	`permissionId` bigint unsigned NOT NULL,
-	CONSTRAINT `admins_id` PRIMARY KEY(`id`),
-	CONSTRAINT `admins_email_unique` UNIQUE(`email`)
+	`userId` bigint unsigned NOT NULL,
+	CONSTRAINT `students_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
-CREATE TABLE `article` (
+CREATE TABLE `articles` (
 	`id` bigint unsigned AUTO_INCREMENT NOT NULL,
 	`documentId` bigint unsigned NOT NULL,
-	CONSTRAINT `article_id` PRIMARY KEY(`id`)
+	CONSTRAINT `articles_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
-CREATE TABLE `book` (
+CREATE TABLE `books` (
 	`id` bigint unsigned AUTO_INCREMENT NOT NULL,
 	`documentId` bigint unsigned NOT NULL,
-	CONSTRAINT `book_id` PRIMARY KEY(`id`)
+	CONSTRAINT `books_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
-CREATE TABLE `certeficate` (
+CREATE TABLE `certeficates` (
 	`id` bigint unsigned AUTO_INCREMENT NOT NULL,
 	`documentId` bigint unsigned NOT NULL,
-	CONSTRAINT `certeficate_id` PRIMARY KEY(`id`)
+	CONSTRAINT `certeficates_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
-CREATE TABLE `conference` (
+CREATE TABLE `conferencse` (
 	`id` bigint unsigned AUTO_INCREMENT NOT NULL,
 	`documentId` bigint unsigned NOT NULL,
-	CONSTRAINT `conference_id` PRIMARY KEY(`id`)
+	CONSTRAINT `conferencse_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
 CREATE TABLE `documents` (
 	`id` bigint unsigned AUTO_INCREMENT NOT NULL,
 	`type` varchar(2048),
+	`userId` bigint unsigned NOT NULL,
 	CONSTRAINT `documents_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
@@ -55,6 +51,17 @@ CREATE TABLE `fields` (
 	`label` varchar(256),
 	`formId` bigint unsigned NOT NULL,
 	CONSTRAINT `fields_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
+CREATE TABLE `formSubmissions` (
+	`id` bigint unsigned AUTO_INCREMENT NOT NULL,
+	`formId` bigint unsigned NOT NULL,
+	`userId` bigint unsigned NOT NULL,
+	`status` enum('draft','submitted') NOT NULL DEFAULT 'draft',
+	`data` text NOT NULL,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `formSubmissions_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
 CREATE TABLE `forms` (
@@ -103,17 +110,8 @@ CREATE TABLE `roles` (
 CREATE TABLE `sourceableFields` (
 	`id` bigint unsigned AUTO_INCREMENT NOT NULL,
 	`type` enum('certificate','book','article','conference'),
-	`documentId` bigint unsigned NOT NULL,
 	`fieldId` bigint unsigned NOT NULL,
 	CONSTRAINT `sourceableFields_id` PRIMARY KEY(`id`)
-);
---> statement-breakpoint
-CREATE TABLE `students` (
-	`id` bigint unsigned AUTO_INCREMENT NOT NULL,
-	`createdAt` timestamp NOT NULL DEFAULT (now()),
-	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
-	`userId` bigint unsigned NOT NULL,
-	CONSTRAINT `students_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
 CREATE TABLE `teachers` (
@@ -128,8 +126,7 @@ CREATE TABLE `teachers` (
 --> statement-breakpoint
 CREATE TABLE `typedFields` (
 	`id` bigint unsigned AUTO_INCREMENT NOT NULL,
-	`type` enum('text','date','number'),
-	`value` varchar(2048),
+	`type` enum('text','date','number','url','email'),
 	`fieldId` bigint unsigned NOT NULL,
 	CONSTRAINT `typedFields_id` PRIMARY KEY(`id`)
 );
@@ -149,20 +146,21 @@ CREATE TABLE `users` (
 	CONSTRAINT `users_email_unique` UNIQUE(`email`)
 );
 --> statement-breakpoint
-ALTER TABLE `admins` ADD CONSTRAINT `admins_permissionId_permissions_id_fk` FOREIGN KEY (`permissionId`) REFERENCES `permissions`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `article` ADD CONSTRAINT `article_documentId_documents_id_fk` FOREIGN KEY (`documentId`) REFERENCES `documents`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `book` ADD CONSTRAINT `book_documentId_documents_id_fk` FOREIGN KEY (`documentId`) REFERENCES `documents`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `certeficate` ADD CONSTRAINT `certeficate_documentId_documents_id_fk` FOREIGN KEY (`documentId`) REFERENCES `documents`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `conference` ADD CONSTRAINT `conference_documentId_documents_id_fk` FOREIGN KEY (`documentId`) REFERENCES `documents`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `students` ADD CONSTRAINT `students_userId_users_id_fk` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `articles` ADD CONSTRAINT `articles_documentId_documents_id_fk` FOREIGN KEY (`documentId`) REFERENCES `documents`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `books` ADD CONSTRAINT `books_documentId_documents_id_fk` FOREIGN KEY (`documentId`) REFERENCES `documents`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `certeficates` ADD CONSTRAINT `certeficates_documentId_documents_id_fk` FOREIGN KEY (`documentId`) REFERENCES `documents`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `conferencse` ADD CONSTRAINT `conferencse_documentId_documents_id_fk` FOREIGN KEY (`documentId`) REFERENCES `documents`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `documents` ADD CONSTRAINT `documents_userId_users_id_fk` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `employees` ADD CONSTRAINT `employees_userId_users_id_fk` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `fields` ADD CONSTRAINT `fields_formId_forms_id_fk` FOREIGN KEY (`formId`) REFERENCES `forms`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `formSubmissions` ADD CONSTRAINT `formSubmissions_formId_forms_id_fk` FOREIGN KEY (`formId`) REFERENCES `forms`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `formSubmissions` ADD CONSTRAINT `formSubmissions_userId_users_id_fk` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `forms` ADD CONSTRAINT `forms_creator_users_id_fk` FOREIGN KEY (`creator`) REFERENCES `users`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `formsAccess` ADD CONSTRAINT `formsAccess_formId_forms_id_fk` FOREIGN KEY (`formId`) REFERENCES `forms`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `formsAccess` ADD CONSTRAINT `formsAccess_roleId_roles_id_fk` FOREIGN KEY (`roleId`) REFERENCES `roles`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `logs` ADD CONSTRAINT `logs_userId_users_id_fk` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `sourceableFields` ADD CONSTRAINT `sourceableFields_documentId_documents_id_fk` FOREIGN KEY (`documentId`) REFERENCES `documents`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `sourceableFields` ADD CONSTRAINT `sourceableFields_fieldId_fields_id_fk` FOREIGN KEY (`fieldId`) REFERENCES `fields`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `students` ADD CONSTRAINT `students_userId_users_id_fk` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `teachers` ADD CONSTRAINT `teachers_userId_users_id_fk` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `teachers` ADD CONSTRAINT `teachers_positionId_positions_id_fk` FOREIGN KEY (`positionId`) REFERENCES `positions`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `typedFields` ADD CONSTRAINT `typedFields_fieldId_fields_id_fk` FOREIGN KEY (`fieldId`) REFERENCES `fields`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint

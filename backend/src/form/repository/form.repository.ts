@@ -1,92 +1,91 @@
-import { db } from '../../db/setup';
-import { forms } from '../../db/schema';
-import { CreateFormDTO, FormDTO, UpdateFormDTO } from '../dtos';
-import { eq } from 'drizzle-orm';
-import { CAE } from '../../utils/constants';
-import { and } from 'drizzle-orm';
+import { db } from "../../db/setup";
+import { forms } from "../../db/schema";
+import { CreateFormDTO, FormDTO, UpdateFormDTO } from "../dtos";
+import { eq } from "drizzle-orm";
+import { CAE } from "../../utils/constants";
+import { and } from "drizzle-orm";
 
+export const createForm = async (
+  createFormDTO: CreateFormDTO,
+  creator: number
+): Promise<FormDTO> => {
+  try {
+    const result = await (
+      await db
+    )
+      .insert(forms)
+      .values({ ...createFormDTO, creator })
+      .execute();
+    const form = await getFormById(result[0].insertId);
+    return form;
+  } catch (error) {
+    console.log(error);
+    throw new Error(CAE); // Handle errors appropriately
+  }
+};
 
-export const createForm = async (createFormDTO: CreateFormDTO, creator: number): Promise<FormDTO> => {
-
-    try {
-        const result = await (await db).insert(forms).values({ ...createFormDTO, creator }).execute();
-        const form = await getFormById(result[0].insertId);
-        return form;
-    } catch (error) {
-        console.log(error)
-        throw new Error(CAE); // Handle errors appropriately
-    }
-}
-
-export const updateForm = async (updateFormDTO: UpdateFormDTO, creator: number): Promise<FormDTO> => {
-    try {
-        const dbInstance = await db;
-        const result = await dbInstance
-            .update(forms)
-            .set({})
-            .where(and(eq(forms.id, updateFormDTO.id), eq(forms.creator, creator)))
-            .execute();
-        const form = await getFormById(result[0].insertId);
-        return form;
-    } catch (error) {
-        console.log(error)
-        throw new Error(CAE); // Handle errors appropriately
-    }
-}
-
+export const updateForm = async (
+  updateFormDTO: UpdateFormDTO,
+  creator: number
+): Promise<FormDTO> => {
+  try {
+    const dbInstance = await db;
+    const result = await dbInstance
+      .update(forms)
+      .set({})
+      .where(and(eq(forms.id, updateFormDTO.id), eq(forms.creator, creator)))
+      .execute();
+    const form = await getFormById(result[0].insertId);
+    return form;
+  } catch (error) {
+    console.log(error);
+    throw new Error(CAE); // Handle errors appropriately
+  }
+};
 
 /// GET FORM BY ID
 export const getFormById = async (id: number): Promise<FormDTO | null> => {
-    try {
-        const dbInstance = await db; // Ensure db instance is awaited once
-        const result = await dbInstance
-            .select()
-            .from(forms)
-            .where(eq(forms.id, id))
-            .limit(1); // Fetch only one result
+  try {
+    const dbInstance = await db; // Ensure db instance is awaited once
+    const result = await dbInstance
+      .select()
+      .from(forms)
+      .where(eq(forms.id, id))
+      .limit(1); // Fetch only one result
 
-        if (result.length === 0) {
-            return null; // No user found
-        }
-
-        const form = result[0];
-        return new FormDTO(
-            form.id,
-            form.title,
-            form.creator
-        );
-
-    } catch (error) {
-        console.error("Error fetching form by id:", error); // Log the error for debugging
-        return null; // Handle errors appropriately
+    if (result.length === 0) {
+      return null; // No user found
     }
+
+    const form = result[0];
+    return new FormDTO(form.id, form.title, form.creator);
+  } catch (error) {
+    console.error("Error fetching form by id:", error); // Log the error for debugging
+    return null; // Handle errors appropriately
+  }
 };
 
 /// GET FORM BY TITLE
-export const getFormByTitle = async (title: string, creator: number): Promise<FormDTO | null> => {
-    try {
-        const dbInstance = await db; // Ensure db instance is awaited once
-        const result = await dbInstance
-            .select()
-            .from(forms)
-            .where(and(eq(forms.creator, creator), eq(forms.title, title)))
-            .limit(1); // Fetch only one result
+export const getFormByTitle = async (
+  title: string,
+  creator: number
+): Promise<FormDTO | null> => {
+  try {
+    const dbInstance = await db; // Ensure db instance is awaited once
+    const result = await dbInstance
+      .select()
+      .from(forms)
+      .where(and(eq(forms.creator, creator), eq(forms.title, title)))
+      .limit(1); // Fetch only one result
 
-        if (result.length === 0) {
-            return null; // No user found
-        }
-
-        const form = result[0];
-        return new FormDTO(
-            form.id,
-            form.title,
-            form.creator
-        );
-
-    } catch (error) {
-        console.error("Error fetching form by title:", error); // Log the error for debugging
-        return null; // Handle errors appropriately
+    if (result.length === 0) {
+      return null; // No user found
     }
+
+    const form = result[0];
+    return new FormDTO(form.id, form.title, form.creator);
+  } catch (error) {
+    console.error("Error fetching form by title:", error); // Log the error for debugging
+    return null; // Handle errors appropriately
+  }
 };
-
-

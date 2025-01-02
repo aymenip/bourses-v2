@@ -3,119 +3,139 @@ import express from "express";
 // import fs from 'fs';
 // import moment from "moment";
 // import { createTeacherFromRow } from "../utils";
-import { CreateTeacherDTO, UpdateTeacherDTO } from "../dtos";
-import { allTeachers, createTeacher, deleteTeacher, teacher, updateTeacher } from "../repository/teacher.repositories";
+import {
+  CreateTeacherDTO,
+  JwtPayloadTeacherResponse,
+  UpdateTeacherDTO,
+} from "../dtos";
+import {
+  allTeachers,
+  createTeacher,
+  deleteTeacher,
+  teacher,
+  updateTeacher,
+} from "../repository/teacher.repositories";
 import { handleError } from "../../utils/errors";
-import { CreateUserDTO, UpdateUserDTO } from "../../user/dtos";
+import {
+  CreateUserDTO,
+  JwtPayloadResponse,
+  UpdateUserDTO,
+} from "../../user/dtos";
+import { Register } from "user/controller/user.controller";
+import { generateToken } from "utils/auth";
 
-export const CreateTeacher = async (req: express.Request, res: express.Response): Promise<CreateTeacherDTO | any> => {
-    try {
-        const {
-            firstname,
-            lastname,
-            email,
-            password,
-            dob,
-            matrialStatus,
-            highPostion,
-            positionId,
-            roleId,
-        } = req.body;
-        // Create an instance of UserDTO
-        const createTeacherDTO = new CreateTeacherDTO(
-            highPostion,
-            positionId,
-        );
-        const createUserDTO = new CreateUserDTO(
-            firstname,
-            lastname,
-            new Date(dob),
-            matrialStatus,
-            email,
-            password,
-            roleId
-        )
-        const resutl = await createTeacher(createTeacherDTO, createUserDTO);
-        return res.status(200).json(resutl)
-    } catch (error) {
-        handleError((msg) => console.log(msg), 'An error occurred');
-        return res.sendStatus(400);
-    }
-}
+export const CreateTeacher = async (
+  req: express.Request,
+  res: express.Response
+): Promise<CreateTeacherDTO | any> => {
+  try {
+    // Create an instance of UserDTO
+    const createUserDTO: CreateUserDTO = req.body;
+    const createTeacherDTO: CreateTeacherDTO = req.body;
+    const createUserWithHashedPasswordDTO = await Register(createUserDTO);
+    const createdUser = await createTeacher(
+      createTeacherDTO,
+      createUserWithHashedPasswordDTO
+    );
 
-export const AllTeachers = async (req: express.Request, res: express.Response): Promise<any> => {
-    try {
-        const resutl = await allTeachers();
-        return res.status(200).json(resutl)
-    } catch (error) {
+    const rgisterResponse: JwtPayloadResponse & JwtPayloadTeacherResponse = {
+      email: createdUser.email,
+      firstname: createdUser.firstname,
+      lastname: createdUser.lastname,
+      roleId: createdUser.roleId,
+      teacherId: createdUser.teacherId,
+      sub: createdUser.id,
+    };
 
-        handleError(() => console.log(error));
-        return res.sendStatus(400);
-    }
-}
+    const token = await generateToken(rgisterResponse);
 
-export const Teacher = async (req: express.Request, res: express.Response): Promise<any> => {
-    try {
-        const { id } = req.params;
-        const resutl = await teacher(Number(id));
-        return res.status(200).json(resutl)
-    } catch (error) {
+    return res.status(200).json({ token: token });
+  } catch (error) {
+    handleError((msg) => console.log(msg), "An error occurred");
+    return res.sendStatus(400);
+  }
+};
 
-        handleError(() => console.log(error));
-        return res.sendStatus(400);
-    }
-}
+export const AllTeachers = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+    const resutl = await allTeachers();
+    return res.status(200).json(resutl);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
 
-export const UpdateTeacher = async (req: express.Request, res: express.Response): Promise<any> => {
-    try {
-        const {
-            userId,
-            teacherId,
-            firstname,
-            lastname,
-            email,
-            dob,
-            matrialStatus,
-            highPostion,
-            positionId,
-        } = req.body;
-        // Create an instance of UserDTO
-        const updateTeacherDTO = new UpdateTeacherDTO(
-            teacherId,
-            Boolean(highPostion),
-            Number(positionId),
-        );
-
-        const updateUserDto = new UpdateUserDTO(
-            userId,
-            firstname,
-            lastname,
-            email,
-            dob,
-            matrialStatus,
-        );
-
-        const result = await updateTeacher(updateTeacherDTO, updateUserDto);
-        return res.status(200).json(result)
-    } catch (error) {
-
-        handleError(() => console.log(error));
-        return res.sendStatus(400);
-    }
-}
-
-export const DeleteTeacher = async (req: express.Request, res: express.Response): Promise<any> => {
+export const Teacher = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
     const { id } = req.params;
-    try {
-        const result = await deleteTeacher(Number(id));
-        return res.status(200).json(result)
-    } catch (error) {
+    const resutl = await teacher(Number(id));
+    return res.status(200).json(resutl);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
 
-        handleError(() => console.log(error));
-        return res.sendStatus(400);
-    }
-}
+export const UpdateTeacher = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+    const {
+      userId,
+      teacherId,
+      firstname,
+      lastname,
+      email,
+      dob,
+      matrialStatus,
+      highPostion,
+      positionId,
+    } = req.body;
+    // Create an instance of UserDTO
+    const updateTeacherDTO = new UpdateTeacherDTO(
+      teacherId,
+      Boolean(highPostion),
+      Number(positionId)
+    );
 
+    const updateUserDto = new UpdateUserDTO(
+      userId,
+      firstname,
+      lastname,
+      email,
+      dob,
+      matrialStatus
+    );
+
+    const result = await updateTeacher(updateTeacherDTO, updateUserDto);
+    return res.status(200).json(result);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
+
+export const DeleteTeacher = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  const { id } = req.params;
+  try {
+    const result = await deleteTeacher(Number(id));
+    return res.status(200).json(result);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
 
 // import feature
 // export const ImportTeachersXlsx = async (req: express.Request, res: express.Response): Promise<any> => {
@@ -154,7 +174,6 @@ export const DeleteTeacher = async (req: express.Request, res: express.Response)
 //     }
 // }
 
-
 // Export teachers
 // export const ExportTeachersToXlsx = async (req: express.Request, res: express.Response): Promise<any> => {
 //     try {
@@ -164,13 +183,10 @@ export const DeleteTeacher = async (req: express.Request, res: express.Response)
 //             return res.status(404).send("No teachers found.");
 //         }
 
-
 //         const worksheet = xlsx.utils.json_to_sheet(teachers);
-
 
 //         const workbook = xlsx.utils.book_new();
 //         xlsx.utils.book_append_sheet(workbook, worksheet, "Teachers");
-
 
 //         const excelBuffer = xlsx.write(workbook, { type: 'buffer', bookType: 'xlsx' });
 
@@ -180,7 +196,6 @@ export const DeleteTeacher = async (req: express.Request, res: express.Response)
 //         res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
 //         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
-
 //         res.status(200).send(excelBuffer);
 //     } catch (error) {
 
@@ -188,4 +203,3 @@ export const DeleteTeacher = async (req: express.Request, res: express.Response)
 //         res.status(500).send("Error exporting teachers.");
 //     }
 // }
-
