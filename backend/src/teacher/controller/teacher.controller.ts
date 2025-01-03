@@ -5,7 +5,7 @@ import express from "express";
 // import { createTeacherFromRow } from "../utils";
 import {
   CreateTeacherDTO,
-  JwtPayloadTeacherResponse,
+  JwtTeacherResponsePayload,
   UpdateTeacherDTO,
 } from "../dtos";
 import {
@@ -18,7 +18,7 @@ import {
 import { handleError } from "../../utils/errors";
 import {
   CreateUserDTO,
-  JwtPayloadResponse,
+  JwtResponsePayload,
   UpdateUserDTO,
 } from "../../user/dtos";
 import { Register } from "user/controller/user.controller";
@@ -38,7 +38,7 @@ export const CreateTeacher = async (
       createUserWithHashedPasswordDTO
     );
 
-    const rgisterResponse: JwtPayloadResponse & JwtPayloadTeacherResponse = {
+    const rgisterResponsePayload: JwtResponsePayload & JwtTeacherResponsePayload = {
       email: createdUser.email,
       firstname: createdUser.firstname,
       lastname: createdUser.lastname,
@@ -47,7 +47,7 @@ export const CreateTeacher = async (
       sub: createdUser.id,
     };
 
-    const token = await generateToken(rgisterResponse);
+    const token = await generateToken(rgisterResponsePayload);
 
     return res.status(200).json({ token: token });
   } catch (error) {

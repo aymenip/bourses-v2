@@ -1,11 +1,10 @@
 export class CreateTypedFieldDTO {
-    type: string;
-    fieldId: number;
-    constructor(
-        type: string,
-        fieldId: number,
-    ) {
-        this.type = type;
-        this.fieldId = fieldId;
-    }
+  type: string;
+  points: number;
+  fieldId: number;
+  constructor(type: string, points: number, fieldId: number) {
+    this.type = type;
+    this.points = points;
+    this.fieldId = fieldId;
+  }
 }

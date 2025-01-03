@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import {
+  int,
   bigint,
   mysqlTable,
   timestamp,
@@ -220,6 +221,7 @@ export const typedFields = mysqlTable("typedFields", {
     .autoincrement()
     .primaryKey(),
   type: mysqlEnum("type", ["text", "date", "number", "url", "email"]),
+  ponints: int("points", { unsigned: true }),
   fieldId: bigint("fieldId", { mode: "number", unsigned: true })
     .references(() => fields.id)
     .notNull(),
@@ -237,6 +239,7 @@ export const sourceableFields = mysqlTable("sourceableFields", {
     .autoincrement()
     .primaryKey(),
   source: mysqlEnum("type", ["certificate", "book", "article", "conference"]),
+  ponints: int("points", { unsigned: true }),
   fieldId: bigint("fieldId", { mode: "number", unsigned: true })
     .references(() => fields.id)
     .notNull(),

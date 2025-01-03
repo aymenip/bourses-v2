@@ -1,4 +1,4 @@
-export class JwtPayloadResponse {
+export class JwtResponsePayload {
   sub: number;
   email: string;
   roleId: number;
