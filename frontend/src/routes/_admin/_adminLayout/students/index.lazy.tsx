@@ -1,12 +1,13 @@
+import { TopBar } from '@/components/global/topBar'
 import { createLazyFileRoute } from '@tanstack/react-router'
 
 export const Route = createLazyFileRoute('/_admin/_adminLayout/students/')({
-  component: Teachers,
+  component: Students,
 })
 
 
-function Teachers() {
-  return (
-    <div>Hello /__admin/students/!</div>
-  )
+function Students() {
+  return <div className='content-container'>
+    <TopBar page_name='students' />
+  </div>
 }

@@ -6,12 +6,13 @@ export const LoginSchema = z.object({
 });
 
 export const LoginResponseSchema = z.object({
-  token: z.string().min(9),
   id: z.number(),
+  token: z.string().min(9),
   roleId: z.number(),
 });
 
 const AuthenticationContextSchema = z.object({
+  token: z.string().or(z.null()),
   isAuthenticated: z.boolean(),
   role: z.string().or(z.null()),
 });

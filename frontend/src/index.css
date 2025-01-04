@@ -101,4 +101,13 @@
   .header-collapsed {
     @apply items-end ltr:pr-4 rtl:pl-4;
   }
+  .content-container {
+    @apply flex-1;
+  }
+  .border-r {
+    @apply border ltr:border-r-zinc-200 rtl:border-l-zinc-200 dark:ltr:border-r-neutral-700 dark:rtl:border-l-neutral-700;
+  }
+  .border-b {
+    @apply border-b-zinc-200  dark:border-b-neutral-700;
+  }
 }

@@ -19,6 +19,7 @@ import { Route as AdminAdminLayoutImport } from './routes/_admin/_adminLayout'
 import { Route as AdminAdminLayoutIndexImport } from './routes/_admin/_adminLayout/index'
 import { Route as AdminAdminLayoutTeachersIdImport } from './routes/_admin/_adminLayout/teachers/$id'
 import { Route as AdminAdminLayoutStudentsIdImport } from './routes/_admin/_adminLayout/students/$id'
+import { Route as AdminAdminLayoutFormsIdImport } from './routes/_admin/_adminLayout/forms/$id'
 import { Route as AdminAdminLayoutEmployeesIdImport } from './routes/_admin/_adminLayout/employees/$id'
 
 // Create Virtual Routes
@@ -41,6 +42,9 @@ const AdminAdminLayoutTeachersIndexLazyImport = createFileRoute(
 )()
 const AdminAdminLayoutStudentsIndexLazyImport = createFileRoute(
   '/_admin/_adminLayout/students/',
+)()
+const AdminAdminLayoutFormsIndexLazyImport = createFileRoute(
+  '/_admin/_adminLayout/forms/',
 )()
 const AdminAdminLayoutEmployeesIndexLazyImport = createFileRoute(
   '/_admin/_adminLayout/employees/',
@@ -137,6 +141,17 @@ const AdminAdminLayoutStudentsIndexLazyRoute =
     ),
   )
 
+const AdminAdminLayoutFormsIndexLazyRoute =
+  AdminAdminLayoutFormsIndexLazyImport.update({
+    id: '/forms/',
+    path: '/forms/',
+    getParentRoute: () => AdminAdminLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/_admin/_adminLayout/forms/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 const AdminAdminLayoutEmployeesIndexLazyRoute =
   AdminAdminLayoutEmployeesIndexLazyImport.update({
     id: '/employees/',
@@ -163,6 +178,12 @@ const AdminAdminLayoutStudentsIdRoute = AdminAdminLayoutStudentsIdImport.update(
     getParentRoute: () => AdminAdminLayoutRoute,
   } as any,
 )
+
+const AdminAdminLayoutFormsIdRoute = AdminAdminLayoutFormsIdImport.update({
+  id: '/forms/$id',
+  path: '/forms/$id',
+  getParentRoute: () => AdminAdminLayoutRoute,
+} as any)
 
 const AdminAdminLayoutEmployeesIdRoute =
   AdminAdminLayoutEmployeesIdImport.update({
@@ -224,6 +245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminLayoutEmployeesIdImport
       parentRoute: typeof AdminAdminLayoutImport
     }
+    '/_admin/_adminLayout/forms/$id': {
+      id: '/_admin/_adminLayout/forms/$id'
+      path: '/forms/$id'
+      fullPath: '/forms/$id'
+      preLoaderRoute: typeof AdminAdminLayoutFormsIdImport
+      parentRoute: typeof AdminAdminLayoutImport
+    }
     '/_admin/_adminLayout/students/$id': {
       id: '/_admin/_adminLayout/students/$id'
       path: '/students/$id'
@@ -243,6 +271,13 @@ declare module '@tanstack/react-router' {
       path: '/employees'
       fullPath: '/employees'
       preLoaderRoute: typeof AdminAdminLayoutEmployeesIndexLazyImport
+      parentRoute: typeof AdminAdminLayoutImport
+    }
+    '/_admin/_adminLayout/forms/': {
+      id: '/_admin/_adminLayout/forms/'
+      path: '/forms'
+      fullPath: '/forms'
+      preLoaderRoute: typeof AdminAdminLayoutFormsIndexLazyImport
       parentRoute: typeof AdminAdminLayoutImport
     }
     '/_admin/_adminLayout/students/': {
@@ -288,9 +323,11 @@ declare module '@tanstack/react-router' {
 interface AdminAdminLayoutRouteChildren {
   AdminAdminLayoutIndexRoute: typeof AdminAdminLayoutIndexRoute
   AdminAdminLayoutEmployeesIdRoute: typeof AdminAdminLayoutEmployeesIdRoute
+  AdminAdminLayoutFormsIdRoute: typeof AdminAdminLayoutFormsIdRoute
   AdminAdminLayoutStudentsIdRoute: typeof AdminAdminLayoutStudentsIdRoute
   AdminAdminLayoutTeachersIdRoute: typeof AdminAdminLayoutTeachersIdRoute
   AdminAdminLayoutEmployeesIndexLazyRoute: typeof AdminAdminLayoutEmployeesIndexLazyRoute
+  AdminAdminLayoutFormsIndexLazyRoute: typeof AdminAdminLayoutFormsIndexLazyRoute
   AdminAdminLayoutStudentsIndexLazyRoute: typeof AdminAdminLayoutStudentsIndexLazyRoute
   AdminAdminLayoutTeachersIndexLazyRoute: typeof AdminAdminLayoutTeachersIndexLazyRoute
 }
@@ -298,10 +335,12 @@ interface AdminAdminLayoutRouteChildren {
 const AdminAdminLayoutRouteChildren: AdminAdminLayoutRouteChildren = {
   AdminAdminLayoutIndexRoute: AdminAdminLayoutIndexRoute,
   AdminAdminLayoutEmployeesIdRoute: AdminAdminLayoutEmployeesIdRoute,
+  AdminAdminLayoutFormsIdRoute: AdminAdminLayoutFormsIdRoute,
   AdminAdminLayoutStudentsIdRoute: AdminAdminLayoutStudentsIdRoute,
   AdminAdminLayoutTeachersIdRoute: AdminAdminLayoutTeachersIdRoute,
   AdminAdminLayoutEmployeesIndexLazyRoute:
     AdminAdminLayoutEmployeesIndexLazyRoute,
+  AdminAdminLayoutFormsIndexLazyRoute: AdminAdminLayoutFormsIndexLazyRoute,
   AdminAdminLayoutStudentsIndexLazyRoute:
     AdminAdminLayoutStudentsIndexLazyRoute,
   AdminAdminLayoutTeachersIndexLazyRoute:
@@ -347,9 +386,11 @@ export interface FileRoutesByFullPath {
   '/': typeof AdminAdminLayoutIndexRoute
   '/users/': typeof UsersUsersLayoutIndexLazyRoute
   '/employees/$id': typeof AdminAdminLayoutEmployeesIdRoute
+  '/forms/$id': typeof AdminAdminLayoutFormsIdRoute
   '/students/$id': typeof AdminAdminLayoutStudentsIdRoute
   '/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
   '/employees': typeof AdminAdminLayoutEmployeesIndexLazyRoute
+  '/forms': typeof AdminAdminLayoutFormsIndexLazyRoute
   '/students': typeof AdminAdminLayoutStudentsIndexLazyRoute
   '/teachers': typeof AdminAdminLayoutTeachersIndexLazyRoute
   '/users/articles': typeof UsersUsersLayoutArticlesIndexLazyRoute
@@ -362,9 +403,11 @@ export interface FileRoutesByTo {
   '/users': typeof UsersUsersLayoutIndexLazyRoute
   '/': typeof AdminAdminLayoutIndexRoute
   '/employees/$id': typeof AdminAdminLayoutEmployeesIdRoute
+  '/forms/$id': typeof AdminAdminLayoutFormsIdRoute
   '/students/$id': typeof AdminAdminLayoutStudentsIdRoute
   '/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
   '/employees': typeof AdminAdminLayoutEmployeesIndexLazyRoute
+  '/forms': typeof AdminAdminLayoutFormsIndexLazyRoute
   '/students': typeof AdminAdminLayoutStudentsIndexLazyRoute
   '/teachers': typeof AdminAdminLayoutTeachersIndexLazyRoute
   '/users/articles': typeof UsersUsersLayoutArticlesIndexLazyRoute
@@ -381,9 +424,11 @@ export interface FileRoutesById {
   '/_admin/_adminLayout/': typeof AdminAdminLayoutIndexRoute
   '/users/_usersLayout/': typeof UsersUsersLayoutIndexLazyRoute
   '/_admin/_adminLayout/employees/$id': typeof AdminAdminLayoutEmployeesIdRoute
+  '/_admin/_adminLayout/forms/$id': typeof AdminAdminLayoutFormsIdRoute
   '/_admin/_adminLayout/students/$id': typeof AdminAdminLayoutStudentsIdRoute
   '/_admin/_adminLayout/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
   '/_admin/_adminLayout/employees/': typeof AdminAdminLayoutEmployeesIndexLazyRoute
+  '/_admin/_adminLayout/forms/': typeof AdminAdminLayoutFormsIndexLazyRoute
   '/_admin/_adminLayout/students/': typeof AdminAdminLayoutStudentsIndexLazyRoute
   '/_admin/_adminLayout/teachers/': typeof AdminAdminLayoutTeachersIndexLazyRoute
   '/users/_usersLayout/articles/': typeof UsersUsersLayoutArticlesIndexLazyRoute
@@ -400,9 +445,11 @@ export interface FileRouteTypes {
     | '/'
     | '/users/'
     | '/employees/$id'
+    | '/forms/$id'
     | '/students/$id'
     | '/teachers/$id'
     | '/employees'
+    | '/forms'
     | '/students'
     | '/teachers'
     | '/users/articles'
@@ -414,9 +461,11 @@ export interface FileRouteTypes {
     | '/users'
     | '/'
     | '/employees/$id'
+    | '/forms/$id'
     | '/students/$id'
     | '/teachers/$id'
     | '/employees'
+    | '/forms'
     | '/students'
     | '/teachers'
     | '/users/articles'
@@ -431,9 +480,11 @@ export interface FileRouteTypes {
     | '/_admin/_adminLayout/'
     | '/users/_usersLayout/'
     | '/_admin/_adminLayout/employees/$id'
+    | '/_admin/_adminLayout/forms/$id'
     | '/_admin/_adminLayout/students/$id'
     | '/_admin/_adminLayout/teachers/$id'
     | '/_admin/_adminLayout/employees/'
+    | '/_admin/_adminLayout/forms/'
     | '/_admin/_adminLayout/students/'
     | '/_admin/_adminLayout/teachers/'
     | '/users/_usersLayout/articles/'
@@ -476,9 +527,11 @@ export const routeTree = rootRoute
       "children": [
         "/_admin/_adminLayout/",
         "/_admin/_adminLayout/employees/$id",
+        "/_admin/_adminLayout/forms/$id",
         "/_admin/_adminLayout/students/$id",
         "/_admin/_adminLayout/teachers/$id",
         "/_admin/_adminLayout/employees/",
+        "/_admin/_adminLayout/forms/",
         "/_admin/_adminLayout/students/",
         "/_admin/_adminLayout/teachers/"
       ]
@@ -514,6 +567,10 @@ export const routeTree = rootRoute
       "filePath": "_admin/_adminLayout/employees/$id.tsx",
       "parent": "/_admin/_adminLayout"
     },
+    "/_admin/_adminLayout/forms/$id": {
+      "filePath": "_admin/_adminLayout/forms/$id.tsx",
+      "parent": "/_admin/_adminLayout"
+    },
     "/_admin/_adminLayout/students/$id": {
       "filePath": "_admin/_adminLayout/students/$id.tsx",
       "parent": "/_admin/_adminLayout"
@@ -524,6 +581,10 @@ export const routeTree = rootRoute
     },
     "/_admin/_adminLayout/employees/": {
       "filePath": "_admin/_adminLayout/employees/index.lazy.tsx",
+      "parent": "/_admin/_adminLayout"
+    },
+    "/_admin/_adminLayout/forms/": {
+      "filePath": "_admin/_adminLayout/forms/index.lazy.tsx",
       "parent": "/_admin/_adminLayout"
     },
     "/_admin/_adminLayout/students/": {

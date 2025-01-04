@@ -1,25 +1,24 @@
 import { authenticationContext } from '@/api'
 import Sidebar from '@/components/global/sidebar'
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/users/_usersLayout')({
-    // beforeLoad: () => {
-    //     console.log("hi [USER]");
+    beforeLoad: () => {
 
-    //     const role = authenticationContext().role
+        const role = authenticationContext().role
 
-    //     if (!authenticationContext().isAuthenticated) {
-    //         throw redirect({ to: '/login' })
-    //     }
-    //     if (role === 'ADMIN') {
-    //         throw redirect({ to: "/" })
-    //     }
-    // },
-    component: UsersDashboard,
+        if (!authenticationContext().isAuthenticated) {
+            throw redirect({ to: '/login' })
+        }
+        if (role === 'ADMIN') {
+            throw redirect({ to: "/" })
+        }
+    },
+    component: UsersLayout,
 })
 
-function UsersDashboard() {
-    const role = authenticationContext().role
+function UsersLayout() {
+    const { role } = authenticationContext()
 
     return (
         <>
@@ -28,3 +27,5 @@ function UsersDashboard() {
         </>
     )
 }
+
+

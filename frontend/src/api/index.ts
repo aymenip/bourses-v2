@@ -1,4 +1,4 @@
-import { TLogin, TLoginResponse, TAuthenticationContext } from "@/types";
+import { TLogin, TLoginResponse, TAuthenticationContext, TUser } from "@/types";
 import axios from "axios";
 import { roleIdToRole } from "./utils";
 
@@ -6,7 +6,6 @@ const baseURL = "http://localhost:5000/";
 const axiosInstance = axios.create({ baseURL });
 
 export async function login(loginInput: TLogin) {
-  setTimeout(() => {}, 10000);
   const response = await axiosInstance.post<TLoginResponse>(
     "user/login",
     loginInput
@@ -16,12 +15,30 @@ export async function login(loginInput: TLogin) {
   return response.data;
 }
 
+export async function me() {
+  const token = authenticationContext().token;
+  if (!token) {
+    throw new Error();
+  }
+  const response = await axiosInstance.get<TUser>("user/me", {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+}
+
+export function clearSotrage() {
+  localStorage.removeItem("user");
+}
+
 export function authenticationContext(): TAuthenticationContext {
   if (localStorage.getItem("user") === null)
-    return { isAuthenticated: false, role: null };
+    return { isAuthenticated: false, role: null, token: null };
   const user: TLoginResponse = JSON.parse(localStorage.getItem("user")!);
   return {
     isAuthenticated: user.token !== null,
     role: roleIdToRole(user.roleId),
+    token: user.token,
   };
 }

@@ -13,11 +13,11 @@ export const Route = createFileRoute('/_admin/_adminLayout')({
       throw redirect({ to: "/users" })
     }
   },
-  component: Dashboard,
+  component: AdminLayout,
 })
 
 
-function Dashboard() {
+function AdminLayout() {
   const role = authenticationContext().role;
   return <>
     <Sidebar role={role!} />

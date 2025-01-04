@@ -75,7 +75,7 @@ export const getUserById = async (id: number): Promise<UserDTO | null> => {
       user.dob,
       user.matrialStatus as MatrialStatus, // Ensure proper enum casting
       user.email,
-      user.password,
+      (user.password = null),
       user.createdAt,
       user.updatedAt,
       user.roleId

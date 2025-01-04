@@ -1,5 +1,18 @@
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { TopBar } from '@/components/global/topBar';
+import { createLazyFileRoute } from '@tanstack/react-router';
 
 export const Route = createLazyFileRoute('/users/_usersLayout/')({
-  component: () => <div>Hello /_users/!</div>,
+  component: Dashboard,
 })
+
+
+function Dashboard() {
+  return <div className='content-container'>
+    <TopBar page_name='dashboard' />
+  </div>
+}
+
+
+
+
+

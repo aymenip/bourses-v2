@@ -1,4 +1,4 @@
-import { DashboardIcon, PersonIcon } from "@radix-ui/react-icons";
+import { DashboardIcon, PersonIcon, RulerSquareIcon } from "@radix-ui/react-icons";
 export type Route = {
     name: string,
     path: string,
@@ -11,6 +11,12 @@ export const routes: Route[] = [
         name: "dashboard",
         icon: <DashboardIcon />,
         path: "/",
+        roles: ["ADMIN"]
+    },
+    {
+        name: "forms",
+        icon: <RulerSquareIcon />,
+        path: "/forms",
         roles: ["ADMIN"]
     },
     {
