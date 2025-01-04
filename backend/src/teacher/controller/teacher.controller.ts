@@ -21,8 +21,9 @@ import {
   JwtResponsePayload,
   UpdateUserDTO,
 } from "../../user/dtos";
-import { Register } from "user/controller/user.controller";
-import { generateToken } from "utils/auth";
+import { Register } from "../../user/controller/user.controller";
+import { generateToken } from "../../utils/auth";
+import { mapCreateUserDTO, mapUpdateUserDTO } from "../../utils/mappers";
 
 export const CreateTeacher = async (
   req: express.Request,
@@ -30,15 +31,19 @@ export const CreateTeacher = async (
 ): Promise<CreateTeacherDTO | any> => {
   try {
     // Create an instance of UserDTO
-    const createUserDTO: CreateUserDTO = req.body;
-    const createTeacherDTO: CreateTeacherDTO = req.body;
+    const createUserDTO: CreateUserDTO = mapCreateUserDTO(req);
+    const createTeacherDTO: CreateTeacherDTO = new CreateTeacherDTO(
+      Boolean(req.body.highPosition),
+      req.body.positionId
+    );
     const createUserWithHashedPasswordDTO = await Register(createUserDTO);
     const createdUser = await createTeacher(
       createTeacherDTO,
       createUserWithHashedPasswordDTO
     );
 
-    const rgisterResponsePayload: JwtResponsePayload & JwtTeacherResponsePayload = {
+    const rgisterResponsePayload: JwtResponsePayload &
+      JwtTeacherResponsePayload = {
       email: createdUser.email,
       firstname: createdUser.firstname,
       lastname: createdUser.lastname,
@@ -88,17 +93,7 @@ export const UpdateTeacher = async (
   res: express.Response
 ): Promise<any> => {
   try {
-    const {
-      userId,
-      teacherId,
-      firstname,
-      lastname,
-      email,
-      dob,
-      matrialStatus,
-      highPostion,
-      positionId,
-    } = req.body;
+    const { teacherId, highPostion, positionId } = req.body;
     // Create an instance of UserDTO
     const updateTeacherDTO = new UpdateTeacherDTO(
       teacherId,
@@ -106,14 +101,7 @@ export const UpdateTeacher = async (
       Number(positionId)
     );
 
-    const updateUserDto = new UpdateUserDTO(
-      userId,
-      firstname,
-      lastname,
-      email,
-      dob,
-      matrialStatus
-    );
+    const updateUserDto = mapUpdateUserDTO(req);
 
     const result = await updateTeacher(updateTeacherDTO, updateUserDto);
     return res.status(200).json(result);

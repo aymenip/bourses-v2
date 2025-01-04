@@ -65,12 +65,14 @@ export const getTypedFieldById = async (
       return null; // No user found
     }
 
-    const typedField = result[0];
+    const typedFieldData = result[0];
 
     return new TypedFieldDTO(
-      typedField.id,
-      typedField.type,
-      typedField.fieldId
+      typedFieldData.id,
+      typedFieldData.type,
+      typedFieldData.label,
+      typedFieldData.points,
+      typedFieldData.fieldId
     );
   } catch (error) {
     console.error("Error fetching typedField by id:", error); // Log the error for debugging

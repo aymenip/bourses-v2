@@ -65,12 +65,14 @@ export const getSourceableFieldById = async (
       return null; // No sourceabledField found
     }
 
-    const sourceabledField = result[0];
+    const sourceableFieldData = result[0];
 
     return new SourceabledFieldDTO(
-      sourceabledField.id,
-      sourceabledField.source,
-      sourceabledField.fieldId
+      sourceableFieldData.id,
+      sourceableFieldData.source,
+      sourceableFieldData.points,
+      sourceableFieldData.label,
+      sourceableFieldData.fieldId
     );
   } catch (error) {
     console.error("Error fetching sourceabledField by id:", error); // Log the error for debugging

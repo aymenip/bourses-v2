@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { JwtPayloadResponse } from "../user/dtos";
+import { JwtResponsePayload } from "../user/dtos";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -11,7 +11,7 @@ export const hash = async (password: string): Promise<string> => {
 };
 
 export const generateToken = async (
-  payload: JwtPayloadResponse
+  payload: JwtResponsePayload
 ): Promise<string> => {
   const token = jwt.sign(payload, process.env.SECRET_KEY);
   return token;

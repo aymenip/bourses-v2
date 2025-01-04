@@ -2,6 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 
+// tanstack query
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
+
 // themes
 import { ThemeProvider } from "@/components/theme-provider"
 
@@ -17,6 +20,16 @@ import { routeTree } from './routeTree.gen'
 const router = createRouter({ routeTree })
 
 
+// tanstack query client  
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 5,
+      retryDelay: 1000
+    },
+  }
+})
+
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
   interface Register {
@@ -26,10 +39,12 @@ declare module '@tanstack/react-router' {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <I18nextProvider i18n={i18n}>
-        <RouterProvider router={router} />
-      </I18nextProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+        <I18nextProvider i18n={i18n}>
+          <RouterProvider router={router} />
+        </I18nextProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   </React.StrictMode>,
 )

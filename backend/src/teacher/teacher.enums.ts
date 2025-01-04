@@ -1,7 +1,4 @@
-export enum MatrialStatus {
-    متزوج = 'متزوج',
-    أعزب = 'أعزب',
-}
+
 
 export enum Degree {
     D0 = "0",

@@ -14,7 +14,6 @@ export const CreateTypedField = async (
 ): Promise<any> => {
     try {
         const createTypedFieldDTO: CreateTypedFieldDTO = req.body;
-
         if (!createTypedFieldDTO) {
             return res.status(400).json({ message: SW });
         }

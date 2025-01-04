@@ -35,7 +35,7 @@ export const userRelations = relations(users, ({ one }) => ({
 }));
 
 /// STUDENTS SCHEMA
-export const admins = mysqlTable("students", {
+export const admins = mysqlTable("admins", {
   id: bigint("id", { mode: "number", unsigned: true })
     .autoincrement()
     .primaryKey(),
@@ -221,7 +221,8 @@ export const typedFields = mysqlTable("typedFields", {
     .autoincrement()
     .primaryKey(),
   type: mysqlEnum("type", ["text", "date", "number", "url", "email"]),
-  ponints: int("points", { unsigned: true }),
+  points: int("points", { unsigned: true }),
+  label: varchar("label", { length: 256 }),
   fieldId: bigint("fieldId", { mode: "number", unsigned: true })
     .references(() => fields.id)
     .notNull(),
@@ -239,7 +240,8 @@ export const sourceableFields = mysqlTable("sourceableFields", {
     .autoincrement()
     .primaryKey(),
   source: mysqlEnum("type", ["certificate", "book", "article", "conference"]),
-  ponints: int("points", { unsigned: true }),
+  points: int("points", { unsigned: true }),
+  label: varchar("label", { length: 256 }),
   fieldId: bigint("fieldId", { mode: "number", unsigned: true })
     .references(() => fields.id)
     .notNull(),

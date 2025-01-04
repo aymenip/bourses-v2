@@ -1,5 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { SW } from "../utils/constants";
 
 declare global {
   namespace Express {
@@ -24,9 +25,25 @@ export const verifyToken = (
     res.status(401).json({ error: "Invalid token" });
   }
 };
+export const verifyAdminKey = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const adminKey = req.header("X-ADMIN-KEY");
+  if (!adminKey) return res.status(401).json({ error: SW });
+  try {
+    if (!(process.env.ADMIN_KEY === adminKey)) {
+      return res.status(401).json({ error: SW });
+    }
+    next();
+  } catch (error) {
+    res.status(401).json({ error: "Invalid token" });
+  }
+};
 
 export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
-  if (req.user["roleId"] !== 2) {
+  if (req.user["roleId"] !== 1) {
     res.status(401).json({ error: "Access denied" });
   } else {
     next();

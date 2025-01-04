@@ -4,10 +4,8 @@ import {
   LoginUserDTO,
   LoginUserOutputDTO,
   UpdateUserDTO,
-  UserDTO,
-} from "user/dtos";
+} from "../dtos";
 import {
-  createUser,
   getUserByEmail,
   getUserById,
   updateMe,
@@ -16,7 +14,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { handleError } from "../../utils/errors";
 import dotenv from "dotenv";
-import { UAE } from "../../utils/constants";
 
 dotenv.config();
 
@@ -55,7 +52,6 @@ export const Login = async (
 ): Promise<any> => {
   try {
     const loginUserDto: LoginUserDTO = req.body;
-
     if (!loginUserDto) {
       return res.sendStatus(400);
     }
@@ -81,7 +77,11 @@ export const Login = async (
       expiresIn: process.env.EXPIRES_IN,
     });
 
-    const response: LoginUserOutputDTO = { token }; // Create the response object
+    const response: LoginUserOutputDTO = new LoginUserOutputDTO(
+      token,
+      user.id,
+      user.roleId
+    ); // Create the response object
 
     return res.status(200).json(response); // Send response as JSON
   } catch (error) {
@@ -95,9 +95,7 @@ export const Register = async (createUserDTO: CreateUserDTO): Promise<any> => {
     if (!createUserDTO) {
       throw new Error();
     }
-
     const user = await getUserByEmail(createUserDTO.email);
-
     if (user) {
       throw new Error();
     }

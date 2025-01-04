@@ -3,7 +3,7 @@ import { users } from "../../db/schema";
 import { CreateUserDTO, UpdateUserDTO, UserDTO } from "../dtos";
 import { eq } from "drizzle-orm";
 import { CAE } from "../../utils/constants";
-import { MatrialStatus } from "teacher/teacher.enums";
+import { MatrialStatus } from "user/user.enums";
 import { MySqlTransaction } from "drizzle-orm/mysql-core";
 
 export const createUser = async (
