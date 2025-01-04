@@ -17,7 +17,8 @@ export const Route = createFileRoute('/_unauthenticated/login')({
   component: Login,
   beforeLoad: () => {
     if (authenticationContext().isAuthenticated) {
-      return redirect({ to: "/" });
+      if (authenticationContext().role === "ADMIN") return redirect({ to: "/" });
+      return redirect({ to: "/users" })
     }
   }
 })
@@ -40,7 +41,10 @@ function Login() {
 
   useEffect(() => {
     if (!isPending && !isError && isSuccess) {
-      navigate({ to: "/" }); // or wherever you want to redirect
+      if (authenticationContext().isAuthenticated) {
+        if (authenticationContext().role === "ADMIN") navigate({ to: "/" });
+        navigate({ to: "/users" })
+      }
     }
   }, [isPending, isError, isSuccess, navigate]);
 

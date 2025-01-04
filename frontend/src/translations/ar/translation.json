@@ -27,5 +27,9 @@
   "request-password": "أدخل كلمة السر من فضلك",
   "invalid-email": "رجاءا أدخل إيميل صالح.",
   "at-least-8": "8 أحرف على الأقل",
-  "login-faild": "همم تأكد من صحة معلوماتك ثم حاول مجددا."
+  "login-faild": "همم تأكد من صحة معلوماتك ثم حاول مجددا.",
+  "usersDashboard": "لوحة التحكم",
+  "usersConferences": "الملتقيات",
+  "usersArticles": "المقالات",
+  "usersBooks": "الكتب"
 }

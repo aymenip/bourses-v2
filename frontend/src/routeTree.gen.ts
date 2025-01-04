@@ -17,7 +17,6 @@ import { Route as UsersUsersLayoutImport } from './routes/users/_usersLayout'
 import { Route as UnauthenticatedLoginImport } from './routes/_unauthenticated/login'
 import { Route as AdminAdminLayoutImport } from './routes/_admin/_adminLayout'
 import { Route as AdminAdminLayoutIndexImport } from './routes/_admin/_adminLayout/index'
-import { Route as UsersUsersLayoutDashboardIndexImport } from './routes/users/_usersLayout/dashboard/index'
 import { Route as AdminAdminLayoutTeachersIdImport } from './routes/_admin/_adminLayout/teachers/$id'
 import { Route as AdminAdminLayoutStudentsIdImport } from './routes/_admin/_adminLayout/students/$id'
 import { Route as AdminAdminLayoutEmployeesIdImport } from './routes/_admin/_adminLayout/employees/$id'
@@ -25,11 +24,17 @@ import { Route as AdminAdminLayoutEmployeesIdImport } from './routes/_admin/_adm
 // Create Virtual Routes
 
 const UsersImport = createFileRoute('/users')()
-const UsersUsersLayoutTeachersIndexLazyImport = createFileRoute(
-  '/users/_usersLayout/teachers/',
+const UsersUsersLayoutIndexLazyImport = createFileRoute(
+  '/users/_usersLayout/',
 )()
-const UsersUsersLayoutEmployeesIndexLazyImport = createFileRoute(
-  '/users/_usersLayout/employees/',
+const UsersUsersLayoutConferencesIndexLazyImport = createFileRoute(
+  '/users/_usersLayout/conferences/',
+)()
+const UsersUsersLayoutBooksIndexLazyImport = createFileRoute(
+  '/users/_usersLayout/books/',
+)()
+const UsersUsersLayoutArticlesIndexLazyImport = createFileRoute(
+  '/users/_usersLayout/articles/',
 )()
 const AdminAdminLayoutTeachersIndexLazyImport = createFileRoute(
   '/_admin/_adminLayout/teachers/',
@@ -65,30 +70,47 @@ const AdminAdminLayoutRoute = AdminAdminLayoutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const UsersUsersLayoutIndexLazyRoute = UsersUsersLayoutIndexLazyImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => UsersUsersLayoutRoute,
+} as any).lazy(() =>
+  import('./routes/users/_usersLayout/index.lazy').then((d) => d.Route),
+)
+
 const AdminAdminLayoutIndexRoute = AdminAdminLayoutIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminAdminLayoutRoute,
 } as any)
 
-const UsersUsersLayoutTeachersIndexLazyRoute =
-  UsersUsersLayoutTeachersIndexLazyImport.update({
-    id: '/teachers/',
-    path: '/teachers/',
+const UsersUsersLayoutConferencesIndexLazyRoute =
+  UsersUsersLayoutConferencesIndexLazyImport.update({
+    id: '/conferences/',
+    path: '/conferences/',
     getParentRoute: () => UsersUsersLayoutRoute,
   } as any).lazy(() =>
-    import('./routes/users/_usersLayout/teachers/index.lazy').then(
+    import('./routes/users/_usersLayout/conferences/index.lazy').then(
       (d) => d.Route,
     ),
   )
 
-const UsersUsersLayoutEmployeesIndexLazyRoute =
-  UsersUsersLayoutEmployeesIndexLazyImport.update({
-    id: '/employees/',
-    path: '/employees/',
+const UsersUsersLayoutBooksIndexLazyRoute =
+  UsersUsersLayoutBooksIndexLazyImport.update({
+    id: '/books/',
+    path: '/books/',
     getParentRoute: () => UsersUsersLayoutRoute,
   } as any).lazy(() =>
-    import('./routes/users/_usersLayout/employees/index.lazy').then(
+    import('./routes/users/_usersLayout/books/index.lazy').then((d) => d.Route),
+  )
+
+const UsersUsersLayoutArticlesIndexLazyRoute =
+  UsersUsersLayoutArticlesIndexLazyImport.update({
+    id: '/articles/',
+    path: '/articles/',
+    getParentRoute: () => UsersUsersLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/users/_usersLayout/articles/index.lazy').then(
       (d) => d.Route,
     ),
   )
@@ -125,13 +147,6 @@ const AdminAdminLayoutEmployeesIndexLazyRoute =
       (d) => d.Route,
     ),
   )
-
-const UsersUsersLayoutDashboardIndexRoute =
-  UsersUsersLayoutDashboardIndexImport.update({
-    id: '/dashboard/',
-    path: '/dashboard/',
-    getParentRoute: () => UsersUsersLayoutRoute,
-  } as any)
 
 const AdminAdminLayoutTeachersIdRoute = AdminAdminLayoutTeachersIdImport.update(
   {
@@ -195,6 +210,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminLayoutIndexImport
       parentRoute: typeof AdminAdminLayoutImport
     }
+    '/users/_usersLayout/': {
+      id: '/users/_usersLayout/'
+      path: '/'
+      fullPath: '/users/'
+      preLoaderRoute: typeof UsersUsersLayoutIndexLazyImport
+      parentRoute: typeof UsersUsersLayoutImport
+    }
     '/_admin/_adminLayout/employees/$id': {
       id: '/_admin/_adminLayout/employees/$id'
       path: '/employees/$id'
@@ -215,13 +237,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/teachers/$id'
       preLoaderRoute: typeof AdminAdminLayoutTeachersIdImport
       parentRoute: typeof AdminAdminLayoutImport
-    }
-    '/users/_usersLayout/dashboard/': {
-      id: '/users/_usersLayout/dashboard/'
-      path: '/dashboard'
-      fullPath: '/users/dashboard'
-      preLoaderRoute: typeof UsersUsersLayoutDashboardIndexImport
-      parentRoute: typeof UsersUsersLayoutImport
     }
     '/_admin/_adminLayout/employees/': {
       id: '/_admin/_adminLayout/employees/'
@@ -244,18 +259,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminLayoutTeachersIndexLazyImport
       parentRoute: typeof AdminAdminLayoutImport
     }
-    '/users/_usersLayout/employees/': {
-      id: '/users/_usersLayout/employees/'
-      path: '/employees'
-      fullPath: '/users/employees'
-      preLoaderRoute: typeof UsersUsersLayoutEmployeesIndexLazyImport
+    '/users/_usersLayout/articles/': {
+      id: '/users/_usersLayout/articles/'
+      path: '/articles'
+      fullPath: '/users/articles'
+      preLoaderRoute: typeof UsersUsersLayoutArticlesIndexLazyImport
       parentRoute: typeof UsersUsersLayoutImport
     }
-    '/users/_usersLayout/teachers/': {
-      id: '/users/_usersLayout/teachers/'
-      path: '/teachers'
-      fullPath: '/users/teachers'
-      preLoaderRoute: typeof UsersUsersLayoutTeachersIndexLazyImport
+    '/users/_usersLayout/books/': {
+      id: '/users/_usersLayout/books/'
+      path: '/books'
+      fullPath: '/users/books'
+      preLoaderRoute: typeof UsersUsersLayoutBooksIndexLazyImport
+      parentRoute: typeof UsersUsersLayoutImport
+    }
+    '/users/_usersLayout/conferences/': {
+      id: '/users/_usersLayout/conferences/'
+      path: '/conferences'
+      fullPath: '/users/conferences'
+      preLoaderRoute: typeof UsersUsersLayoutConferencesIndexLazyImport
       parentRoute: typeof UsersUsersLayoutImport
     }
   }
@@ -290,17 +312,19 @@ const AdminAdminLayoutRouteWithChildren =
   AdminAdminLayoutRoute._addFileChildren(AdminAdminLayoutRouteChildren)
 
 interface UsersUsersLayoutRouteChildren {
-  UsersUsersLayoutDashboardIndexRoute: typeof UsersUsersLayoutDashboardIndexRoute
-  UsersUsersLayoutEmployeesIndexLazyRoute: typeof UsersUsersLayoutEmployeesIndexLazyRoute
-  UsersUsersLayoutTeachersIndexLazyRoute: typeof UsersUsersLayoutTeachersIndexLazyRoute
+  UsersUsersLayoutIndexLazyRoute: typeof UsersUsersLayoutIndexLazyRoute
+  UsersUsersLayoutArticlesIndexLazyRoute: typeof UsersUsersLayoutArticlesIndexLazyRoute
+  UsersUsersLayoutBooksIndexLazyRoute: typeof UsersUsersLayoutBooksIndexLazyRoute
+  UsersUsersLayoutConferencesIndexLazyRoute: typeof UsersUsersLayoutConferencesIndexLazyRoute
 }
 
 const UsersUsersLayoutRouteChildren: UsersUsersLayoutRouteChildren = {
-  UsersUsersLayoutDashboardIndexRoute: UsersUsersLayoutDashboardIndexRoute,
-  UsersUsersLayoutEmployeesIndexLazyRoute:
-    UsersUsersLayoutEmployeesIndexLazyRoute,
-  UsersUsersLayoutTeachersIndexLazyRoute:
-    UsersUsersLayoutTeachersIndexLazyRoute,
+  UsersUsersLayoutIndexLazyRoute: UsersUsersLayoutIndexLazyRoute,
+  UsersUsersLayoutArticlesIndexLazyRoute:
+    UsersUsersLayoutArticlesIndexLazyRoute,
+  UsersUsersLayoutBooksIndexLazyRoute: UsersUsersLayoutBooksIndexLazyRoute,
+  UsersUsersLayoutConferencesIndexLazyRoute:
+    UsersUsersLayoutConferencesIndexLazyRoute,
 }
 
 const UsersUsersLayoutRouteWithChildren =
@@ -321,30 +345,31 @@ export interface FileRoutesByFullPath {
   '/login': typeof UnauthenticatedLoginRoute
   '/users': typeof UsersUsersLayoutRouteWithChildren
   '/': typeof AdminAdminLayoutIndexRoute
+  '/users/': typeof UsersUsersLayoutIndexLazyRoute
   '/employees/$id': typeof AdminAdminLayoutEmployeesIdRoute
   '/students/$id': typeof AdminAdminLayoutStudentsIdRoute
   '/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
-  '/users/dashboard': typeof UsersUsersLayoutDashboardIndexRoute
   '/employees': typeof AdminAdminLayoutEmployeesIndexLazyRoute
   '/students': typeof AdminAdminLayoutStudentsIndexLazyRoute
   '/teachers': typeof AdminAdminLayoutTeachersIndexLazyRoute
-  '/users/employees': typeof UsersUsersLayoutEmployeesIndexLazyRoute
-  '/users/teachers': typeof UsersUsersLayoutTeachersIndexLazyRoute
+  '/users/articles': typeof UsersUsersLayoutArticlesIndexLazyRoute
+  '/users/books': typeof UsersUsersLayoutBooksIndexLazyRoute
+  '/users/conferences': typeof UsersUsersLayoutConferencesIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/login': typeof UnauthenticatedLoginRoute
-  '/users': typeof UsersUsersLayoutRouteWithChildren
+  '/users': typeof UsersUsersLayoutIndexLazyRoute
   '/': typeof AdminAdminLayoutIndexRoute
   '/employees/$id': typeof AdminAdminLayoutEmployeesIdRoute
   '/students/$id': typeof AdminAdminLayoutStudentsIdRoute
   '/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
-  '/users/dashboard': typeof UsersUsersLayoutDashboardIndexRoute
   '/employees': typeof AdminAdminLayoutEmployeesIndexLazyRoute
   '/students': typeof AdminAdminLayoutStudentsIndexLazyRoute
   '/teachers': typeof AdminAdminLayoutTeachersIndexLazyRoute
-  '/users/employees': typeof UsersUsersLayoutEmployeesIndexLazyRoute
-  '/users/teachers': typeof UsersUsersLayoutTeachersIndexLazyRoute
+  '/users/articles': typeof UsersUsersLayoutArticlesIndexLazyRoute
+  '/users/books': typeof UsersUsersLayoutBooksIndexLazyRoute
+  '/users/conferences': typeof UsersUsersLayoutConferencesIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -354,15 +379,16 @@ export interface FileRoutesById {
   '/users': typeof UsersRouteWithChildren
   '/users/_usersLayout': typeof UsersUsersLayoutRouteWithChildren
   '/_admin/_adminLayout/': typeof AdminAdminLayoutIndexRoute
+  '/users/_usersLayout/': typeof UsersUsersLayoutIndexLazyRoute
   '/_admin/_adminLayout/employees/$id': typeof AdminAdminLayoutEmployeesIdRoute
   '/_admin/_adminLayout/students/$id': typeof AdminAdminLayoutStudentsIdRoute
   '/_admin/_adminLayout/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
-  '/users/_usersLayout/dashboard/': typeof UsersUsersLayoutDashboardIndexRoute
   '/_admin/_adminLayout/employees/': typeof AdminAdminLayoutEmployeesIndexLazyRoute
   '/_admin/_adminLayout/students/': typeof AdminAdminLayoutStudentsIndexLazyRoute
   '/_admin/_adminLayout/teachers/': typeof AdminAdminLayoutTeachersIndexLazyRoute
-  '/users/_usersLayout/employees/': typeof UsersUsersLayoutEmployeesIndexLazyRoute
-  '/users/_usersLayout/teachers/': typeof UsersUsersLayoutTeachersIndexLazyRoute
+  '/users/_usersLayout/articles/': typeof UsersUsersLayoutArticlesIndexLazyRoute
+  '/users/_usersLayout/books/': typeof UsersUsersLayoutBooksIndexLazyRoute
+  '/users/_usersLayout/conferences/': typeof UsersUsersLayoutConferencesIndexLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -372,15 +398,16 @@ export interface FileRouteTypes {
     | '/login'
     | '/users'
     | '/'
+    | '/users/'
     | '/employees/$id'
     | '/students/$id'
     | '/teachers/$id'
-    | '/users/dashboard'
     | '/employees'
     | '/students'
     | '/teachers'
-    | '/users/employees'
-    | '/users/teachers'
+    | '/users/articles'
+    | '/users/books'
+    | '/users/conferences'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -389,12 +416,12 @@ export interface FileRouteTypes {
     | '/employees/$id'
     | '/students/$id'
     | '/teachers/$id'
-    | '/users/dashboard'
     | '/employees'
     | '/students'
     | '/teachers'
-    | '/users/employees'
-    | '/users/teachers'
+    | '/users/articles'
+    | '/users/books'
+    | '/users/conferences'
   id:
     | '__root__'
     | '/_admin/_adminLayout'
@@ -402,15 +429,16 @@ export interface FileRouteTypes {
     | '/users'
     | '/users/_usersLayout'
     | '/_admin/_adminLayout/'
+    | '/users/_usersLayout/'
     | '/_admin/_adminLayout/employees/$id'
     | '/_admin/_adminLayout/students/$id'
     | '/_admin/_adminLayout/teachers/$id'
-    | '/users/_usersLayout/dashboard/'
     | '/_admin/_adminLayout/employees/'
     | '/_admin/_adminLayout/students/'
     | '/_admin/_adminLayout/teachers/'
-    | '/users/_usersLayout/employees/'
-    | '/users/_usersLayout/teachers/'
+    | '/users/_usersLayout/articles/'
+    | '/users/_usersLayout/books/'
+    | '/users/_usersLayout/conferences/'
   fileRoutesById: FileRoutesById
 }
 
@@ -468,14 +496,19 @@ export const routeTree = rootRoute
       "filePath": "users/_usersLayout.tsx",
       "parent": "/users",
       "children": [
-        "/users/_usersLayout/dashboard/",
-        "/users/_usersLayout/employees/",
-        "/users/_usersLayout/teachers/"
+        "/users/_usersLayout/",
+        "/users/_usersLayout/articles/",
+        "/users/_usersLayout/books/",
+        "/users/_usersLayout/conferences/"
       ]
     },
     "/_admin/_adminLayout/": {
       "filePath": "_admin/_adminLayout/index.tsx",
       "parent": "/_admin/_adminLayout"
+    },
+    "/users/_usersLayout/": {
+      "filePath": "users/_usersLayout/index.lazy.tsx",
+      "parent": "/users/_usersLayout"
     },
     "/_admin/_adminLayout/employees/$id": {
       "filePath": "_admin/_adminLayout/employees/$id.tsx",
@@ -489,10 +522,6 @@ export const routeTree = rootRoute
       "filePath": "_admin/_adminLayout/teachers/$id.tsx",
       "parent": "/_admin/_adminLayout"
     },
-    "/users/_usersLayout/dashboard/": {
-      "filePath": "users/_usersLayout/dashboard/index.tsx",
-      "parent": "/users/_usersLayout"
-    },
     "/_admin/_adminLayout/employees/": {
       "filePath": "_admin/_adminLayout/employees/index.lazy.tsx",
       "parent": "/_admin/_adminLayout"
@@ -505,12 +534,16 @@ export const routeTree = rootRoute
       "filePath": "_admin/_adminLayout/teachers/index.lazy.tsx",
       "parent": "/_admin/_adminLayout"
     },
-    "/users/_usersLayout/employees/": {
-      "filePath": "users/_usersLayout/employees/index.lazy.tsx",
+    "/users/_usersLayout/articles/": {
+      "filePath": "users/_usersLayout/articles/index.lazy.tsx",
       "parent": "/users/_usersLayout"
     },
-    "/users/_usersLayout/teachers/": {
-      "filePath": "users/_usersLayout/teachers/index.lazy.tsx",
+    "/users/_usersLayout/books/": {
+      "filePath": "users/_usersLayout/books/index.lazy.tsx",
+      "parent": "/users/_usersLayout"
+    },
+    "/users/_usersLayout/conferences/": {
+      "filePath": "users/_usersLayout/conferences/index.lazy.tsx",
       "parent": "/users/_usersLayout"
     }
   }

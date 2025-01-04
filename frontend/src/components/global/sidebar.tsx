@@ -1,6 +1,6 @@
 import { Route, routes } from "@/constants/routes"
 import { cn } from "@/lib/utils"
-import { Link } from "@tanstack/react-router"
+import { Link, useLocation } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 import { ModeToggle } from "../mode-toggle"
 import { LanguageToggle } from "../language-toggle"
@@ -40,6 +40,7 @@ function Sidebar({ role }: SidebarProps) {
     const [t, _] = useTranslation("translation")
     const [isOpen, setIsOpen] = useState(false);
     const containerControls = useAnimationControls();
+    const location = useLocation();
     useEffect(() => {
         if (isOpen) {
             containerControls.start("open")
@@ -68,15 +69,16 @@ function Sidebar({ role }: SidebarProps) {
             <div className="flex flex-col w-full gap-3 h-full">
                 {
                     routes.map((route: Route) => {
-                        if (route.roles.includes(role)) return <Link key={route.name} to={route.path} className="header-item header-item-active">
+                        const exactMatch = location.pathname === route.path;
+                        if (route.roles.includes(role)) return <Link key={route.name} to={route.path} className={cn("header-item", { "header-item-active": exactMatch })}>
                             {
-                                ({ isActive }) => <div className={cn("flex gap-2 items-center", { "justify-center": !isOpen })}>
+                                () => <div className={cn("flex gap-2 items-center", { "justify-center": !isOpen })}>
                                     {
                                         !isOpen ? (
                                             <TooltipProvider delayDuration={1}>
                                                 <Tooltip >
                                                     <TooltipTrigger className="flex items-center gap-x-1">
-                                                        {isActive && <span className="block w-1 h-3 rounded-full bg-primary/90  neon-shadow" />}
+                                                        {exactMatch && <span className="block w-1 h-3 rounded-full bg-primary/90  neon-shadow" />}
                                                         {route.icon}
                                                     </TooltipTrigger>
                                                     <TooltipContent>
@@ -86,7 +88,7 @@ function Sidebar({ role }: SidebarProps) {
                                             </TooltipProvider>
                                         ) : (
                                             <>
-                                                {isActive && <span className="block w-1 h-3 rounded-full bg-primary/90 neon-shadow" />}
+                                                {exactMatch && <span className="block w-1 h-3 rounded-full bg-primary/90 neon-shadow" />}
                                                 {route.icon}
                                                 {isOpen && t(route.name)}
                                             </>
