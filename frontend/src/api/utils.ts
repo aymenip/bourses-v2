@@ -18,11 +18,11 @@ export function roleToRoute(role: string | null) {
     case "ADMIN":
       return "/";
     case "TEACHER":
-      return "/teachers";
+      return "users/teachers";
     case "EMPLOYER":
-      return "/employees";
+      return "users/employees";
     case "STUDENT":
-      return "/students";
+      return "users/students";
     default:
       return "/login";
   }

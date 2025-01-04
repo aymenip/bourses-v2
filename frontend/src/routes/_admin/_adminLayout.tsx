@@ -6,10 +6,11 @@ import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 export const Route = createFileRoute('/_admin/_adminLayout')({
   beforeLoad: () => {
     const role = authenticationContext().role;
-    if (authenticationContext().isAuthenticated) {
+    if (!authenticationContext().isAuthenticated) {
       throw redirect({ to: "/login" })
-    } else if (role !== "ADMIN") {
-      throw redirect({ to: roleToRoute(role) })
+    }
+    if (role != "ADMIN") {
+      throw redirect({ to: "/users" })
     }
   },
   component: Dashboard,
@@ -17,8 +18,9 @@ export const Route = createFileRoute('/_admin/_adminLayout')({
 
 
 function Dashboard() {
+  const role = authenticationContext().role;
   return <>
-    <Sidebar />
+    <Sidebar role={role!} />
     <Outlet />
   </>
 }

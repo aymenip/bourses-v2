@@ -32,7 +32,11 @@ const containerVariants = {
     }
 }
 
-function Sidebar() {
+type SidebarProps = {
+    role: string;
+}
+
+function Sidebar({ role }: SidebarProps) {
     const [t, _] = useTranslation("translation")
     const [isOpen, setIsOpen] = useState(false);
     const containerControls = useAnimationControls();
@@ -63,8 +67,8 @@ function Sidebar() {
             </div>
             <div className="flex flex-col w-full gap-3 h-full">
                 {
-                    routes.map((route: Route) => (
-                        <Link to={route.path} className="header-item header-item-active">
+                    routes.map((route: Route) => {
+                        if (route.roles.includes(role)) return <Link key={route.name} to={route.path} className="header-item header-item-active">
                             {
                                 ({ isActive }) => <div className={cn("flex gap-2 items-center", { "justify-center": !isOpen })}>
                                     {
@@ -91,9 +95,8 @@ function Sidebar() {
 
                                 </div>
                             }
-
                         </Link>
-                    ))
+                    })
                 }
             </div>
 
