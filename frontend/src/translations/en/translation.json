@@ -55,5 +55,9 @@
   "forms/create": "Create new form",
   "type-form-name": "Form title...",
   "add-block": "Add new element",
-  "create-new-form": "Create new form"
+  "create-new-form": "Create new form",
+  "element-title": "Element title",
+  "field-label": "Field label",
+  "field-type": "Field type",
+  "field-source": "Field source"
 }

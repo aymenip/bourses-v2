@@ -33,33 +33,33 @@ function FormCreate() {
                             <Pencil2Icon />
                         </Button>
                         <div>
-                            <Muted>element title</Muted>
+                            <Muted>{t("element-title")}</Muted>
                             <H4>Personal informations</H4>
                         </div>
                         <div className='col-span-3 grid gap-y-4'>
                             {/* Field */}
                             <div className='grid grid-cols-3 '>
                                 <div>
-                                    <Muted>field label</Muted>
+                                    <Muted>{t("field-label")}</Muted>
                                     <p>Firstname</p>
                                 </div>
                                 <div>
-                                    <Muted>field type</Muted>
+                                    <Muted>{t("field-type")}</Muted>
                                     <p>Text</p>
                                 </div>
                             </div>
 
                             <div className='grid grid-cols-3'>
                                 <div>
-                                    <Muted>field label</Muted>
+                                    <Muted>{t("field-label")}</Muted>
                                     <p>Firstname</p>
                                 </div>
                                 <div>
-                                    <Muted>field type</Muted>
+                                    <Muted>{t("field-type")}</Muted>
                                     <p>Sourceable</p>
                                 </div>
                                 <div>
-                                    <Muted>source</Muted>
+                                    <Muted>{t("field-source")}</Muted>
                                     <p>Books</p>
                                 </div>
                             </div>

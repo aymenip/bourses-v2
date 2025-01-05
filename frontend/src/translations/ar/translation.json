@@ -55,5 +55,9 @@
   "forms/create": "إنشاء إستبيان جديد",
   "type-form-name": "عنوان الإستبيان...",
   "add-block": "إضافة عنصر جديد",
-  "create-new-form": "إنشاء إستبيان جديد"
+  "create-new-form": "إنشاء إستبيان جديد",
+  "element-title": "عنوان العنصر",
+  "field-label": "إسم الحقل",
+  "field-type": "نوع الحقل",
+  "field-source": "مصدر الحقل"
 }
