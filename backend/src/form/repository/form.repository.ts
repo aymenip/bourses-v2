@@ -89,3 +89,33 @@ export const getFormByTitle = async (
     return null; // Handle errors appropriately
   }
 };
+
+export const getFormsById = async (creator: number): Promise<FormDTO[]> => {
+  try {
+    const dbInstance = await db; // Ensure db instance is awaited once
+    const result = await dbInstance
+      .select()
+      .from(forms)
+      .where(eq(forms.creator, creator));
+
+    if (result.length === 0) {
+      return null; // No user found
+    }
+    return result?.map(
+      (form) => new FormDTO(form.id, form.title, form.creator)
+    );
+  } catch (error) {
+    console.error("Error fetching form by id:", error); // Log the error for debugging
+    return null; // Handle errors appropriately
+  }
+};
+export const deleteForm = async (id: number): Promise<void> => {
+  try {
+    const dbInstance = await db; // Ensure db instance is awaited once
+
+    const result = await dbInstance.delete(forms).where(eq(forms.id, id));
+  } catch (error) {
+    console.error("Error fetching form by id:", error); // Log the error for debugging
+    return null; // Handle errors appropriately
+  }
+};

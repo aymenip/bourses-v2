@@ -4,7 +4,6 @@ import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_admin/_adminLayout')({
   beforeLoad: () => {
-    console.log("hi [ADMIN]");
     const role = authenticationContext().role;
     if (!authenticationContext().isAuthenticated) {
       throw redirect({ to: "/login" })

@@ -32,5 +32,21 @@
   "usersConferences": "Conferences",
   "usersArticles": "Articles",
   "usersBooks": "Books",
-  "forms": "Forms"
+  "forms": "Forms",
+  "delete": "Delete",
+  "filter-titles": "Filter titles...",
+  "view": "View",
+  "page": "Page",
+  "of": "Of",
+  "title": "Title",
+  "creator": "Creator",
+  "toggle-columns": "Toggle columns",
+  "rows-per-page": "Rows per page",
+  "select-row": "Select row",
+  "reset": "Reset",
+  "row-s": "row(s)",
+  "selected": "selected",
+  "no-results": "No results.",
+  "edit": "Edit",
+  "id": "Id"
 }

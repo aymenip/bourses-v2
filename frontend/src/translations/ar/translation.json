@@ -32,5 +32,21 @@
   "usersConferences": "الملتقيات",
   "usersArticles": "المقالات",
   "usersBooks": "الكتب",
-  "forms": "الإستبيانات"
+  "forms": "الإستبيانات",
+  "delete": "حذف",
+  "filter-titles": "فلترة العناوين...",
+  "view": "أظهر",
+  "page": "صفحة",
+  "of": "من",
+  "title": "العنوان",
+  "creator": "المنشئ",
+  "toggle-columns": "تبديل الأعمدة",
+  "rows-per-page": "الصفوف لكل صفحة",
+  "select-row": "إختر العمود",
+  "reset": "إعادة",
+  "row-s": "عمود (أعمدة)",
+  "selected": "مختار(ة)",
+  "no-results": "لا توجد نتائج.",
+  "edit": "تعديل",
+  "id": "المعرف"
 }

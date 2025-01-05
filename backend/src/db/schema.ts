@@ -212,9 +212,13 @@ export const fields = mysqlTable("fields", {
   label: varchar("label", { length: 256 }),
 
   formId: bigint("formId", { mode: "number", unsigned: true })
-    .references(() => forms.id)
+    .references(() => forms.id, { onDelete: "cascade" })
     .notNull(),
 });
+
+export const fieldsRelations = relations(fields, ({ one }) => ({
+  form: one(forms, { fields: [fields.formId], references: [forms.id] }),
+}));
 
 export const typedFields = mysqlTable("typedFields", {
   id: bigint("id", { mode: "number", unsigned: true })
@@ -224,7 +228,7 @@ export const typedFields = mysqlTable("typedFields", {
   points: int("points", { unsigned: true }),
   label: varchar("label", { length: 256 }),
   fieldId: bigint("fieldId", { mode: "number", unsigned: true })
-    .references(() => fields.id)
+    .references(() => fields.id, { onDelete: "cascade" })
     .notNull(),
 });
 
@@ -243,7 +247,7 @@ export const sourceableFields = mysqlTable("sourceableFields", {
   points: int("points", { unsigned: true }),
   label: varchar("label", { length: 256 }),
   fieldId: bigint("fieldId", { mode: "number", unsigned: true })
-    .references(() => fields.id)
+    .references(() => fields.id, { onDelete: "cascade" })
     .notNull(),
 });
 

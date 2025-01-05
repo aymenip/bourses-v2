@@ -8,7 +8,8 @@ import {
   getFormById,
   getFormByTitle,
   updateForm,
-  
+  getFormsById,
+  deleteForm,
 } from "../repository/form.repository";
 
 dotenv.config();
@@ -61,6 +62,69 @@ export const UpdateForm = async (
     const updatedForm = await updateForm(updateFormDTO, userId);
 
     return res.status(200).json(updatedForm);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
+
+export const AllForms = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+    const creator = req.user?.sub;
+
+    if (!creator) {
+      return res.status(400).json({ message: SW });
+    }
+
+    const forms = await getFormsById(creator);
+
+    return res.status(200).json(forms);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
+
+export const GetForm = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+    const creator = req.user?.sub;
+    const formId = parseInt(req.params.id);
+    if (!creator) {
+      return res.status(400).json({ message: SW });
+    }
+
+    const form = await getFormById(formId);
+
+    return res.status(200).json(form);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
+
+export const DeleteForm = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+    const creator = req.user?.sub;
+    const formId = parseInt(req.params.id);
+    if (!creator) {
+      return res.status(400).json({ message: SW });
+    }
+
+    const form = await getFormById(formId);
+
+    if (form.creator !== creator) throw new Error();
+    await deleteForm(formId);
+
+    return res.status(200).json(form);
   } catch (error) {
     handleError(() => console.log(error));
     return res.sendStatus(400);
