@@ -1,5 +1,5 @@
 "use client";;
-import { Cross2Icon } from "@radix-ui/react-icons";
+import { Cross2Icon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { DataTableViewOptions } from "./view-options";
 import { TrashIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { DataTableFacetedFilter } from "./faceted-filter";
+import { Link } from "@tanstack/react-router";
 
 interface DataTableToolbarProps<TData> {
     table: Table<TData>;
@@ -29,6 +29,13 @@ export function DataTableToolbar<TData>({
                     }}
                     className="h-8 w-[150px] lg:w-[250px]"
                 />
+
+                <Link to="/forms/create">
+                    <Button variant={"link"}>
+                        <span className="ltr:pr-2 rtl:pl-2"><PlusCircledIcon /></span>
+                        {t("create-new-form")}
+                    </Button>
+                </Link>
                 {/* {table.getColumn("title") && (
                     <DataTableFacetedFilter
                         column={table.getColumn("title")}

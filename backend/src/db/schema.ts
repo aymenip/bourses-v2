@@ -67,7 +67,7 @@ export const logs = mysqlTable("logs", {
 
   userId: bigint("userId", { mode: "number", unsigned: true })
     .notNull()
-    .references(() => users.id),
+    .references(() => users.id, { onDelete: "cascade" }),
 });
 
 export const logsRelations = relations(logs, ({ one }) => ({
@@ -178,7 +178,7 @@ export const forms = mysqlTable("forms", {
     .primaryKey(),
   title: varchar("title", { length: 1024 }),
   creator: bigint("creator", { mode: "number", unsigned: true })
-    .references(() => users.id)
+    .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
 });
 
@@ -192,10 +192,10 @@ export const formsAccess = mysqlTable("formsAccess", {
     .autoincrement()
     .primaryKey(),
   formId: bigint("formId", { mode: "number", unsigned: true })
-    .references(() => forms.id)
+    .references(() => forms.id, { onDelete: "cascade" })
     .notNull(),
   roleId: bigint("roleId", { mode: "number", unsigned: true })
-    .references(() => roles.id)
+    .references(() => roles.id, { onDelete: "cascade" })
     .notNull(),
 });
 
@@ -282,7 +282,7 @@ export const certificates = mysqlTable("certeficates", {
     .autoincrement()
     .primaryKey(),
   documentId: bigint("documentId", { mode: "number", unsigned: true })
-    .references(() => documents.id)
+    .references(() => documents.id, { onDelete: "cascade" })
     .notNull(),
 });
 
@@ -298,7 +298,7 @@ export const books = mysqlTable("books", {
     .autoincrement()
     .primaryKey(),
   documentId: bigint("documentId", { mode: "number", unsigned: true })
-    .references(() => documents.id)
+    .references(() => documents.id, { onDelete: "cascade" })
     .notNull(),
 });
 
@@ -314,7 +314,7 @@ export const articles = mysqlTable("articles", {
     .autoincrement()
     .primaryKey(),
   documentId: bigint("documentId", { mode: "number", unsigned: true })
-    .references(() => documents.id)
+    .references(() => documents.id, { onDelete: "cascade" })
     .notNull(),
 });
 
@@ -330,7 +330,7 @@ export const conferences = mysqlTable("conferencse", {
     .autoincrement()
     .primaryKey(),
   documentId: bigint("documentId", { mode: "number", unsigned: true })
-    .references(() => documents.id)
+    .references(() => documents.id, { onDelete: "cascade" })
     .notNull(),
 });
 
@@ -350,7 +350,7 @@ export const formSubmissions = mysqlTable("formSubmissions", {
     .references(() => forms.id)
     .notNull(),
   userId: bigint("userId", { mode: "number", unsigned: true })
-    .references(() => users.id)
+    .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
   status: mysqlEnum("status", ["draft", "submitted"])
     .default("draft")

@@ -17,7 +17,7 @@ function Forms() {
   return <div className='content-container'>
     <TopBar page_name='forms' />
     <div className='p-2'>
-      <DataTable data={forms} columns={columns} />
+      <DataTable data={forms!} columns={columns} />
     </div>
   </div>
 }
