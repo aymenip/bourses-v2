@@ -13,11 +13,11 @@ export const Route = createLazyFileRoute('/_admin/_adminLayout/forms/')({
 function Forms() {
   const { data: forms, isLoading, isFetching } = useForms();
   if (isLoading || isFetching) return <Loader />
-
+  console.log(forms)
   return <div className='content-container'>
     <TopBar page_name='forms' />
     <div className='p-2'>
-      <DataTable data={forms!} columns={columns} />
+      <DataTable data={forms || []} columns={columns} />
     </div>
   </div>
 }
