@@ -2,8 +2,10 @@ import { TopBar } from '@/components/global/topBar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { H4, Muted } from '@/components/ui/typography';
+import { TField, TFormElement } from '@/types/forms';
 import { Pencil2Icon, ReloadIcon } from '@radix-ui/react-icons';
 import { createLazyFileRoute } from '@tanstack/react-router'
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next'
 
 export const Route = createLazyFileRoute('/_admin/_adminLayout/forms/create')({
@@ -12,6 +14,26 @@ export const Route = createLazyFileRoute('/_admin/_adminLayout/forms/create')({
 
 
 function FormCreate() {
+
+    const [formElements, setFormElements] = useState<TFormElement[] | null>(null);
+
+    useEffect(() => {
+        setFormElements([{
+            title: "Personal informations", subelements: [
+                {
+                    label: "Firstname",
+                    type: "Text",
+                },
+                {
+                    label: "Certeficate",
+                    type: "Sourceable",
+                    source: "Books"
+                },
+            ]
+        }])
+    }, []);
+
+
     const [t, _] = useTranslation("translation")
     return <div className='content-container'>
         <TopBar page_name='forms/create' />
@@ -28,47 +50,46 @@ function FormCreate() {
 
                 {/* Added Blocks */}
                 <div className='col-span-6 col-start-2 col-end-8'>
-                    <div className='relative grid gap-y-2 px-2 py-4 bg-zinc-400/5 dark:bg-zinc-800/10 shadow-sm rounded'>
-                        <Button className='absolute rtl:left-2 ltr:right-2 top-2' variant={"link"}>
-                            <Pencil2Icon />
-                        </Button>
-                        <div>
-                            <Muted>{t("element-title")}</Muted>
-                            <H4>Personal informations</H4>
-                        </div>
-                        <div className='col-span-3 grid gap-y-4'>
-                            {/* Field */}
-                            <div className='grid grid-cols-3 '>
+                    {
+                        formElements?.map((element: TFormElement) => {
+                            return <div className='relative grid gap-y-2 px-2 py-4 bg-zinc-400/5 dark:bg-zinc-800/10 shadow-sm rounded'>
+                                <Button className='absolute rtl:left-2 ltr:right-2 top-2' variant={"link"}>
+                                    <Pencil2Icon />
+                                </Button>
                                 <div>
-                                    <Muted>{t("field-label")}</Muted>
-                                    <p>Firstname</p>
+                                    <Muted>{t("element-title")}</Muted>
+                                    <H4>{element.title}</H4>
                                 </div>
-                                <div>
-                                    <Muted>{t("field-type")}</Muted>
-                                    <p>Text</p>
-                                </div>
-                            </div>
+                                <div className='col-span-3 grid gap-y-4'>
+                                    {
+                                        element.subelements?.map((subelement: TField) => {
+                                            return <div className='grid grid-cols-3 '>
+                                                <div>
+                                                    <Muted>{t("field-label")}</Muted>
+                                                    <p>{subelement.label}</p>
+                                                </div>
+                                                <div>
+                                                    <Muted>{t("field-type")}</Muted>
+                                                    <p>{subelement.type}</p>
+                                                </div>
+                                                {
+                                                    subelement.source && <div>
+                                                        <Muted>{t("field-source")}</Muted>
+                                                        <p>{subelement.source}</p>
+                                                    </div>
+                                                }
 
-                            <div className='grid grid-cols-3'>
-                                <div>
-                                    <Muted>{t("field-label")}</Muted>
-                                    <p>Firstname</p>
-                                </div>
-                                <div>
-                                    <Muted>{t("field-type")}</Muted>
-                                    <p>Sourceable</p>
-                                </div>
-                                <div>
-                                    <Muted>{t("field-source")}</Muted>
-                                    <p>Books</p>
+                                            </div>
+                                        })
+                                    }
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        })
+                    }
                 </div>
                 {/* Added Blocks end */}
 
-                {/* Form blocks start */}
+                {/* Add blocks button start */}
                 <div className='col-span-6 col-start-2 col-end-8 p-2'>
                     {/* Add new block */}
                     <div className='flex'>
@@ -77,7 +98,7 @@ function FormCreate() {
                         </Button>
                     </div>
                 </div>
-                {/* Form blocks end */}
+                {/* Add blocks button end */}
             </div>
         </div>
     </div>
