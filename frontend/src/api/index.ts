@@ -4,6 +4,7 @@ import {
   TAuthenticationContext,
   TUser,
   TForm,
+  TCreateForm,
 } from "@/types";
 import axios from "axios";
 import { roleIdToRole } from "./utils";
@@ -73,6 +74,19 @@ export async function form(id: number): Promise<TForm> {
     },
     params: {
       id: id,
+    },
+  });
+  return response.data;
+}
+
+export async function createForm(createForm: TCreateForm): Promise<TForm> {
+  const token = authenticationContext().token;
+  if (!token) {
+    throw new Error();
+  }
+  const response = await axiosInstance.post<TForm>("form/create", createForm, {
+    headers: {
+      Authorization: token,
     },
   });
   return response.data;

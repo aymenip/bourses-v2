@@ -6,7 +6,10 @@ export const FormSchema = z.object({
   creator: z.number(),
 });
 
-export type TForm = z.infer<typeof FormSchema>;
+export const CreateFormSchema = z.object({
+  title: z.string(),
+  creator: z.number(),
+});
 
 export const FieldSchema = z.object({
   label: z.string(),
@@ -19,5 +22,7 @@ export const FormElementSchema = z.object({
   subelements: z.array(FieldSchema),
 });
 
+export type TForm = z.infer<typeof FormSchema>;
+export type TCreateForm = z.infer<typeof CreateFormSchema>;
 export type TField = z.infer<typeof FieldSchema>;
 export type TFormElement = z.infer<typeof FormElementSchema>;
