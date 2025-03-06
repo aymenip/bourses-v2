@@ -1,18 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { clearSotrage, form, forms, me } from ".";
-
-export function useUser() {
-    return useQuery({
-        queryKey: ["me"],
-        queryFn: me
-    })
-}
+import { form, forms } from "./services";
 
 
-export function logout() {
-    clearSotrage();
-    window.location.href = '/login';
-}
 
 
 export function useForms() {

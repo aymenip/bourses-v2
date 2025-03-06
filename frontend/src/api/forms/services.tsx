@@ -1,0 +1,59 @@
+import { TCreateForm, TForm } from "@/types";
+import { axiosInstance } from ".."
+import { authenticationContext } from "../auth/services";
+
+export async function forms(): Promise<TForm[]> {
+    const token = authenticationContext().token;
+    if (!token) {
+        throw new Error();
+    }
+    const response = await axiosInstance.get<TForm[]>("form/all", {
+        headers: {
+            Authorization: token,
+        },
+    });
+    return response.data || [];
+}
+
+export async function form(id: number): Promise<TForm> {
+    const token = authenticationContext().token;
+    if (!token) {
+        throw new Error();
+    }
+    const response = await axiosInstance.get<TForm>("form", {
+        headers: {
+            Authorization: token,
+        },
+        params: {
+            id: id,
+        },
+    });
+    return response.data;
+}
+
+export async function createAForm(createForm: TCreateForm): Promise<TForm> {
+    const token = authenticationContext().token;
+    if (!token) {
+        throw new Error();
+    }
+    const response = await axiosInstance.post<TForm>("form/create", createForm, {
+        headers: {
+            Authorization: token,
+        },
+    });
+    return response.data;
+}
+
+export async function deleteForm(id: number): Promise<void> {
+    const token = authenticationContext().token;
+    if (!token) {
+        throw new Error();
+    }
+    const response = await axiosInstance.delete<void>(`form/${id}`, {
+        headers: {
+            Authorization: token,
+        },
+    });
+    return response.data;
+}
+
