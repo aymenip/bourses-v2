@@ -5,10 +5,9 @@ import { H4, Muted } from '@/components/ui/typography';
 import { TField, TFormElement } from '@/types/forms';
 import { Pencil2Icon, ReloadIcon } from '@radix-ui/react-icons';
 import { createLazyFileRoute } from '@tanstack/react-router'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useCreateForm } from '@/api/mutations';
-import { authenticationContext } from '@/api/services';
 import { useUser } from '@/api/queries';
 import { cn } from '@/lib/utils';
 export const Route = createLazyFileRoute('/_admin/_adminLayout/forms/create')({
@@ -26,9 +25,9 @@ function FormCreate() {
         let title = e.target.value;
         if (title && userData) {
             let creator = userData?.id;
-            setTimeout(() => {
-                mutate({ title, creator })
-            }, 1000)
+
+            mutate({ title, creator })
+
         }
     }
 
@@ -45,7 +44,7 @@ function FormCreate() {
                 {/* Form title */}
                 <div className='col-span-6 col-start-2 col-end-8'>
                     <div className='flex justify-end items-center'>
-                        <ReloadIcon height={20} width={20} className={cn('absolute m-4 text-zinc-800/50 dark:text-zinc-500', { 'animate-spin': isPending })} />
+                        <span className='w-3 h-3 rounded-full bg-green-500 absolute m-4 animate-pulse' />
                         <Input onChange={onInputChange} className='h-20 text-3xl placeholder:text-3xl dark:placeholder:text-zinc-500  rounded-none border-0  border-b-2 dark:border-b-zinc-500 dark:bg-zinc-800/30 bg-zinc-800/5' placeholder={t("type-form-name")} />
                     </div>
                 </div>
