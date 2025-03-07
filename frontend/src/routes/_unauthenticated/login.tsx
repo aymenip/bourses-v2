@@ -10,7 +10,7 @@ import { LoginSchema } from '@/types/login'
 import { CrossCircledIcon } from '@radix-ui/react-icons'
 import { useAuth } from '@/api/mutations'
 import { LoaderIcon } from 'lucide-react'
-import { authenticationContext } from '@/api'
+import { authenticationContext } from '@/api/services'
 import { useEffect } from 'react'
 
 export const Route = createFileRoute('/_unauthenticated/login')({

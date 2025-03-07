@@ -1,4 +1,4 @@
-import { authenticationContext } from '@/api'
+import { authenticationContext } from '@/api/services'
 import Sidebar from '@/components/global/sidebar'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
