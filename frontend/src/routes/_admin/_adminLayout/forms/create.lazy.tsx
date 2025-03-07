@@ -7,31 +7,34 @@ import { Pencil2Icon, ReloadIcon } from '@radix-ui/react-icons';
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next'
-
+import { useCreateForm } from '@/api/mutations';
+import { authenticationContext } from '@/api/services';
+import { useUser } from '@/api/queries';
+import { cn } from '@/lib/utils';
 export const Route = createLazyFileRoute('/_admin/_adminLayout/forms/create')({
     component: FormCreate,
 })
 
 
 function FormCreate() {
+    const { data, isPending, mutate } = useCreateForm();
+    const { data: userData } = useUser();
 
     const [formElements, setFormElements] = useState<TFormElement[] | null>(null);
 
-    useEffect(() => {
-        setFormElements([{
-            title: "Personal informations", subelements: [
-                {
-                    label: "Firstname",
-                    type: "Text",
-                },
-                {
-                    label: "Certeficate",
-                    type: "Sourceable",
-                    source: "Books"
-                },
-            ]
-        }])
-    }, []);
+    const onInputChange = (e: any) => {
+        let title = e.target.value;
+        if (title && userData) {
+            let creator = userData?.id;
+            setTimeout(() => {
+                mutate({ title, creator })
+            }, 1000)
+        }
+    }
+
+    // useEffect(() => {
+    //     setFormElements([])
+    // }, [formElements]);
 
 
     const [t, _] = useTranslation("translation")
@@ -42,8 +45,8 @@ function FormCreate() {
                 {/* Form title */}
                 <div className='col-span-6 col-start-2 col-end-8'>
                     <div className='flex justify-end items-center'>
-                        <ReloadIcon height={20} width={20} className='absolute m-4 text-zinc-800/50 dark:text-zinc-500' />
-                        <Input className='h-20 text-3xl placeholder:text-3xl dark:placeholder:text-zinc-500  rounded-none border-0  border-b-2 dark:border-b-zinc-500 dark:bg-zinc-800/30 bg-zinc-800/5' placeholder={t("type-form-name")} />
+                        <ReloadIcon height={20} width={20} className={cn('absolute m-4 text-zinc-800/50 dark:text-zinc-500', { 'animate-spin': isPending })} />
+                        <Input onChange={onInputChange} className='h-20 text-3xl placeholder:text-3xl dark:placeholder:text-zinc-500  rounded-none border-0  border-b-2 dark:border-b-zinc-500 dark:bg-zinc-800/30 bg-zinc-800/5' placeholder={t("type-form-name")} />
                     </div>
                 </div>
                 {/* Form title end */}
@@ -51,7 +54,7 @@ function FormCreate() {
                 {/* Added Blocks */}
                 <div className='col-span-6 col-start-2 col-end-8'>
                     {
-                        formElements?.map((element: TFormElement) => {
+                        formElements?.length ? formElements?.map((element: TFormElement) => {
                             return <div className='relative grid gap-y-2 px-2 py-4 bg-zinc-400/5 dark:bg-zinc-800/10 shadow-sm rounded'>
                                 <Button className='absolute rtl:left-2 ltr:right-2 top-2' variant={"link"}>
                                     <Pencil2Icon />
@@ -84,13 +87,15 @@ function FormCreate() {
                                     }
                                 </div>
                             </div>
-                        })
+                        }) : <div>
+                            <Muted>{t("no-elements-yet")} <span className='font-bold'>{t("add-block")}</span></Muted>
+                        </div>
                     }
                 </div>
                 {/* Added Blocks end */}
 
                 {/* Add blocks button start */}
-                <div className='col-span-6 col-start-2 col-end-8 p-2'>
+                <div className='col-span-6 col-start-2 col-end-8 py-2'>
                     {/* Add new block */}
                     <div className='flex'>
                         <Button variant={"ghost"} size={"lg"} className='py-4 text-lg flex-1 border-2 border-dashed rounded-none dark:border-zinc-800/30 dark:hover:bg-foreground/5 '>

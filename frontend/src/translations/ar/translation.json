@@ -59,5 +59,6 @@
   "element-title": "عنوان العنصر",
   "field-label": "إسم الحقل",
   "field-type": "نوع الحقل",
-  "field-source": "مصدر الحقل"
+  "field-source": "مصدر الحقل",
+  "no-elements-yet": "لا يوجد عناصر حتى الآن، يمكنك إضافة عنصر بالنقر على"
 }

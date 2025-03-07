@@ -59,5 +59,6 @@
   "element-title": "Element title",
   "field-label": "Field label",
   "field-type": "Field type",
-  "field-source": "Field source"
+  "field-source": "Field source",
+  "no-elements-yet": "There's no elements yet you can add one by clicking on"
 }
