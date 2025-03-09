@@ -2,32 +2,41 @@ import { TopBar } from '@/components/global/topBar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { H4, Muted } from '@/components/ui/typography';
-import { TField, TFormElement } from '@/types/forms';
-import { Pencil2Icon, ReloadIcon } from '@radix-ui/react-icons';
+import { TField, TForm, TFormElement } from '@/types/forms';
+import { Pencil2Icon } from '@radix-ui/react-icons';
 import { createLazyFileRoute } from '@tanstack/react-router'
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useCreateForm } from '@/api/mutations';
-import { useUser } from '@/api/queries';
-import { cn } from '@/lib/utils';
+import debounce from "lodash.debounce";
 export const Route = createLazyFileRoute('/_admin/_adminLayout/forms/create')({
     component: FormCreate,
 })
 
 
 function FormCreate() {
-    const { data, isPending, mutate } = useCreateForm();
-    const { data: userData } = useUser();
+    const { data, mutate } = useCreateForm();
+    const [formElements, setFormElements] = useState<TFormElement[] | undefined>(undefined);
+    const [title, setTitle] = useState<string>("");
+    const [formId, setFormId] = useState<number>();
+    const [lastChange, setLastChange] = useState<string | undefined>(undefined);
+    const debouncedMutate = useCallback(
+        debounce((title: string, id?: number) => {
+            mutate({ title, id });
+            setLastChange(new Date().toLocaleTimeString());
 
-    const [formElements, setFormElements] = useState<TFormElement[] | null>(null);
+        }, 10000), // يؤخر التنفيذ لمدة 500 مللي ثانية
+        []
+    );
 
     const onInputChange = (e: any) => {
-        let title = e.target.value;
-        if (title && userData) {
-            let creator = userData?.id;
-
-            mutate({ title, creator })
-
+        let newTitle = e.target.value;
+        setTitle(newTitle);
+        if (newTitle) {
+            debouncedMutate(newTitle, formId);
+            if (!formId) {
+                setFormId(data?.id);
+            }
         }
     }
 
@@ -47,6 +56,7 @@ function FormCreate() {
                         <span className='w-3 h-3 rounded-full bg-green-500 absolute m-4 animate-pulse' />
                         <Input onChange={onInputChange} className='h-20 text-3xl placeholder:text-3xl dark:placeholder:text-zinc-500  rounded-none border-0  border-b-2 dark:border-b-zinc-500 dark:bg-zinc-800/30 bg-zinc-800/5' placeholder={t("type-form-name")} />
                     </div>
+                    {lastChange && <Muted>{t("form-title-last-save")} <span className='font-bold'>{lastChange}</span></Muted>}
                 </div>
                 {/* Form title end */}
 

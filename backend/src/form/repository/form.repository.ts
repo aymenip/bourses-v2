@@ -10,9 +10,15 @@ export const createForm = async (
   creator: number
 ): Promise<FormDTO> => {
   try {
-    const result = await (
-      await db
-    )
+    const dbInstance = await db;
+    if (createFormDTO.id) {
+      const updateFormDTO: UpdateFormDTO = {
+        ...createFormDTO,
+        id: createFormDTO.id,
+      };
+      return await updateForm(updateFormDTO, creator);
+    }
+    const result = await dbInstance
       .insert(forms)
       .values({ ...createFormDTO, creator })
       .execute();
@@ -32,7 +38,7 @@ export const updateForm = async (
     const dbInstance = await db;
     const result = await dbInstance
       .update(forms)
-      .set({})
+      .set({ title: updateFormDTO.title })
       .where(and(eq(forms.id, updateFormDTO.id), eq(forms.creator, creator)))
       .execute();
     const form = await getFormById(result[0].insertId);

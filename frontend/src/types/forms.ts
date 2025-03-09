@@ -8,7 +8,7 @@ export const FormSchema = z.object({
 
 export const CreateFormSchema = z.object({
   title: z.string(),
-  creator: z.number(),
+  id: z.number().optional(),
 });
 
 export const FieldSchema = z.object({

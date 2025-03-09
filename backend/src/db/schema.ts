@@ -176,7 +176,7 @@ export const forms = mysqlTable("forms", {
   id: bigint("id", { mode: "number", unsigned: true })
     .autoincrement()
     .primaryKey(),
-  title: varchar("title", { length: 1024 }),
+  title: varchar("title", { length: 1024 }).notNull(),
   creator: bigint("creator", { mode: "number", unsigned: true })
     .references(() => users.id, { onDelete: "cascade" })
     .notNull(),

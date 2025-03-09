@@ -60,5 +60,6 @@
   "field-label": "Field label",
   "field-type": "Field type",
   "field-source": "Field source",
-  "no-elements-yet": "There's no elements yet you can add one by clicking on"
+  "no-elements-yet": "There's no elements yet you can add one by clicking on",
+  "form-title-last-save": "Last change of address saved in "
 }
