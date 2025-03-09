@@ -49,10 +49,14 @@ const AdminAdminLayoutFormsIndexLazyImport = createFileRoute(
 const AdminAdminLayoutEmployeesIndexLazyImport = createFileRoute(
   '/_admin/_adminLayout/employees/',
 )()
+const AdminAdminLayoutFormsCreateLazyImport = createFileRoute(
+  '/_admin/_adminLayout/forms/create',
+)()
 
 // Create/Update Routes
 
 const UsersRoute = UsersImport.update({
+  id: '/users',
   path: '/users',
   getParentRoute: () => rootRoute,
 } as any)
@@ -63,6 +67,7 @@ const UsersUsersLayoutRoute = UsersUsersLayoutImport.update({
 } as any)
 
 const UnauthenticatedLoginRoute = UnauthenticatedLoginImport.update({
+  id: '/_unauthenticated/login',
   path: '/login',
   getParentRoute: () => rootRoute,
 } as any)
@@ -73,6 +78,7 @@ const AdminAdminLayoutRoute = AdminAdminLayoutImport.update({
 } as any)
 
 const UsersUsersLayoutIndexLazyRoute = UsersUsersLayoutIndexLazyImport.update({
+  id: '/',
   path: '/',
   getParentRoute: () => UsersUsersLayoutRoute,
 } as any).lazy(() =>
@@ -80,12 +86,14 @@ const UsersUsersLayoutIndexLazyRoute = UsersUsersLayoutIndexLazyImport.update({
 )
 
 const AdminAdminLayoutIndexRoute = AdminAdminLayoutIndexImport.update({
+  id: '/',
   path: '/',
   getParentRoute: () => AdminAdminLayoutRoute,
 } as any)
 
 const UsersUsersLayoutConferencesIndexLazyRoute =
   UsersUsersLayoutConferencesIndexLazyImport.update({
+    id: '/conferences/',
     path: '/conferences/',
     getParentRoute: () => UsersUsersLayoutRoute,
   } as any).lazy(() =>
@@ -96,6 +104,7 @@ const UsersUsersLayoutConferencesIndexLazyRoute =
 
 const UsersUsersLayoutBooksIndexLazyRoute =
   UsersUsersLayoutBooksIndexLazyImport.update({
+    id: '/books/',
     path: '/books/',
     getParentRoute: () => UsersUsersLayoutRoute,
   } as any).lazy(() =>
@@ -104,6 +113,7 @@ const UsersUsersLayoutBooksIndexLazyRoute =
 
 const UsersUsersLayoutArticlesIndexLazyRoute =
   UsersUsersLayoutArticlesIndexLazyImport.update({
+    id: '/articles/',
     path: '/articles/',
     getParentRoute: () => UsersUsersLayoutRoute,
   } as any).lazy(() =>
@@ -114,6 +124,7 @@ const UsersUsersLayoutArticlesIndexLazyRoute =
 
 const AdminAdminLayoutTeachersIndexLazyRoute =
   AdminAdminLayoutTeachersIndexLazyImport.update({
+    id: '/teachers/',
     path: '/teachers/',
     getParentRoute: () => AdminAdminLayoutRoute,
   } as any).lazy(() =>
@@ -124,6 +135,7 @@ const AdminAdminLayoutTeachersIndexLazyRoute =
 
 const AdminAdminLayoutStudentsIndexLazyRoute =
   AdminAdminLayoutStudentsIndexLazyImport.update({
+    id: '/students/',
     path: '/students/',
     getParentRoute: () => AdminAdminLayoutRoute,
   } as any).lazy(() =>
@@ -134,6 +146,7 @@ const AdminAdminLayoutStudentsIndexLazyRoute =
 
 const AdminAdminLayoutFormsIndexLazyRoute =
   AdminAdminLayoutFormsIndexLazyImport.update({
+    id: '/forms/',
     path: '/forms/',
     getParentRoute: () => AdminAdminLayoutRoute,
   } as any).lazy(() =>
@@ -144,6 +157,7 @@ const AdminAdminLayoutFormsIndexLazyRoute =
 
 const AdminAdminLayoutEmployeesIndexLazyRoute =
   AdminAdminLayoutEmployeesIndexLazyImport.update({
+    id: '/employees/',
     path: '/employees/',
     getParentRoute: () => AdminAdminLayoutRoute,
   } as any).lazy(() =>
@@ -152,8 +166,20 @@ const AdminAdminLayoutEmployeesIndexLazyRoute =
     ),
   )
 
+const AdminAdminLayoutFormsCreateLazyRoute =
+  AdminAdminLayoutFormsCreateLazyImport.update({
+    id: '/forms/create',
+    path: '/forms/create',
+    getParentRoute: () => AdminAdminLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/_admin/_adminLayout/forms/create.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 const AdminAdminLayoutTeachersIdRoute = AdminAdminLayoutTeachersIdImport.update(
   {
+    id: '/teachers/$id',
     path: '/teachers/$id',
     getParentRoute: () => AdminAdminLayoutRoute,
   } as any,
@@ -161,18 +187,21 @@ const AdminAdminLayoutTeachersIdRoute = AdminAdminLayoutTeachersIdImport.update(
 
 const AdminAdminLayoutStudentsIdRoute = AdminAdminLayoutStudentsIdImport.update(
   {
+    id: '/students/$id',
     path: '/students/$id',
     getParentRoute: () => AdminAdminLayoutRoute,
   } as any,
 )
 
 const AdminAdminLayoutFormsIdRoute = AdminAdminLayoutFormsIdImport.update({
+  id: '/forms/$id',
   path: '/forms/$id',
   getParentRoute: () => AdminAdminLayoutRoute,
 } as any)
 
 const AdminAdminLayoutEmployeesIdRoute =
   AdminAdminLayoutEmployeesIdImport.update({
+    id: '/employees/$id',
     path: '/employees/$id',
     getParentRoute: () => AdminAdminLayoutRoute,
   } as any)
@@ -251,6 +280,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminLayoutTeachersIdImport
       parentRoute: typeof AdminAdminLayoutImport
     }
+    '/_admin/_adminLayout/forms/create': {
+      id: '/_admin/_adminLayout/forms/create'
+      path: '/forms/create'
+      fullPath: '/forms/create'
+      preLoaderRoute: typeof AdminAdminLayoutFormsCreateLazyImport
+      parentRoute: typeof AdminAdminLayoutImport
+    }
     '/_admin/_adminLayout/employees/': {
       id: '/_admin/_adminLayout/employees/'
       path: '/employees'
@@ -305,28 +341,202 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({
-  AdminAdminLayoutRoute: AdminAdminLayoutRoute.addChildren({
-    AdminAdminLayoutIndexRoute,
-    AdminAdminLayoutEmployeesIdRoute,
-    AdminAdminLayoutFormsIdRoute,
-    AdminAdminLayoutStudentsIdRoute,
-    AdminAdminLayoutTeachersIdRoute,
+interface AdminAdminLayoutRouteChildren {
+  AdminAdminLayoutIndexRoute: typeof AdminAdminLayoutIndexRoute
+  AdminAdminLayoutEmployeesIdRoute: typeof AdminAdminLayoutEmployeesIdRoute
+  AdminAdminLayoutFormsIdRoute: typeof AdminAdminLayoutFormsIdRoute
+  AdminAdminLayoutStudentsIdRoute: typeof AdminAdminLayoutStudentsIdRoute
+  AdminAdminLayoutTeachersIdRoute: typeof AdminAdminLayoutTeachersIdRoute
+  AdminAdminLayoutFormsCreateLazyRoute: typeof AdminAdminLayoutFormsCreateLazyRoute
+  AdminAdminLayoutEmployeesIndexLazyRoute: typeof AdminAdminLayoutEmployeesIndexLazyRoute
+  AdminAdminLayoutFormsIndexLazyRoute: typeof AdminAdminLayoutFormsIndexLazyRoute
+  AdminAdminLayoutStudentsIndexLazyRoute: typeof AdminAdminLayoutStudentsIndexLazyRoute
+  AdminAdminLayoutTeachersIndexLazyRoute: typeof AdminAdminLayoutTeachersIndexLazyRoute
+}
+
+const AdminAdminLayoutRouteChildren: AdminAdminLayoutRouteChildren = {
+  AdminAdminLayoutIndexRoute: AdminAdminLayoutIndexRoute,
+  AdminAdminLayoutEmployeesIdRoute: AdminAdminLayoutEmployeesIdRoute,
+  AdminAdminLayoutFormsIdRoute: AdminAdminLayoutFormsIdRoute,
+  AdminAdminLayoutStudentsIdRoute: AdminAdminLayoutStudentsIdRoute,
+  AdminAdminLayoutTeachersIdRoute: AdminAdminLayoutTeachersIdRoute,
+  AdminAdminLayoutFormsCreateLazyRoute: AdminAdminLayoutFormsCreateLazyRoute,
+  AdminAdminLayoutEmployeesIndexLazyRoute:
     AdminAdminLayoutEmployeesIndexLazyRoute,
-    AdminAdminLayoutFormsIndexLazyRoute,
+  AdminAdminLayoutFormsIndexLazyRoute: AdminAdminLayoutFormsIndexLazyRoute,
+  AdminAdminLayoutStudentsIndexLazyRoute:
     AdminAdminLayoutStudentsIndexLazyRoute,
+  AdminAdminLayoutTeachersIndexLazyRoute:
     AdminAdminLayoutTeachersIndexLazyRoute,
-  }),
-  UnauthenticatedLoginRoute,
-  UsersRoute: UsersRoute.addChildren({
-    UsersUsersLayoutRoute: UsersUsersLayoutRoute.addChildren({
-      UsersUsersLayoutIndexLazyRoute,
-      UsersUsersLayoutArticlesIndexLazyRoute,
-      UsersUsersLayoutBooksIndexLazyRoute,
-      UsersUsersLayoutConferencesIndexLazyRoute,
-    }),
-  }),
-})
+}
+
+const AdminAdminLayoutRouteWithChildren =
+  AdminAdminLayoutRoute._addFileChildren(AdminAdminLayoutRouteChildren)
+
+interface UsersUsersLayoutRouteChildren {
+  UsersUsersLayoutIndexLazyRoute: typeof UsersUsersLayoutIndexLazyRoute
+  UsersUsersLayoutArticlesIndexLazyRoute: typeof UsersUsersLayoutArticlesIndexLazyRoute
+  UsersUsersLayoutBooksIndexLazyRoute: typeof UsersUsersLayoutBooksIndexLazyRoute
+  UsersUsersLayoutConferencesIndexLazyRoute: typeof UsersUsersLayoutConferencesIndexLazyRoute
+}
+
+const UsersUsersLayoutRouteChildren: UsersUsersLayoutRouteChildren = {
+  UsersUsersLayoutIndexLazyRoute: UsersUsersLayoutIndexLazyRoute,
+  UsersUsersLayoutArticlesIndexLazyRoute:
+    UsersUsersLayoutArticlesIndexLazyRoute,
+  UsersUsersLayoutBooksIndexLazyRoute: UsersUsersLayoutBooksIndexLazyRoute,
+  UsersUsersLayoutConferencesIndexLazyRoute:
+    UsersUsersLayoutConferencesIndexLazyRoute,
+}
+
+const UsersUsersLayoutRouteWithChildren =
+  UsersUsersLayoutRoute._addFileChildren(UsersUsersLayoutRouteChildren)
+
+interface UsersRouteChildren {
+  UsersUsersLayoutRoute: typeof UsersUsersLayoutRouteWithChildren
+}
+
+const UsersRouteChildren: UsersRouteChildren = {
+  UsersUsersLayoutRoute: UsersUsersLayoutRouteWithChildren,
+}
+
+const UsersRouteWithChildren = UsersRoute._addFileChildren(UsersRouteChildren)
+
+export interface FileRoutesByFullPath {
+  '': typeof AdminAdminLayoutRouteWithChildren
+  '/login': typeof UnauthenticatedLoginRoute
+  '/users': typeof UsersUsersLayoutRouteWithChildren
+  '/': typeof AdminAdminLayoutIndexRoute
+  '/users/': typeof UsersUsersLayoutIndexLazyRoute
+  '/employees/$id': typeof AdminAdminLayoutEmployeesIdRoute
+  '/forms/$id': typeof AdminAdminLayoutFormsIdRoute
+  '/students/$id': typeof AdminAdminLayoutStudentsIdRoute
+  '/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
+  '/forms/create': typeof AdminAdminLayoutFormsCreateLazyRoute
+  '/employees': typeof AdminAdminLayoutEmployeesIndexLazyRoute
+  '/forms': typeof AdminAdminLayoutFormsIndexLazyRoute
+  '/students': typeof AdminAdminLayoutStudentsIndexLazyRoute
+  '/teachers': typeof AdminAdminLayoutTeachersIndexLazyRoute
+  '/users/articles': typeof UsersUsersLayoutArticlesIndexLazyRoute
+  '/users/books': typeof UsersUsersLayoutBooksIndexLazyRoute
+  '/users/conferences': typeof UsersUsersLayoutConferencesIndexLazyRoute
+}
+
+export interface FileRoutesByTo {
+  '/login': typeof UnauthenticatedLoginRoute
+  '/users': typeof UsersUsersLayoutIndexLazyRoute
+  '/': typeof AdminAdminLayoutIndexRoute
+  '/employees/$id': typeof AdminAdminLayoutEmployeesIdRoute
+  '/forms/$id': typeof AdminAdminLayoutFormsIdRoute
+  '/students/$id': typeof AdminAdminLayoutStudentsIdRoute
+  '/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
+  '/forms/create': typeof AdminAdminLayoutFormsCreateLazyRoute
+  '/employees': typeof AdminAdminLayoutEmployeesIndexLazyRoute
+  '/forms': typeof AdminAdminLayoutFormsIndexLazyRoute
+  '/students': typeof AdminAdminLayoutStudentsIndexLazyRoute
+  '/teachers': typeof AdminAdminLayoutTeachersIndexLazyRoute
+  '/users/articles': typeof UsersUsersLayoutArticlesIndexLazyRoute
+  '/users/books': typeof UsersUsersLayoutBooksIndexLazyRoute
+  '/users/conferences': typeof UsersUsersLayoutConferencesIndexLazyRoute
+}
+
+export interface FileRoutesById {
+  __root__: typeof rootRoute
+  '/_admin/_adminLayout': typeof AdminAdminLayoutRouteWithChildren
+  '/_unauthenticated/login': typeof UnauthenticatedLoginRoute
+  '/users': typeof UsersRouteWithChildren
+  '/users/_usersLayout': typeof UsersUsersLayoutRouteWithChildren
+  '/_admin/_adminLayout/': typeof AdminAdminLayoutIndexRoute
+  '/users/_usersLayout/': typeof UsersUsersLayoutIndexLazyRoute
+  '/_admin/_adminLayout/employees/$id': typeof AdminAdminLayoutEmployeesIdRoute
+  '/_admin/_adminLayout/forms/$id': typeof AdminAdminLayoutFormsIdRoute
+  '/_admin/_adminLayout/students/$id': typeof AdminAdminLayoutStudentsIdRoute
+  '/_admin/_adminLayout/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
+  '/_admin/_adminLayout/forms/create': typeof AdminAdminLayoutFormsCreateLazyRoute
+  '/_admin/_adminLayout/employees/': typeof AdminAdminLayoutEmployeesIndexLazyRoute
+  '/_admin/_adminLayout/forms/': typeof AdminAdminLayoutFormsIndexLazyRoute
+  '/_admin/_adminLayout/students/': typeof AdminAdminLayoutStudentsIndexLazyRoute
+  '/_admin/_adminLayout/teachers/': typeof AdminAdminLayoutTeachersIndexLazyRoute
+  '/users/_usersLayout/articles/': typeof UsersUsersLayoutArticlesIndexLazyRoute
+  '/users/_usersLayout/books/': typeof UsersUsersLayoutBooksIndexLazyRoute
+  '/users/_usersLayout/conferences/': typeof UsersUsersLayoutConferencesIndexLazyRoute
+}
+
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | ''
+    | '/login'
+    | '/users'
+    | '/'
+    | '/users/'
+    | '/employees/$id'
+    | '/forms/$id'
+    | '/students/$id'
+    | '/teachers/$id'
+    | '/forms/create'
+    | '/employees'
+    | '/forms'
+    | '/students'
+    | '/teachers'
+    | '/users/articles'
+    | '/users/books'
+    | '/users/conferences'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/login'
+    | '/users'
+    | '/'
+    | '/employees/$id'
+    | '/forms/$id'
+    | '/students/$id'
+    | '/teachers/$id'
+    | '/forms/create'
+    | '/employees'
+    | '/forms'
+    | '/students'
+    | '/teachers'
+    | '/users/articles'
+    | '/users/books'
+    | '/users/conferences'
+  id:
+    | '__root__'
+    | '/_admin/_adminLayout'
+    | '/_unauthenticated/login'
+    | '/users'
+    | '/users/_usersLayout'
+    | '/_admin/_adminLayout/'
+    | '/users/_usersLayout/'
+    | '/_admin/_adminLayout/employees/$id'
+    | '/_admin/_adminLayout/forms/$id'
+    | '/_admin/_adminLayout/students/$id'
+    | '/_admin/_adminLayout/teachers/$id'
+    | '/_admin/_adminLayout/forms/create'
+    | '/_admin/_adminLayout/employees/'
+    | '/_admin/_adminLayout/forms/'
+    | '/_admin/_adminLayout/students/'
+    | '/_admin/_adminLayout/teachers/'
+    | '/users/_usersLayout/articles/'
+    | '/users/_usersLayout/books/'
+    | '/users/_usersLayout/conferences/'
+  fileRoutesById: FileRoutesById
+}
+
+export interface RootRouteChildren {
+  AdminAdminLayoutRoute: typeof AdminAdminLayoutRouteWithChildren
+  UnauthenticatedLoginRoute: typeof UnauthenticatedLoginRoute
+  UsersRoute: typeof UsersRouteWithChildren
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  AdminAdminLayoutRoute: AdminAdminLayoutRouteWithChildren,
+  UnauthenticatedLoginRoute: UnauthenticatedLoginRoute,
+  UsersRoute: UsersRouteWithChildren,
+}
+
+export const routeTree = rootRoute
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* prettier-ignore-end */
 
@@ -349,6 +559,7 @@ export const routeTree = rootRoute.addChildren({
         "/_admin/_adminLayout/forms/$id",
         "/_admin/_adminLayout/students/$id",
         "/_admin/_adminLayout/teachers/$id",
+        "/_admin/_adminLayout/forms/create",
         "/_admin/_adminLayout/employees/",
         "/_admin/_adminLayout/forms/",
         "/_admin/_adminLayout/students/",
@@ -396,6 +607,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_admin/_adminLayout/teachers/$id": {
       "filePath": "_admin/_adminLayout/teachers/$id.tsx",
+      "parent": "/_admin/_adminLayout"
+    },
+    "/_admin/_adminLayout/forms/create": {
+      "filePath": "_admin/_adminLayout/forms/create.lazy.tsx",
       "parent": "/_admin/_adminLayout"
     },
     "/_admin/_adminLayout/employees/": {

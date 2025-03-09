@@ -1,17 +1,13 @@
-import { useMutation } from "@tanstack/react-query";
-import { deleteForm, login } from ".";
-import { TLogin } from "@/types";
+import {
+    useAuth
+} from "./auth/mutations"
+import {
+    useCreateForm,
+    useDeleteForm
+} from "./forms/mutations";
 
-export function useAuth() {
-    return useMutation({
-        mutationKey: ['login'],
-        mutationFn: (data: TLogin) => login(data),
-    });
-}
-
-export function useDeleteForm() {
-    return useMutation({
-        mutationKey: ["deleteForm"],
-        mutationFn: (id: number) => deleteForm(id)
-    })
+export {
+    useAuth,
+    useCreateForm,
+    useDeleteForm
 }

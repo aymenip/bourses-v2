@@ -26,16 +26,18 @@ export const CreateForm = async (
       return res.status(400).json({ message: SW });
     }
 
+
     const form = await getFormByTitle(createFormDTO.title, creator);
 
     if (form) {
       return res.status(400).json({ message: FAE });
     }
-
+    
     const createdForm = await createForm(createFormDTO, creator);
 
     return res.status(200).json(createdForm);
   } catch (error) {
+    
     handleError(() => console.log(error));
     return res.sendStatus(400);
   }

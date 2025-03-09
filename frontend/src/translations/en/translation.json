@@ -48,5 +48,18 @@
   "selected": "selected",
   "no-results": "No results.",
   "edit": "Edit",
-  "id": "Id"
+  "id": "Id",
+  "asc": "Asc",
+  "desc": "Desc",
+  "hide": "Hide",
+  "forms/create": "Create new form",
+  "type-form-name": "Form title...",
+  "add-block": "Add new element",
+  "create-new-form": "Create new form",
+  "element-title": "Element title",
+  "field-label": "Field label",
+  "field-type": "Field type",
+  "field-source": "Field source",
+  "no-elements-yet": "There's no elements yet you can add one by clicking on",
+  "form-title-last-save": "Last change of address saved in "
 }
