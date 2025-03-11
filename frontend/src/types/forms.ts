@@ -7,8 +7,18 @@ export const FormSchema = z.object({
 });
 
 export const CreateFormSchema = z.object({
-  title: z.string(),
   id: z.number().optional(),
+  title: z.string(),
+});
+
+export const FormBlockSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+});
+
+export const CreateFormBlockSchema = z.object({
+  label: z.string(),
+  formId: z.number(),
 });
 
 export const FieldSchema = z.object({
@@ -17,12 +27,14 @@ export const FieldSchema = z.object({
   source: z.string().optional(),
 });
 
-export const FormElementSchema = z.object({
-  title: z.string(),
-  subelements: z.array(FieldSchema),
+export const FullFormBlockSchema = z.object({
+  label: z.string(),
+  subfields: z.array(FieldSchema).optional(),
 });
 
 export type TForm = z.infer<typeof FormSchema>;
 export type TCreateForm = z.infer<typeof CreateFormSchema>;
+export type TFormBlock = z.infer<typeof FormBlockSchema>;
+export type TCreateFormBlock = z.infer<typeof CreateFormBlockSchema>;
 export type TField = z.infer<typeof FieldSchema>;
-export type TFormElement = z.infer<typeof FormElementSchema>;
+export type TFullFormBlock = z.infer<typeof FullFormBlockSchema>;
