@@ -13,7 +13,7 @@ export const CreateFormSchema = z.object({
 
 export const FormBlockSchema = z.object({
   id: z.number(),
-  title: z.string(),
+  label: z.string(),
 });
 
 export const CreateFormBlockSchema = z.object({

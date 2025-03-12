@@ -2,16 +2,15 @@ import { TopBar } from '@/components/global/topBar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { H4, Muted } from '@/components/ui/typography';
-import { TField, TFormBlock, TFullFormBlock } from '@/types/forms';
+import { TField, TFullFormBlock } from '@/types/forms';
 import { Pencil2Icon } from '@radix-ui/react-icons';
 import { createLazyFileRoute } from '@tanstack/react-router'
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useCreateForm } from '@/api/mutations';
 import debounce from "lodash.debounce";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/global/label';
-import { cn } from '@/lib/utils';
 import { useCreateFormBlock } from '@/api/forms/mutations';
 export const Route = createLazyFileRoute('/_admin/_adminLayout/forms/create')({
     component: FormCreate,
@@ -19,35 +18,49 @@ export const Route = createLazyFileRoute('/_admin/_adminLayout/forms/create')({
 
 
 function FormCreate() {
-    const { data, mutate } = useCreateForm();
-    const { mutate: createFormBlock } = useCreateFormBlock()
-    const [formBlocks, setFormBlocks] = useState<TFullFormBlock[] | undefined>(undefined);
+    const { data: createdForm, mutate: createForm } = useCreateForm();
+    const { data: createdFormBlock, mutate: createFormBlock } = useCreateFormBlock()
+    const [formBlocks, setFormBlocks] = useState<TFullFormBlock[]>();
     const [title, setTitle] = useState<string>("");
     const [FormBlockTitle, setFormBlockTitle] = useState<string>("");
     const [formId, setFormId] = useState<number>();
     const [lastChange, setLastChange] = useState<string | undefined>(undefined);
-    const debouncedMutate = useCallback(
+
+
+
+    // Update formId when createdForm changes
+    useEffect(() => {
+        if (createdForm?.id && !formId) {
+            setFormId(createdForm.id);
+        }
+    }, [createdForm, formId]);
+
+    const debouncedCreateForm = useCallback(
         debounce((title: string, id?: number) => {
-            mutate({ title, id });
+            createForm({ title, id });
             setLastChange(new Date().toLocaleTimeString());
 
-        }, 10000), // يؤخر التنفيذ لمدة 500 مللي ثانية
-        []
+        }, 10000),
+        [createForm] // Only depend on createForm function
     );
 
-    const onInputChange = async (e: any) => {
-        let newTitle = e.target.value;
+    const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newTitle = e.target.value;
         setTitle(newTitle);
         if (newTitle) {
-            debouncedMutate(newTitle, formId);
-            if (!formId) {
-                setFormId(data?.id);
-            }
+            debouncedCreateForm(newTitle, formId);
         }
-    }
+    };
+
+
+
+    useEffect(() => {
+        if (createdFormBlock?.id) {
+            setFormBlocks((prev) => [...(prev || []), createdFormBlock]);
+        }
+    }, [createdFormBlock]);
 
     const addFormBlock = () => {
-        console.log(formId);
         createFormBlock({ formId: formId!, label: FormBlockTitle });
     }
 
@@ -69,10 +82,10 @@ function FormCreate() {
                 {/* Form title end */}
 
                 {/* Added Blocks */}
-                <div className='col-span-6 col-start-2 col-end-8'>
+                <div className='col-span-6 col-start-2 col-end-8 '>
                     {
                         formBlocks?.length ? formBlocks?.map((block: TFullFormBlock) => {
-                            return <div className='relative grid gap-y-2 px-2 py-4 bg-zinc-400/5 dark:bg-zinc-800/10 shadow-sm rounded'>
+                            return <div className='relative mt-2 grid gap-y-2 px-2 py-4 bg-zinc-400/5 dark:bg-zinc-800/10 shadow-sm rounded'>
                                 <Button className='absolute rtl:left-2 ltr:right-2 top-2' variant={"link"}>
                                     <Pencil2Icon />
                                 </Button>
@@ -112,42 +125,44 @@ function FormCreate() {
                 {/* Added Blocks end */}
 
                 {/* Add blocks button start */}
-                <div className={cn("col-span-6 col-start-2 col-end-8 py-2", { "hidden": !title })}>
-                    {/* Add new block */}
-                    <div className='flex'>
-                        <form>
-                            <Dialog>
-                                <DialogTrigger asChild>
-                                    <Button variant={"ghost"} size={"lg"} className='py-4 text-lg flex-1 border-2 border-dashed rounded-none dark:border-zinc-800/30 dark:hover:bg-foreground/5 '>
-                                        {t("add-new-block")}
-                                    </Button>
-                                </DialogTrigger>
-                                <DialogContent className="sm:max-w-[425px]" dir={i18n.dir()}>
-                                    <DialogHeader dir={i18n.dir()}>
-                                        <DialogTitle dir={i18n.dir()}>{t("add-new-block")}</DialogTitle>
-                                        <DialogDescription dir={i18n.dir()}>
-                                            <span className='font-bold'>{title}</span>
-                                        </DialogDescription>
-                                    </DialogHeader>
-                                    <div className="grid gap-4 py-4">
-                                        <div className="grid grid-cols-4 items-center gap-4">
-                                            <Label htmlFor="block-title" className="text-right">
-                                                {t("title")}
-                                            </Label>
-                                            <Input onChange={(e) => setFormBlockTitle(e.target.value)} required id="block-title" placeholder={t("block-title")} className="col-span-3" />
-                                        </div>
-
-                                    </div>
-                                    <DialogFooter>
-                                        <Button onClick={() => addFormBlock()} type="submit">
-                                            {t("add")}
+                {
+                    createdForm && title && <div className="col-span-6 col-start-2 col-end-8 py-2">
+                        {/* Add new block */}
+                        <div className='flex '>
+                            <form className='flex-1'>
+                                <Dialog>
+                                    <DialogTrigger asChild className='w-full'>
+                                        <Button variant={"ghost"} size={"lg"} className='py-4 text-lg flex-1 border-2 border-dashed rounded-none dark:border-zinc-800/30 dark:hover:bg-foreground/5 '>
+                                            {t("add-new-block")}
                                         </Button>
-                                    </DialogFooter>
-                                </DialogContent>
-                            </Dialog>
-                        </form>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-[425px]" dir={i18n.dir()}>
+                                        <DialogHeader dir={i18n.dir()}>
+                                            <DialogTitle dir={i18n.dir()}>{t("add-new-block")}</DialogTitle>
+                                            <DialogDescription dir={i18n.dir()}>
+                                                <span className='font-bold'>{title}</span>
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <div className="grid gap-4 py-4">
+                                            <div className="grid grid-cols-4 items-center gap-4">
+                                                <Label htmlFor="block-title" className="text-right">
+                                                    {t("title")}
+                                                </Label>
+                                                <Input onChange={(e) => setFormBlockTitle(e.target.value)} required id="block-title" placeholder={t("block-title")} className="col-span-3" />
+                                            </div>
+
+                                        </div>
+                                        <DialogFooter>
+                                            <Button onClick={() => addFormBlock()} type="submit">
+                                                {t("add")}
+                                            </Button>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+                            </form>
+                        </div>
                     </div>
-                </div>
+                }
                 {/* Add blocks button end */}
             </div>
         </div>
