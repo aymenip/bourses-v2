@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { H4, Muted } from '@/components/ui/typography';
 import { TField, TFullFormBlock } from '@/types/forms';
-import { Pencil2Icon } from '@radix-ui/react-icons';
+import { Pencil2Icon, PlusCircledIcon } from '@radix-ui/react-icons';
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next'
@@ -55,11 +55,12 @@ function FormCreate() {
 
 
     useEffect(() => {
-        if (createdFormBlock?.id) {
+        if (createdFormBlock?.id && createdFormBlock?.id != -1) {
             setFormBlocks((prev) => [...(prev || []), createdFormBlock]);
+            // Reset createdFormBlock after adding it
+            createdFormBlock.id = -1; // Assuming you have this setter available
         }
     }, [createdFormBlock]);
-
     const addFormBlock = () => {
         createFormBlock({ formId: formId!, label: FormBlockTitle });
     }
@@ -94,6 +95,12 @@ function FormCreate() {
                                     <H4>{block.label}</H4>
                                 </div>
                                 <div className='col-span-3 grid gap-y-4'>
+                                    <div className='flex-1 text-center'>
+                                        <Button className='gap-x-1' variant={"link"} dir={i18n.dir()}>
+                                            {t("add-field")}
+                                            <PlusCircledIcon />
+                                        </Button>
+                                    </div>
                                     {
                                         block.subfields?.map((subfield: TField) => {
                                             return <div className='grid grid-cols-3 '>

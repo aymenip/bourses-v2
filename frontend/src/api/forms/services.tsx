@@ -60,7 +60,6 @@ export async function deleteForm(id: number): Promise<void> {
 
 export async function createAFormBlock(createFormBlock: TCreateFormBlock): Promise<TFormBlock> {
     const token = authenticationContext().token;
-    console.log(createFormBlock)
     if (!token) {
         throw new Error();
     }

@@ -62,5 +62,6 @@
   "form-title-last-save": "Last change of title saved in ",
   "add-new-block": "Add new block",
   "block-title": "Block title",
-  "add": "Add"
+  "add": "Add",
+  "add-field": "Add field"
 }
