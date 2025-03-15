@@ -4,7 +4,7 @@ import { TField, TFullFormBlock } from '@/types/forms';
 import { Pencil2Icon, PlusCircledIcon } from '@radix-ui/react-icons';
 import React from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Label } from '@/components/global/label';
+import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useTranslation } from 'react-i18next';
 

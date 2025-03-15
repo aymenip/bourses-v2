@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Label } from '@/components/global/label';
+import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
