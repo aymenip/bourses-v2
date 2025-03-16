@@ -1,7 +1,7 @@
 import { TCreateForm, TForm } from "@/types";
 import { axiosInstance } from ".."
 import { authenticationContext } from "../auth/services";
-import { TCreateFormBlock, TFormBlock } from "@/types/forms";
+import { TCreateFormBlock, TField, TFormBlock } from "@/types/forms";
 
 export async function forms(): Promise<TForm[]> {
     const token = authenticationContext().token;
@@ -64,6 +64,19 @@ export async function createAFormBlock(createFormBlock: TCreateFormBlock): Promi
         throw new Error();
     }
     const response = await axiosInstance.post<TFormBlock>("field/create", createFormBlock, {
+        headers: {
+            Authorization: token,
+        },
+    });
+    return response.data;
+}
+
+export async function createField(field: TField): Promise<TField> {
+    const token = authenticationContext().token;
+    if (!token) {
+        throw new Error();
+    }
+    const response = await axiosInstance.post<TField>(`field/${field.type}/create`, field, {
         headers: {
             Authorization: token,
         },

@@ -1,12 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { H4, Muted } from '@/components/ui/typography';
 import { TField, TFullFormBlock } from '@/types/forms';
-import { Pencil2Icon, PlusCircledIcon } from '@radix-ui/react-icons';
+import { Pencil2Icon } from '@radix-ui/react-icons';
 import React from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import { useTranslation } from 'react-i18next';
+import { AddNewFieldButton } from '@/components/forms/create-forms'
 
 interface FormBlocksListProps {
     formBlocks?: TFullFormBlock[];
@@ -37,38 +35,7 @@ export const FormBlocksList: React.FC<FormBlocksListProps> = ({
                         </div>
                         <div className='col-span-3 grid gap-y-4'>
                             <div className='flex-1 text-center'>
-                                <Dialog>
-                                    <DialogTrigger>
-                                        <Button className='gap-x-1' variant={"link"} dir={i18n.dir()}>
-                                            {t("add-field")}
-                                            <PlusCircledIcon />
-                                        </Button>
-                                    </DialogTrigger>
-                                    <DialogContent className="sm:max-w-[425px]" dir={i18n.dir()}>
-                                        <DialogHeader dir={i18n.dir()}>
-                                            <DialogTitle dir={i18n.dir()}>{t("add-new-field")}</DialogTitle>
-                                            <DialogDescription dir={i18n.dir()}>
-                                                <div className='font-bold'>
-                                                    <div>{title}</div>
-                                                    <div>{block.label}</div>
-                                                </div>
-                                            </DialogDescription>
-                                        </DialogHeader>
-                                        <div className="grid gap-4 py-4">
-                                            <form className="grid grid-cols-4 items-center gap-4 ">
-                                                <Label htmlFor="field-label" className="text-right">
-                                                    {t("field-label")}
-                                                </Label>
-                                                <Input onChange={(e) => setFormBlockTitle(e.target.value)} required id="field-label" placeholder={t("field-label")} className="col-span-3" />
-                                            </form>
-                                        </div>
-                                        <DialogFooter>
-                                            <Button onClick={() => addFormBlock()} type="submit">
-                                                {t("add")}
-                                            </Button>
-                                        </DialogFooter>
-                                    </DialogContent>
-                                </Dialog>
+                                <AddNewFieldButton title={title} block = {block}/>
                             </div>
                             {block.subfields?.map((subfield: TField) => (
                                 <div key={subfield.label} className='grid grid-cols-3'>

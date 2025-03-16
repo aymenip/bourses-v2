@@ -22,8 +22,8 @@ export const CreateFormBlockSchema = z.object({
 });
 
 export const FieldSchema = z.object({
-  label: z.string(),
-  type: z.string(),
+  label: z.string().min(8, "at-least-8"),
+  type: z.enum(["typed", "sourceable"]),
   source: z.string().optional(),
 });
 

@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { createAForm, deleteForm, createAFormBlock } from "./services";
+import { createAForm, deleteForm, createAFormBlock, createField } from "./services";
 import { TCreateForm } from "@/types";
-import { TCreateFormBlock } from "@/types/forms";
+import { TCreateFormBlock, TField } from "@/types/forms";
 
 
 
@@ -23,5 +23,13 @@ export function useDeleteForm() {
     return useMutation({
         mutationKey: ["deleteForm"],
         mutationFn: (id: number) => deleteForm(id)
+    })
+}
+
+
+export function useCreateField() {
+    return useMutation({
+        mutationKey: ['createField'],
+        mutationFn: (field: TField) => createField(field)
     })
 }
