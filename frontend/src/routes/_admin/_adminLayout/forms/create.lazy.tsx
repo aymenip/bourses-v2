@@ -1,31 +1,35 @@
-import { TopBar } from '@/components/global/topBar'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { TopBar } from '@/components/global/topBar';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { H4, Muted } from '@/components/ui/typography';
-import { TField, TForm, TFormElement } from '@/types/forms';
-import { Pencil2Icon } from '@radix-ui/react-icons';
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { TField, TFormElement } from '@/types/forms';
+import { Pencil2Icon, TrashIcon } from '@radix-ui/react-icons';
+import { createLazyFileRoute } from '@tanstack/react-router';
 import { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 import { useCreateForm } from '@/api/mutations';
 import debounce from "lodash.debounce";
+
 export const Route = createLazyFileRoute('/_admin/_adminLayout/forms/create')({
     component: FormCreate,
-})
-
+});
 
 function FormCreate() {
     const { data, mutate } = useCreateForm();
-    const [formElements, setFormElements] = useState<TFormElement[] | undefined>(undefined);
+    const [formElements, setFormElements] = useState<TFormElement[]>([]);
     const [title, setTitle] = useState<string>("");
     const [formId, setFormId] = useState<number>();
     const [lastChange, setLastChange] = useState<string | undefined>(undefined);
+    const [newFieldName, setNewFieldName] = useState<string>("");
+    const [newFieldType, setNewFieldType] = useState<string>("text");
+    const [editingElement, setEditingElement] = useState<number | null>(null);
+    const [editedTitle, setEditedTitle] = useState<string>("");
+
     const debouncedMutate = useCallback(
         debounce((title: string, id?: number) => {
             mutate({ title, id });
             setLastChange(new Date().toLocaleTimeString());
-
-        }, 10000), // يؤخر التنفيذ لمدة 500 مللي ثانية
+        }, 10000),
         []
     );
 
@@ -38,82 +42,119 @@ function FormCreate() {
                 setFormId(data?.id);
             }
         }
-    }
+    };
 
-    // useEffect(() => {
-    //     setFormElements([])
-    // }, [formElements]);
+    const addNewElement = () => {
+        if (!newFieldName.trim()) return;
 
+        const newElement: TFormElement = {
+            id: Date.now(),
+            title: newFieldName,
+            subelements: [{ label: newFieldName, type: newFieldType }]
+        };
 
-    const [t, _] = useTranslation("translation")
-    return <div className='content-container'>
-        <TopBar page_name='forms/create' />
-        <div className='px-2 pt-6 grid grid-cols-8'>
-            <div className='grid grid-cols-8 col-span-8 gap-y-8'>
-                {/* Form title */}
-                <div className='col-span-6 col-start-2 col-end-8'>
-                    <div className='flex justify-end items-center'>
-                        <span className='w-3 h-3 rounded-full bg-green-500 absolute m-4 animate-pulse' />
-                        <Input onChange={onInputChange} className='h-20 text-3xl placeholder:text-3xl dark:placeholder:text-zinc-500  rounded-none border-0  border-b-2 dark:border-b-zinc-500 dark:bg-zinc-800/30 bg-zinc-800/5' placeholder={t("type-form-name")} />
+        setFormElements(prevElements => [...prevElements, newElement]);
+        setNewFieldName("");
+        setNewFieldType("text");
+    };
+
+    const removeElement = (id: number) => {
+        setFormElements(prevElements => prevElements.filter(el => el.id !== id));
+    };
+
+    const startEditing = (id: number, title: string) => {
+        setEditingElement(id);
+        setEditedTitle(title);
+    };
+
+    const saveEdit = (id: number) => {
+        setFormElements(prevElements =>
+            prevElements.map(el => el.id === id ? { ...el, title: editedTitle } : el)
+        );
+        setEditingElement(null);
+    };
+
+    const [t] = useTranslation("translation");
+
+    return (
+        <div className='content-container'>
+            <TopBar page_name='forms/create' />
+            <div className='px-2 pt-6 grid grid-cols-8'>
+                <div className='grid grid-cols-8 col-span-8 gap-y-8'>
+
+                    <div className='col-span-6 col-start-2 col-end-8'>
+                        <div className='flex justify-end items-center'>
+                            <span className='w-3 h-3 rounded-full bg-green-500 absolute m-4 animate-pulse' />
+                            <Input 
+                                onChange={onInputChange} 
+                                className='h-20 text-3xl placeholder:text-3xl dark:placeholder:text-zinc-500 rounded-none border-0 border-b-2 dark:border-b-zinc-500 dark:bg-zinc-800/30 bg-zinc-800/5' 
+                                placeholder={t("type-form-name")} 
+                            />
+                        </div>
+                        {lastChange && <Muted>{t("form-title-last-save")} <span className='font-bold'>{lastChange}</span></Muted>}
                     </div>
-                    {lastChange && <Muted>{t("form-title-last-save")} <span className='font-bold'>{lastChange}</span></Muted>}
-                </div>
-                {/* Form title end */}
 
-                {/* Added Blocks */}
-                <div className='col-span-6 col-start-2 col-end-8'>
-                    {
-                        formElements?.length ? formElements?.map((element: TFormElement) => {
-                            return <div className='relative grid gap-y-2 px-2 py-4 bg-zinc-400/5 dark:bg-zinc-800/10 shadow-sm rounded'>
-                                <Button className='absolute rtl:left-2 ltr:right-2 top-2' variant={"link"}>
-                                    <Pencil2Icon />
-                                </Button>
-                                <div>
-                                    <Muted>{t("element-title")}</Muted>
-                                    <H4>{element.title}</H4>
-                                </div>
-                                <div className='col-span-3 grid gap-y-4'>
-                                    {
-                                        element.subelements?.map((subelement: TField) => {
-                                            return <div className='grid grid-cols-3 '>
-                                                <div>
-                                                    <Muted>{t("field-label")}</Muted>
-                                                    <p>{subelement.label}</p>
-                                                </div>
-                                                <div>
-                                                    <Muted>{t("field-type")}</Muted>
-                                                    <p>{subelement.type}</p>
-                                                </div>
-                                                {
-                                                    subelement.source && <div>
-                                                        <Muted>{t("field-source")}</Muted>
-                                                        <p>{subelement.source}</p>
-                                                    </div>
-                                                }
-
-                                            </div>
-                                        })
-                                    }
+                    <div className='col-span-6 col-start-2 col-end-8'>
+                        {formElements.length ? formElements.map((element) => (
+                            <div key={element.id} className='relative grid gap-y-2 px-2 py-4 bg-zinc-400/5 dark:bg-zinc-800/10 shadow-sm rounded'>
+                                <div className='flex justify-between items-center'>
+                                    <div>
+                                        {editingElement === element.id ? (
+                                            <Input value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
+                                        ) : (
+                                            <H4>{element.title}</H4>
+                                        )}
+                                        <Muted>{t("element-title")}</Muted>
+                                    </div>
+                                    <div className='flex gap-2'>
+                                        {editingElement === element.id ? (
+                                            <Button variant="link" onClick={() => saveEdit(element.id)}>
+                                                💾
+                                            </Button>
+                                        ) : (
+                                            <Button variant="link" onClick={() => startEditing(element.id, element.title)}>
+                                                <Pencil2Icon />
+                                            </Button>
+                                        )}
+                                        <Button variant="link" onClick={() => removeElement(element.id)}>
+                                            <TrashIcon />
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
-                        }) : <div>
-                            <Muted>{t("no-elements-yet")} <span className='font-bold'>{t("add-block")}</span></Muted>
-                        </div>
-                    }
-                </div>
-                {/* Added Blocks end */}
+                        )) : (
+                            <div>
+                                <Muted>{t("no-elements-yet")} <span className='font-bold'>{t("add-block")}</span></Muted>
+                            </div>
+                        )}
+                    </div>
 
-                {/* Add blocks button start */}
-                <div className='col-span-6 col-start-2 col-end-8 py-2'>
-                    {/* Add new block */}
-                    <div className='flex'>
-                        <Button variant={"ghost"} size={"lg"} className='py-4 text-lg flex-1 border-2 border-dashed rounded-none dark:border-zinc-800/30 dark:hover:bg-foreground/5 '>
-                            {t("add-block")}
-                        </Button>
+                    <div className='col-span-6 col-start-2 col-end-8 py-2'>
+                        <div className='grid grid-cols-3 gap-4'>
+                            <Input 
+                                value={newFieldName} 
+                                onChange={(e) => setNewFieldName(e.target.value)}
+                                placeholder={t("enter-field-name")} 
+                                className='border dark:border-zinc-800/30'
+                            />
+                            <select 
+                                value={newFieldType} 
+                                onChange={(e) => setNewFieldType(e.target.value)} 
+                                className='border p-2 rounded dark:border-zinc-800/30 dark:bg-zinc-800 text-black dark:text-white'
+                            >
+                                <option value="text">{t("text")}</option>
+                                <option value="number">{t("number")}</option>
+                                <option value="email">{t("email")}</option>
+                                <option value="date">{t("date")}</option>
+                                <option value="password">{t("password")}</option>
+                            </select>
+                            <Button onClick={addNewElement} variant="ghost" size="lg" className='border-2 border-dashed rounded-none dark:border-zinc-800/30 dark:hover:bg-foreground/5'>
+                                {t("add-new-element")}
+                            </Button>
+                        </div>
                     </div>
                 </div>
-                {/* Add blocks button end */}
             </div>
         </div>
-    </div>
-} 
+    );
+}
