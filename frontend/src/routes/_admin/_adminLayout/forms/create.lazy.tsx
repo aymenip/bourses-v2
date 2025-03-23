@@ -15,7 +15,7 @@ export const Route = createLazyFileRoute('/_admin/_adminLayout/forms/create')({
 });
 
 function FormCreate() {
-    const { data, mutate } = useCreateForm();
+    const { mutate } = useCreateForm();
     const [formElements, setFormElements] = useState<TFormElement[]>([]);
     const [title, setTitle] = useState<string>("");
     const [formId, setFormId] = useState<number>();
@@ -27,20 +27,21 @@ function FormCreate() {
 
     const debouncedMutate = useCallback(
         debounce((title: string, id?: number) => {
-            mutate({ title, id });
-            setLastChange(new Date().toLocaleTimeString());
+            try {
+                mutate({ title, id });
+                setLastChange(new Date().toLocaleTimeString());
+            } catch (error) {
+                console.error("Failed to save form:", error);
+            }
         }, 10000),
         []
     );
 
-    const onInputChange = (e: any) => {
-        let newTitle = e.target.value;
+    const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newTitle = e.target.value;
         setTitle(newTitle);
         if (newTitle) {
             debouncedMutate(newTitle, formId);
-            if (!formId) {
-                setFormId(data?.id);
-            }
         }
     };
 
@@ -82,6 +83,7 @@ function FormCreate() {
             <div className='px-2 pt-6 grid grid-cols-8'>
                 <div className='grid grid-cols-8 col-span-8 gap-y-8'>
 
+                    {/* Title Input */}
                     <div className='col-span-6 col-start-2 col-end-8'>
                         <div className='flex justify-end items-center'>
                             <span className='w-3 h-3 rounded-full bg-green-500 absolute m-4 animate-pulse' />
@@ -94,6 +96,7 @@ function FormCreate() {
                         {lastChange && <Muted>{t("form-title-last-save")} <span className='font-bold'>{lastChange}</span></Muted>}
                     </div>
 
+                    {/* Form Elements */}
                     <div className='col-span-6 col-start-2 col-end-8'>
                         {formElements.length ? formElements.map((element) => (
                             <div key={element.id} className='relative grid gap-y-2 px-2 py-4 bg-zinc-400/5 dark:bg-zinc-800/10 shadow-sm rounded'>
@@ -129,6 +132,7 @@ function FormCreate() {
                         )}
                     </div>
 
+                    {/* Add New Element */}
                     <div className='col-span-6 col-start-2 col-end-8 py-2'>
                         <div className='grid grid-cols-3 gap-4'>
                             <Input 
