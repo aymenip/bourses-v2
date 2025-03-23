@@ -25,6 +25,9 @@ function FormCreate() {
     const [editingElement, setEditingElement] = useState<number | null>(null);
     const [editedTitle, setEditedTitle] = useState<string>("");
 
+    // Placeholder message for the field name input
+    const [placeholderMessage, setPlaceholderMessage] = useState<string>("");
+
     const debouncedMutate = useCallback(
         debounce((title: string, id?: number) => {
             try {
@@ -76,6 +79,32 @@ function FormCreate() {
     };
 
     const [t] = useTranslation("translation");
+
+    // Update placeholder message dynamically based on field type
+    const updatePlaceholderMessage = (type: string) => {
+        switch (type) {
+            case "text":
+                setPlaceholderMessage(t("enter-text-field-name"));
+                break;
+            case "number":
+                setPlaceholderMessage(t("enter-number-field-name"));
+                break;
+            case "email":
+                setPlaceholderMessage(t("enter-email-field-name"));
+                break;
+            case "date":
+                setPlaceholderMessage(t("enter-date-field-name"));
+                break;
+            default:
+                setPlaceholderMessage(t("enter-field-name"));
+        }
+    };
+
+    const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedType = e.target.value;
+        setNewFieldType(selectedType);
+        updatePlaceholderMessage(selectedType);
+    };
 
     return (
         <div className='content-container'>
@@ -138,19 +167,18 @@ function FormCreate() {
                             <Input 
                                 value={newFieldName} 
                                 onChange={(e) => setNewFieldName(e.target.value)}
-                                placeholder={t("enter-field-name")} 
+                                placeholder={placeholderMessage || t("enter-field-name")} 
                                 className='border dark:border-zinc-800/30'
                             />
                             <select 
                                 value={newFieldType} 
-                                onChange={(e) => setNewFieldType(e.target.value)} 
+                                onChange={handleTypeChange} 
                                 className='border p-2 rounded dark:border-zinc-800/30 dark:bg-zinc-800 text-black dark:text-white'
                             >
                                 <option value="text">{t("text")}</option>
                                 <option value="number">{t("number")}</option>
                                 <option value="email">{t("email")}</option>
                                 <option value="date">{t("date")}</option>
-                                <option value="password">{t("password")}</option>
                             </select>
                             <Button onClick={addNewElement} variant="ghost" size="lg" className='border-2 border-dashed rounded-none dark:border-zinc-800/30 dark:hover:bg-foreground/5'>
                                 {t("add-new-element")}
