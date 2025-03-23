@@ -24,6 +24,7 @@ function FormCreate() {
     const [newFieldType, setNewFieldType] = useState<string>("text");
     const [editingElement, setEditingElement] = useState<number | null>(null);
     const [editedTitle, setEditedTitle] = useState<string>("");
+    const [newFieldDate, setNewFieldDate] = useState<string>("");
 
     // Placeholder message for the field name input
     const [placeholderMessage, setPlaceholderMessage] = useState<string>("");
@@ -54,12 +55,13 @@ function FormCreate() {
         const newElement: TFormElement = {
             id: Date.now(),
             title: newFieldName,
-            subelements: [{ label: newFieldName, type: newFieldType }]
+            subelements: [{ label: newFieldName, type: newFieldType, value: newFieldType === "date" ? newFieldDate : "" }]
         };
 
         setFormElements(prevElements => [...prevElements, newElement]);
         setNewFieldName("");
         setNewFieldType("text");
+        setNewFieldDate(""); // Reset date field after adding
     };
 
     const removeElement = (id: number) => {
@@ -164,15 +166,24 @@ function FormCreate() {
                     {/* Add New Element */}
                     <div className='col-span-6 col-start-2 col-end-8 py-2'>
                         <div className='grid grid-cols-3 gap-4'>
-                            <Input 
-                                value={newFieldName} 
-                                onChange={(e) => setNewFieldName(e.target.value)}
-                                placeholder={placeholderMessage || t("enter-field-name")} 
-                                className='border dark:border-zinc-800/30'
-                            />
-                            <select 
-                                value={newFieldType} 
-                                onChange={handleTypeChange} 
+                            {newFieldType === "date" ? (
+                                <input
+                                    type="date"
+                                    value={newFieldDate}
+                                    onChange={(e) => setNewFieldDate(e.target.value)}
+                                    className='border p-2 rounded dark:border-zinc-800/30 dark:bg-zinc-800 text-black dark:text-white'
+                                />
+                            ) : (
+                                <Input
+                                    value={newFieldName}
+                                    onChange={(e) => setNewFieldName(e.target.value)}
+                                    placeholder={placeholderMessage || t("enter-field-name")}
+                                    className='border dark:border-zinc-800/30'
+                                />
+                            )}
+                            <select
+                                value={newFieldType}
+                                onChange={handleTypeChange}
                                 className='border p-2 rounded dark:border-zinc-800/30 dark:bg-zinc-800 text-black dark:text-white'
                             >
                                 <option value="text">{t("text")}</option>
