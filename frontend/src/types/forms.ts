@@ -14,6 +14,7 @@ export const CreateFormSchema = z.object({
 export const FormBlockSchema = z.object({
   id: z.number(),
   label: z.string(),
+  formId: z.number(),
 });
 
 export const CreateFormBlockSchema = z.object({
@@ -21,20 +22,46 @@ export const CreateFormBlockSchema = z.object({
   formId: z.number(),
 });
 
-export const FieldSchema = z.object({
-  label: z.string().min(8, "at-least-8"),
-  type: z.enum(["typed", "sourceable"]),
-  source: z.string().optional(),
+export const TypedFieldSchema = z.object({
+  id: z.number(),
+  type: z.enum(["text", "date", "number", "url", "email"], {
+    required_error: "required-input",
+  }),
+  points: z.number({ required_error: "required-input" }).default(0),
+  label: z.string({ required_error: "required-input" }),
+  blockId: z.number(),
+});
+
+export const SourceableFieldSchema = z.object({
+  id: z.number(),
+  type: z.enum(["certificate", "book", "article", "conference"], {
+    required_error: "required-input",
+  }),
+  points: z.number({ required_error: "required-input" }).default(0),
+  label: z.string({ required_error: "required-input" }),
+  blockId: z.number(),
 });
 
 export const FullFormBlockSchema = z.object({
+  id: z.number(),
   label: z.string(),
-  subfields: z.array(FieldSchema).optional(),
+  formId: z.number(),
+  fields: z.array(z.union([TypedFieldSchema, SourceableFieldSchema])),
+});
+
+export const FullFormSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  creator: z.number(),
+  blocks: z.array(FullFormBlockSchema).optional(),
 });
 
 export type TForm = z.infer<typeof FormSchema>;
 export type TCreateForm = z.infer<typeof CreateFormSchema>;
 export type TFormBlock = z.infer<typeof FormBlockSchema>;
 export type TCreateFormBlock = z.infer<typeof CreateFormBlockSchema>;
-export type TField = z.infer<typeof FieldSchema>;
+export type TTypedField = z.infer<typeof TypedFieldSchema>;
+export type TSourceableField = z.infer<typeof SourceableFieldSchema>;
 export type TFullFormBlock = z.infer<typeof FullFormBlockSchema>;
+export type TFullForm = z.infer<typeof FullFormSchema>;
+export type TField = TTypedField | TSourceableField;

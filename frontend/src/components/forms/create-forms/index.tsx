@@ -1,8 +1,10 @@
 import { FormTitleInput } from "./FormTitleInput";
 import { FormBlocksList } from "./FormBlocksList";
-import { AddNewFieldButton } from "./AddNewFieldButton"
+import { AddNewTypedFieldButton } from "./AddNewFieldButton"
+import { AddNewSourceableFieldButton } from "./AddNewSourceableFieldButton"
 export {
     FormTitleInput,
     FormBlocksList,
-    AddNewFieldButton
+    AddNewTypedFieldButton,
+    AddNewSourceableFieldButton
 }

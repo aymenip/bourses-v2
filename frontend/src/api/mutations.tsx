@@ -4,12 +4,12 @@ import {
 import {
     useCreateForm,
     useDeleteForm,
-    useCreateField
+    useCreateTypedField
 } from "./forms/mutations";
 
 export {
     useAuth,
     useCreateForm,
     useDeleteForm,
-    useCreateField
+    useCreateTypedField
 }

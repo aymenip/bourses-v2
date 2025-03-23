@@ -4,28 +4,22 @@ import { TField, TFullFormBlock } from '@/types/forms';
 import { Pencil2Icon } from '@radix-ui/react-icons';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { AddNewFieldButton } from '@/components/forms/create-forms'
+import { AddNewTypedFieldButton, AddNewSourceableFieldButton } from '@/components/forms/create-forms'
+import { useFormStore } from '@/store/formStore';
 
 interface FormBlocksListProps {
-    formBlocks?: TFullFormBlock[];
-    title: string;
-    setFormBlockTitle: (title: string) => void;
-    addFormBlock: () => void;
 }
 
-export const FormBlocksList: React.FC<FormBlocksListProps> = ({
-    formBlocks,
-    title,
-    setFormBlockTitle,
-    addFormBlock,
-}) => {
+export const FormBlocksList: React.FC<FormBlocksListProps> = () => {
 
-    const [t, i18n] = useTranslation("translation")
+    const [t, i18n] = useTranslation("translation");
+    const currentForm = useFormStore((state) => state.currentForm);
+
     return (
         <>
-            {formBlocks?.length ? (
-                formBlocks.map((block: TFullFormBlock) => (
-                    <div key={block.label} className='relative mt-2 grid gap-y-2 px-2 py-4 bg-zinc-400/5 dark:bg-zinc-800/10 shadow-sm rounded'>
+            {currentForm?.blocks?.length ? (
+                currentForm.blocks.map((block: TFullFormBlock) => (
+                    <div key={block.id} className='relative mt-2 grid gap-y-2 px-2 py-4 bg-zinc-400/5 dark:bg-zinc-800/10 shadow-sm rounded'>
                         <Button className='absolute rtl:left-2 ltr:right-2 top-2' variant={"link"}>
                             <Pencil2Icon />
                         </Button>
@@ -35,22 +29,23 @@ export const FormBlocksList: React.FC<FormBlocksListProps> = ({
                         </div>
                         <div className='col-span-3 grid gap-y-4'>
                             <div className='flex-1 text-center'>
-                                <AddNewFieldButton title={title} block = {block}/>
+                                <AddNewTypedFieldButton blockId={block.id} formTitle={currentForm.title} blockLabel={block.label} />
+                                <AddNewSourceableFieldButton title={currentForm.title} block={block} />
                             </div>
-                            {block.subfields?.map((subfield: TField) => (
-                                <div key={subfield.label} className='grid grid-cols-3'>
+                            {block.fields?.map((fields: TField) => (
+                                <div key={fields.label} className='grid grid-cols-3'>
                                     <div>
                                         <Muted>{t("field-label")}</Muted>
-                                        <p>{subfield.label}</p>
+                                        <p>{fields.label}</p>
                                     </div>
                                     <div>
-                                        <Muted>{t("field-type")}</Muted>
-                                        <p>{subfield.type}</p>
+                                        <Muted>{t("field-points")}</Muted>
+                                        <p>{fields.points}</p>
                                     </div>
-                                    {subfield.source && (
+                                    {fields.type && (
                                         <div>
-                                            <Muted>{t("field-source")}</Muted>
-                                            <p>{subfield.source}</p>
+                                            <Muted>{t("field-type")}</Muted>
+                                            <p>{fields.type}</p>
                                         </div>
                                     )}
                                 </div>
