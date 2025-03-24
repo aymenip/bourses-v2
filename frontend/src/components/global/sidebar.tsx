@@ -69,7 +69,7 @@ function Sidebar({ role }: SidebarProps) {
             <div className="flex flex-col w-full gap-3 h-full">
                 {
                     routes.map((route: Route) => {
-                        const exactMatch = location.pathname === route.path;
+                        const exactMatch = `/${location.pathname.split("/")[1]}` === route.path;
                         if (route.roles.includes(role)) return <Link key={route.name} to={route.path} className={cn("header-item", { "header-item-active": exactMatch })}>
                             {
                                 () => <div className={cn("flex gap-2 items-center", { "justify-center": !isOpen })}>
