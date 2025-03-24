@@ -83,5 +83,9 @@
   "block-creation-error": "An error occurred while creating the block.",
   "field-creation-success": "The field was created successfully.",
   "field-creation-pending": "Field creation pending.",
-  "field-creation-error": "An error occurred while creating the field."
+  "field-creation-error": "An error occurred while creating the field.",
+  "article": "Article",
+  "certificate": "Certificate",
+  "book": "Book",
+  "conference": "Conference"
 }

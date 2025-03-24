@@ -30,6 +30,7 @@ export const AddNewTypedFieldButton: React.FC<AddNewTypedFieldButtonProps> = ({
         handleSubmit,
         setValue,
         watch,
+        reset,
         formState: { errors, isSubmitting },
     } = useForm<TTypedField>({
         defaultValues: {
@@ -55,6 +56,7 @@ export const AddNewTypedFieldButton: React.FC<AddNewTypedFieldButtonProps> = ({
         if (isSuccess && createdField) {
             toast.success(t("field-creation-success"));
             addFieldToBlock(createdField, blockId);
+            reset();
         } else if (isPending) {
             toast.info(t("field-creation-pending"));
         } else if (isError) {
@@ -80,7 +82,8 @@ export const AddNewTypedFieldButton: React.FC<AddNewTypedFieldButtonProps> = ({
                         </div>
                     </DialogDescription>
                 </DialogHeader>
-                <form className="grid gap-4 py-4" onSubmit={handleSubmit(formSubmit)}>
+                
+                <form id="typed-field-form" className="form" onSubmit={handleSubmit(formSubmit)}>
                     <div className="form-group">
                         <Label>{t("field-label")}</Label>
                         <Input {...register("label")} placeholder={t("field-label")} type="text" />
@@ -131,7 +134,7 @@ export const AddNewTypedFieldButton: React.FC<AddNewTypedFieldButtonProps> = ({
                     </div>
 
                     <DialogFooter>
-                        <Button type="submit" className="w-full text-md font-bold" disabled={isPending || isSubmitting}>
+                        <Button form="typed-field-form" type="submit" className="w-full text-md font-bold" disabled={isPending || isSubmitting}>
                             {isPending ? <LoaderIcon className="animate-spin" /> : t("add")}
                         </Button>
                     </DialogFooter>

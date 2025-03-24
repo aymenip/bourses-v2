@@ -8,17 +8,17 @@ export const FormSchema = z.object({
 
 export const CreateFormSchema = z.object({
   id: z.number().optional(),
-  title: z.string(),
+  title: z.string().min(1),
 });
 
 export const FormBlockSchema = z.object({
   id: z.number(),
-  label: z.string(),
+  label: z.string().min(1),
   formId: z.number(),
 });
 
 export const CreateFormBlockSchema = z.object({
-  label: z.string(),
+  label: z.string().min(1),
   formId: z.number(),
 });
 
@@ -27,8 +27,8 @@ export const TypedFieldSchema = z.object({
   type: z.enum(["text", "date", "number", "url", "email"], {
     required_error: "required-input",
   }),
-  points: z.number({ required_error: "required-input" }).default(0),
-  label: z.string({ required_error: "required-input" }),
+  points: z.number({ required_error: "required-input" }).min(0).default(0),
+  label: z.string({ required_error: "required-input" }).min(1),
   blockId: z.number(),
 });
 
@@ -37,8 +37,8 @@ export const SourceableFieldSchema = z.object({
   type: z.enum(["certificate", "book", "article", "conference"], {
     required_error: "required-input",
   }),
-  points: z.number({ required_error: "required-input" }).default(0),
-  label: z.string({ required_error: "required-input" }),
+  points: z.number({ required_error: "required-input" }).min(0).default(0),
+  label: z.string({ required_error: "required-input" }).min(1),
   blockId: z.number(),
 });
 

@@ -1,129 +1,182 @@
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import React from 'react';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CrossCircledIcon, PlusCircledIcon } from '@radix-ui/react-icons';
-import { TFullFormBlock, TTypedField, TypedFieldSchema } from '@/types/forms';
+import { TSourceableField, SourceableFieldSchema } from '@/types/forms';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-// import { useCreateField } from '@/api/mutations';
-import { LoaderIcon } from 'lucide-react';
+import { useCreateSourceableField } from '@/api/forms/mutations';
+import { toast } from 'sonner';
+import { useFormStore } from '@/store/formStore';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { LoaderIcon } from 'lucide-react';
 
 interface AddNewSourceableFieldButtonProps {
-    title: string;
-    block: TFullFormBlock;
-    // setFormBlockTitle: (title: string) => void;
-    // addFormBlock: () => void;
+    blockId: number;
+    formTitle: string;
+    blockLabel: string;
 }
 
 export const AddNewSourceableFieldButton: React.FC<AddNewSourceableFieldButtonProps> = ({
-    title,
-    block
-    // setFormBlockTitle,
-    // addFormBlock,
+    blockId,
+    formTitle,
+    blockLabel,
 }) => {
+
+    const [t, i18n] = useTranslation("translation");
+    const addFieldToBlock = useFormStore((state) => state.addFieldToBlock);
 
     const {
         register,
         handleSubmit,
+        setValue,
+        watch,
+        reset,
+        formState: { errors, isSubmitting },
+    } = useForm<TSourceableField>({
+        defaultValues: {
+            id: 0,
+            blockId,
+            points: 0,
+            type: "certificate",
+            label: "",
+        },
+        resolver: zodResolver(SourceableFieldSchema),
+    });
 
-        formState: { errors },
-    } = useForm<TTypedField>({
-        resolver: zodResolver(TypedFieldSchema),
-    })
-    const [t, i18n] = useTranslation("translation")
+    const {
+        mutate: createField,
+        data: createdField,
+        isPending,
+        isError,
+        isSuccess
+    } = useCreateSourceableField();
 
-    // const { isError, isPending, isSuccess, mutate } = useCreateField();
+    const formSubmit = (sourceableField: TSourceableField) => {
+        createField(sourceableField);
+    };
 
-    const formSubmit = async (typedField: TTypedField) => {
-        console.log(typedField)
-        // mutate(field);
-    }
+    useEffect(() => {
+        if (isSuccess && createdField) {
+            toast.success(t("field-creation-success"));
+            addFieldToBlock(createdField, blockId);
+            reset();
+        } else if (isPending) {
+            toast.info(t("field-creation-pending"));
+        } else if (isError) {
+            toast.error(t("field-creation-error"));
+        }
+    }, [isError, isPending, isSuccess, createdField, blockId, t, addFieldToBlock, reset]);
 
     return (
         <Dialog>
-            <DialogTrigger>
-                <Button className='gap-x-1' variant={"link"} dir={i18n.dir()}>
+            <DialogTrigger asChild>
+                <Button className="gap-x-1" variant="link" dir={i18n.dir()}>
                     {t("add-sourceable-field")}
                     <PlusCircledIcon />
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]" dir={i18n.dir()}>
-                <DialogHeader dir={i18n.dir()}>
-                    <DialogTitle dir={i18n.dir()}>{t("add-new-field")}</DialogTitle>
-                    <DialogDescription dir={i18n.dir()}>
-                        <div className='font-bold'>
-                            <div>{title}</div>
-                            <div>{block.label}</div>
+                <DialogHeader>
+                    <DialogTitle>{t("add-new-sourceable-field")}</DialogTitle>
+                    <DialogDescription>
+                        <div className="font-bold">
+                            <div>{formTitle}</div>
+                            <div>{blockLabel}</div>
                         </div>
                     </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <form className="form" onSubmit={handleSubmit(formSubmit)}>
-                        <div className="form-group">
-                            <Label className="">{t('field-label')}</Label>
-                            <Input
-                                {...register('label')}
-                                placeholder={t('field-label')}
-                                type="text"
-                            />
+                <form id="sourceable-field-form" className="form" onSubmit={handleSubmit(formSubmit)}>
+                    <div className="form-group">
+                        <Label htmlFor="label">{t("field-label")}</Label>
+                        <Input
+                            id="label"
+                            {...register("label")}
+                            placeholder={t("field-label")}
+                            type="text"
+                        />
+                        {errors.label && (
                             <div className="form-error">
-                                {errors?.label && (
-                                    <>
-                                        <CrossCircledIcon />{' '}
-                                        <span className="flex items-center gap-x-1">
-                                            {t(errors.label?.message || '')}
-                                        </span>{' '}
-                                    </>
-                                )}
+                                <CrossCircledIcon />
+                                <span className="flex items-center gap-x-1">
+                                    {t(errors.label?.message || "")}
+                                </span>
                             </div>
-                        </div>
-                        <div className="form-group">
-                            <Label className="">{t('field-source')}</Label>
-                            <Input
-                                {...register('type')}
-                                placeholder={t('field-type')}
-                                type="text"
-                            />
-                            <div className="form-error">
-                                {errors?.type && (
-                                    <>
-                                        <CrossCircledIcon />{' '}
-                                        <span className="flex items-center gap-x-1">
-                                            {t(errors.type?.message || '')}
-                                        </span>{' '}
-                                    </>
-                                )}
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <Label className="">{t('field-points')}</Label>
-                            <Input
-                                {...register('points')}
-                                placeholder={t('field-points')}
-                                type="text"
-                            />
-                            <div className="form-error">
-                                {errors?.points && (
-                                    <>
-                                        <CrossCircledIcon />{' '}
-                                        <span className="flex items-center gap-x-1">
-                                            {t(errors.points?.message || '')}
-                                        </span>{' '}
-                                    </>
-                                )}
-                            </div>
-                        </div>
+                        )}
+                    </div>
 
-                    </form>
-                </div>
-                <DialogFooter>
-                    <Button onClick={handleSubmit(formSubmit)} type="submit" className="w-full text-md font-bold">
-                        {/* {isPending ? <LoaderIcon className='animate-spin' /> : t('add')} */}
-                    </Button>
-                </DialogFooter>
+                    <div className="form-group">
+                        <Label>{t("field-type")}</Label>
+                        <RadioGroup
+                            dir={i18n.dir()}
+                            value={watch("type")}
+                            onValueChange={(value) => {
+                                setValue("type", value as "certificate" | "book" | "article" | "conference");
+                            }}
+                        >
+                            {["article", "certificate", "book", "conference"].map((type) => (
+                                <div key={type} className="flex items-center gap-x-2">
+                                    <RadioGroupItem value={type} id={type} />
+                                    <Label htmlFor={type}>{t(type)}</Label>
+                                </div>
+                            ))}
+                        </RadioGroup>
+                        {errors.type && (
+                            <div className="form-error">
+                                <CrossCircledIcon />
+                                <span className="flex items-center gap-x-1">
+                                    {t(errors.type?.message || "")}
+                                </span>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="form-group">
+                        <Label htmlFor="points">{t("field-points")}</Label>
+                        <Input
+                            id="points"
+                            {...register("points", { valueAsNumber: true })}
+                            placeholder={t("field-points")}
+                            type="number"
+                            min="0"
+                            defaultValue={0}
+                        />
+                        {errors.points && (
+                            <div className="form-error">
+                                <CrossCircledIcon />
+                                <span className="flex items-center gap-x-1">
+                                    {t(errors.points?.message || "")}
+                                </span>
+                            </div>
+                        )}
+                    </div>
+
+                    <DialogFooter>
+                        <Button
+                            form="sourceable-field-form"
+                            type="submit"
+                            className="w-full text-md font-bold"
+                            disabled={isPending || isSubmitting}
+                        >
+                            {isPending ? (
+                                <LoaderIcon className="mr-2 h-4 w-4 animate-spin" />
+                            ) : (
+                                t("add")
+                            )}
+                        </Button>
+                    </DialogFooter>
+                </form>
             </DialogContent>
         </Dialog>
     );

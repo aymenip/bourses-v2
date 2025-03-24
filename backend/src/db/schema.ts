@@ -243,7 +243,7 @@ export const sourceableFields = mysqlTable("sourceableFields", {
   id: bigint("id", { mode: "number", unsigned: true })
     .autoincrement()
     .primaryKey(),
-  source: mysqlEnum("type", ["certificate", "book", "article", "conference"]),
+  type: mysqlEnum("type", ["certificate", "book", "article", "conference"]),
   points: int("points", { unsigned: true }),
   label: varchar("label", { length: 256 }),
   fieldId: bigint("fieldId", { mode: "number", unsigned: true })

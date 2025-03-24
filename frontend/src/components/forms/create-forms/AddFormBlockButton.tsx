@@ -7,6 +7,10 @@ import { useTranslation } from 'react-i18next';
 import { useFormStore } from '@/store/formStore';
 import { useCreateFormBlock } from '@/api/forms/mutations';
 import { toast } from 'sonner';
+import { useForm } from 'react-hook-form';
+import { FormBlockSchema, TFormBlock } from '@/types/forms';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { CrossCircledIcon } from '@radix-ui/react-icons';
 
 interface AddFormBlockButtonProps {
 }
@@ -17,7 +21,21 @@ export const AddFormBlockButton: React.FC<AddFormBlockButtonProps> = () => {
     const currentForm = useFormStore((state) => state.currentForm);
     const addFormBlock = useFormStore((state) => state.addBlockToCurrentForm);
     const { data: createdFormBlock, mutate: createFormBlock, isError, isPending, isSuccess } = useCreateFormBlock()
-    const onAddButtonClick = () => {
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<TFormBlock>({
+        defaultValues: {
+            id: 0,
+            formId: currentForm?.id,
+            label: "",
+        },
+        resolver: zodResolver(FormBlockSchema),
+    });
+
+    const formSubmit = () => {
         createFormBlock({
             formId: currentForm!.id,
             label: FormBlockTitle!
@@ -39,18 +57,19 @@ export const AddFormBlockButton: React.FC<AddFormBlockButtonProps> = () => {
     }, [isError, isPending, isSuccess])
     return (
         <div className='flex'>
-            <form className='flex-1'>
-                <Dialog>
-                    <DialogTrigger asChild className='w-full'>
-                        <Button
-                            variant={"ghost"}
-                            size={"lg"}
-                            className='py-4 text-lg flex-1 border-2 border-dashed rounded-none dark:border-zinc-800/30 dark:hover:bg-foreground/5'
-                        >
-                            {t("add-new-block")}
-                        </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]" dir={i18n.dir()}>
+
+            <Dialog>
+                <DialogTrigger asChild className='w-full'>
+                    <Button
+                        variant={"ghost"}
+                        size={"lg"}
+                        className='py-4 text-lg flex-1 border-2 border-dashed rounded-none dark:border-zinc-800/30 dark:hover:bg-foreground/5'
+                    >
+                        {t("add-new-block")}
+                    </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]" dir={i18n.dir()}>
+                    <form id="form-block-form" className="w-full grid gap-4 py-4" onSubmit={handleSubmit(formSubmit)}>
                         <DialogHeader dir={i18n.dir()}>
                             <DialogTitle dir={i18n.dir()}>{t("add-new-block")}</DialogTitle>
                             <DialogDescription dir={i18n.dir()}>
@@ -58,28 +77,26 @@ export const AddFormBlockButton: React.FC<AddFormBlockButtonProps> = () => {
                             </DialogDescription>
                         </DialogHeader>
                         <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="block-title" className="text-right">
-                                    {t("title")}
-                                </Label>
-                                <Input
-                                    onChange={(e) => setFormBlockTitle(e.target.value)}
-                                    required
-                                    id="block-title"
-                                    placeholder={t("block-title")}
-                                    className="col-span-3"
+                            <div className="form-group">
+                                <Label>{t("block-title")}</Label>
+                                <Input {...register("label")} placeholder={t("block-title")} type="text" />
+                                {errors.label && (
+                                    <div className="form-error">
+                                        <CrossCircledIcon />
+                                        <span className="flex items-center gap-x-1">{t(errors.label?.message || "")}</span>
+                                    </div>
+                                )}
 
-                                />
                             </div>
                         </div>
                         <DialogFooter>
-                            <Button onClick={() => onAddButtonClick()}>
+                            <Button form="form-block-form" type="submit">
                                 {t("add")}
                             </Button>
                         </DialogFooter>
-                    </DialogContent>
-                </Dialog>
-            </form>
+                    </form>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 };

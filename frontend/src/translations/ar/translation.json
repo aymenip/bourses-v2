@@ -84,5 +84,9 @@
   "block-creation-error": "حدث خطأ أثناء إنشاء المجموعة.",
   "field-creation-success": "تم إنشاء الحقل بنجاح.",
   "field-creation-pending": "إنشاء الحقل قيد الإنتظار.",
-  "field-creation-error": "حدث خطأ أثناء إنشاء الحقل."
+  "field-creation-error": "حدث خطأ أثناء إنشاء الحقل.",
+  "article": "مقال",
+  "certificate": "شهادة",
+  "book": "كتاب",
+  "conference": "ملتقى"
 }

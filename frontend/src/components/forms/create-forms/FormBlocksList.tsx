@@ -30,7 +30,7 @@ export const FormBlocksList: React.FC<FormBlocksListProps> = () => {
                         <div className='col-span-3 grid gap-y-4'>
                             <div className='flex-1 text-center'>
                                 <AddNewTypedFieldButton blockId={block.id} formTitle={currentForm.title} blockLabel={block.label} />
-                                <AddNewSourceableFieldButton title={currentForm.title} block={block} />
+                                <AddNewSourceableFieldButton blockId={block.id} formTitle={currentForm.title} blockLabel={block.label} />
                             </div>
                             {block.fields?.map((fields: TField) => (
                                 <div key={fields.label} className='grid grid-cols-3'>

@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { createAForm, deleteForm, createAFormBlock, createTypedField } from "./services";
+import { createAForm, deleteForm, createAFormBlock, createTypedField, createSourceableField } from "./services";
 import { TCreateForm } from "@/types";
-import { TCreateFormBlock, TTypedField } from "@/types/forms";
+import { TCreateFormBlock, TSourceableField, TTypedField } from "@/types/forms";
 
 
 
@@ -31,5 +31,12 @@ export function useCreateTypedField() {
     return useMutation({
         mutationKey: ['createTypedField'],
         mutationFn: (typedField: TTypedField) => createTypedField(typedField)
+    })
+}
+
+export function useCreateSourceableField() {
+    return useMutation({
+        mutationKey: ['createSourceableField'],
+        mutationFn: (sourceableField: TSourceableField) => createSourceableField(sourceableField)
     })
 }
