@@ -14,7 +14,6 @@ export const CreateDocument = async (
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
-
     const userId = req.user?.sub; // Get user ID from JWT
     const type = req.body.type; // Get document type
     const filePath = `/uploads/${req.file.filename}`; // Store file path

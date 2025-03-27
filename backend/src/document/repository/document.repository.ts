@@ -1,14 +1,13 @@
 import { db } from "../../db/setup"; // Database instance
 import { eq } from "drizzle-orm";
 import { CreateDocumentDTO, DocumentDTO } from "../dtos";
-import { documents } from "db/schema";
+import { documents } from "../../db/schema";
 
 export const createDocument = async (
   createDocumentDTO: CreateDocumentDTO
 ): Promise<DocumentDTO> => {
   try {
     const dbInstance = await db;
-
     const result = await dbInstance
       .insert(documents)
       .values(createDocumentDTO)

@@ -290,7 +290,7 @@ export const documents = mysqlTable("documents", {
     .autoincrement()
     .primaryKey(),
   type: varchar("type", { length: 5 }),
-  path: varchar("type", { length: 2048 }),
+  path: varchar("path", { length: 2048 }),
 
   userId: bigint("userId", { mode: "number", unsigned: true })
     .notNull()
@@ -310,6 +310,9 @@ export const certificates = mysqlTable("certeficates", {
   documentId: bigint("documentId", { mode: "number", unsigned: true })
     .references(() => documents.id, { onDelete: "cascade" })
     .notNull(),
+  userId: bigint("userId", { mode: "number", unsigned: true })
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -318,6 +321,10 @@ export const certificatesRelations = relations(certificates, ({ one }) => ({
   document: one(documents, {
     fields: [certificates.documentId],
     references: [documents.id],
+  }),
+  user: one(users, {
+    fields: [certificates.userId],
+    references: [users.id],
   }),
 }));
 
@@ -328,6 +335,9 @@ export const books = mysqlTable("books", {
   documentId: bigint("documentId", { mode: "number", unsigned: true })
     .references(() => documents.id, { onDelete: "cascade" })
     .notNull(),
+  userId: bigint("userId", { mode: "number", unsigned: true })
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -336,6 +346,10 @@ export const booksRelations = relations(books, ({ one }) => ({
   document: one(documents, {
     fields: [books.documentId],
     references: [documents.id],
+  }),
+  user: one(users, {
+    fields: [books.userId],
+    references: [users.id],
   }),
 }));
 
@@ -346,6 +360,9 @@ export const articles = mysqlTable("articles", {
   documentId: bigint("documentId", { mode: "number", unsigned: true })
     .references(() => documents.id, { onDelete: "cascade" })
     .notNull(),
+  userId: bigint("userId", { mode: "number", unsigned: true })
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -354,6 +371,10 @@ export const articlesRelations = relations(articles, ({ one }) => ({
   document: one(documents, {
     fields: [articles.documentId],
     references: [documents.id],
+  }),
+  user: one(users, {
+    fields: [articles.userId],
+    references: [users.id],
   }),
 }));
 
@@ -364,6 +385,9 @@ export const conferences = mysqlTable("conferencse", {
   documentId: bigint("documentId", { mode: "number", unsigned: true })
     .references(() => documents.id, { onDelete: "cascade" })
     .notNull(),
+  userId: bigint("userId", { mode: "number", unsigned: true })
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -372,6 +396,10 @@ export const conferencesRelations = relations(conferences, ({ one }) => ({
   document: one(documents, {
     fields: [conferences.documentId],
     references: [documents.id],
+  }),
+  user: one(users, {
+    fields: [conferences.userId],
+    references: [users.id],
   }),
 }));
 
