@@ -16,6 +16,7 @@ export const createForm = async (
         ...createFormDTO,
         id: createFormDTO.id,
       };
+
       return await updateForm(updateFormDTO, creator);
     }
     const result = await dbInstance
@@ -41,7 +42,9 @@ export const updateForm = async (
       .set({ title: updateFormDTO.title })
       .where(and(eq(forms.id, updateFormDTO.id), eq(forms.creator, creator)))
       .execute();
-    const form = await getFormById(result[0].insertId);
+
+    const form = await getFormById(updateFormDTO.id);
+    
     return form;
   } catch (error) {
     console.log(error);
@@ -52,6 +55,7 @@ export const updateForm = async (
 /// GET FORM BY ID
 export const getFormById = async (id: number): Promise<FormDTO | null> => {
   try {
+
     const dbInstance = await db; // Ensure db instance is awaited once
     const result = await dbInstance
       .select()

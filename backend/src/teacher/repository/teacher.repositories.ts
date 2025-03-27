@@ -16,7 +16,7 @@ export const createTeacher = async (
 ): Promise<TeacherDTO & UserDTO> => {
   try {
     const dbInstance = await db;
-
+    
     const teacherId = await dbInstance.transaction(
       async (tx: MySqlTransaction<any, any>) => {
         const userId = await createUser(createUserDTO, tx);
@@ -51,10 +51,9 @@ export const allTeachers = async (): Promise<(TeacherDTO & UserDTO)[]> => {
 
     const teacherDTO = new TeacherDTO(
       teacherData.id,
-      teacherData.highPostion,
+      teacherData.highPosition,
       teacherData.createdAt,
       teacherData.updatedAt,
-      teacherData.positionId
     );
 
     const userDTO = new UserDTO(
@@ -67,7 +66,8 @@ export const allTeachers = async (): Promise<(TeacherDTO & UserDTO)[]> => {
       null, // Ensure password is not returned
       userData.createdAt,
       userData.updatedAt,
-      userData.roleId
+      userData.roleId,
+      userData.positionId
     );
 
     return { ...teacherDTO, ...userDTO };
@@ -93,10 +93,9 @@ export const teacher = async (id: number): Promise<TeacherDTO & UserDTO> => {
   const userData = result[0].users;
   const teacherDTO = new TeacherDTO(
     teacherData.id,
-    teacherData.highPostion,
+    teacherData.highPosition,
     teacherData.createdAt,
     teacherData.updatedAt,
-    teacherData.positionId
   );
   const userDTO = new UserDTO(
     userData.id,
@@ -108,7 +107,8 @@ export const teacher = async (id: number): Promise<TeacherDTO & UserDTO> => {
     (userData.password = null),
     userData.createdAt,
     userData.updatedAt,
-    userData.roleId
+    userData.roleId,
+    userData.positionId
   );
 
   return { ...teacherDTO, ...userDTO };
@@ -126,6 +126,7 @@ export const updateTeacher = async (
       .set(updateUserDto)
       .where(eq(users.id, updateUserDto.id))
       .execute();
+      
     const updatedTeacher = await dbInstance
       .update(teachers)
       .set(updateTeacherDTO)

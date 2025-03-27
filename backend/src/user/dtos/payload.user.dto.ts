@@ -1,19 +1,19 @@
 export class JwtResponsePayload {
   sub: number;
   email: string;
-  roleId: number;
+  positionId: number;
   firstname: string;
   lastname: string;
   constructor(
     sub: number,
     email: string,
-    roleId: number,
+    positionId: number,
     firstname: string,
     lastname: string
   ) {
     this.sub = sub;
     this.email = email;
-    this.roleId = roleId;
+    this.positionId = positionId;
     this.firstname = firstname;
     this.lastname = lastname;
   }

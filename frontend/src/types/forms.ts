@@ -34,7 +34,7 @@ export const TypedFieldSchema = z.object({
 
 export const SourceableFieldSchema = z.object({
   id: z.number(),
-  type: z.enum(["certificate", "book", "article", "conference"], {
+  type: z.enum(["certificate", "book", "article", "conference", "thesis"], {
     required_error: "required-input",
   }),
   points: z.number({ required_error: "required-input" }).min(0).default(0),

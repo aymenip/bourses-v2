@@ -32,6 +32,7 @@
   "usersConferences": "الملتقيات",
   "usersArticles": "المقالات",
   "usersBooks": "الكتب",
+  "usersTheses": "المذكرات",
   "forms": "النماذج",
   "delete": "حذف",
   "filter-titles": "فلترة العناوين...",
@@ -88,5 +89,16 @@
   "article": "مقال",
   "certificate": "شهادة",
   "book": "كتاب",
-  "conference": "ملتقى"
+  "conference": "ملتقى",
+  "thesis": "أطروحة",
+  "theses": "أطروحات",
+  "form-to": "لمن هذا النموذج",
+  "mca": "أستاذ محاضر أ",
+  "mcb": "أستاذ محاضر ب",
+  "pro": "أستاذ",
+  "phd": "طالب دكتوراه",
+  "emp": "موظف",
+  "form-access-change-success": "تم تغيير الوصول إلى النموذج بنجاح.",
+  "form-access-change-pending": "تغيير الوصول إلى النموذج قيد الإنتظار.",
+  "form-access-change-error": "حدث خطأ أثناء تغيير الوصول إلى النموذج."
 }

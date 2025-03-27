@@ -12,9 +12,11 @@ export class LoginUserOutputDTO {
   token: string;
   id: number;
   roleId: number;
-  constructor(token: string, id: number, roleId: number) {
+  positionId: number;
+  constructor(token: string, id: number, roleId: number, positionId: number) {
     this.token = token;
     this.id = id;
     this.roleId = roleId;
+    this.positionId = positionId;
   }
 }

@@ -32,6 +32,7 @@
   "usersConferences": "Conferences",
   "usersArticles": "Articles",
   "usersBooks": "Books",
+  "usersTheses": "Theses",
   "forms": "Forms",
   "delete": "Delete",
   "filter-titles": "Filter titles...",
@@ -87,5 +88,17 @@
   "article": "Article",
   "certificate": "Certificate",
   "book": "Book",
-  "conference": "Conference"
+  "conference": "Conference",
+  "thesis": "Thesis",
+  "theses": "Theses",
+  "form-to": "Create this form for",
+  "mca": "Associate Professor A",
+  "mcb": "Associate Professor B",
+  "pro": "Professor",
+  "phd": "PhD student",
+  "emp": "Employee",
+  "form-access-change-success": "The form access was changed successfully.",
+  "form-access-change-pending": "Form access changing is pending.",
+  "form-access-change-error": "An error occurred while changing the form access."
+
 }

@@ -1,18 +1,22 @@
 import { create } from "zustand";
 import { TFullFormBlock, TFullForm, TField } from "@/types/forms";
+import { TCreateFormAccess } from "@/types/form-acess";
 
 interface FormState {
   currentForm?: TFullForm;
   lastChange?: string;
+  formAccess?: TCreateFormAccess;
   setCurrentForm: (newForm: TFullForm) => void;
   setCurrentFormTitle: (newTitle: string) => void;
   addBlockToCurrentForm: (newBlock: TFullFormBlock) => void;
   addFieldToBlock: (newField: TField, blockId: number) => void;
+  changeCurrentFormAccess: (newFormAccess: TCreateFormAccess) => void;
 }
 
 export const useFormStore = create<FormState>((set) => ({
   currentForm: undefined,
   lastChange: undefined,
+  formAccess: undefined,
   setCurrentForm: (newForm) =>
     set({
       currentForm: { ...newForm, blocks: [] },
@@ -69,5 +73,9 @@ export const useFormStore = create<FormState>((set) => ({
           ),
         },
       };
+    }),
+  changeCurrentFormAccess: (newFormAccess) =>
+    set({
+      formAccess: newFormAccess,
     }),
 }));

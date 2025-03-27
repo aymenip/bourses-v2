@@ -122,10 +122,10 @@ export const AddNewSourceableFieldButton: React.FC<AddNewSourceableFieldButtonPr
                             dir={i18n.dir()}
                             value={watch("type")}
                             onValueChange={(value) => {
-                                setValue("type", value as "certificate" | "book" | "article" | "conference");
+                                setValue("type", value as "certificate" | "book" | "article" | "conference" | "thesis");
                             }}
                         >
-                            {["article", "certificate", "book", "conference"].map((type) => (
+                            {["article", "certificate", "book", "conference", "thesis"].map((type) => (
                                 <div key={type} className="flex items-center gap-x-2">
                                     <RadioGroupItem value={type} id={type} />
                                     <Label htmlFor={type}>{t(type)}</Label>

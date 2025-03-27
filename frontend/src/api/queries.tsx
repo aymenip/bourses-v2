@@ -7,10 +7,14 @@ import {
     useForms
 } from "./forms/queries";
 
+import {
+    useRoles
+} from "./roles/queries";
 
 export {
     useUser,
     logout,
     useForm,
-    useForms
+    useForms,
+    useRoles,
 }

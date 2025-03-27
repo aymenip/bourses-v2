@@ -10,6 +10,7 @@ export const UserSchema = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   roleId: z.number(),
+  positionId: z.number(),
 });
 
 export type TUser = z.infer<typeof UserSchema>;

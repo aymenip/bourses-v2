@@ -5,19 +5,16 @@ export class TeacherDTO {
   highPostion: boolean;
   createdAt: Date;
   updatedAt: Date;
-  positionId: number;
   constructor(
     teacherId: number,
     highPostion: boolean,
     createdAt: Date,
     updatedAt: Date,
-    positionId: number
   ) {
     this.teacherId = teacherId;
     this.highPostion = highPostion;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-    this.positionId = positionId;
   }
 }
 
@@ -31,7 +28,6 @@ export class FullTeacherDTO {
   highPostion: boolean;
   createdAt: Date;
   updatedAt: Date;
-  positionId: number;
 
   constructor(
     id: number,
@@ -43,7 +39,6 @@ export class FullTeacherDTO {
     highPostion: boolean,
     createdAt: Date,
     updatedAt: Date,
-    positionId: number
   ) {
     this.id = id;
     this.firstname = firstname;
@@ -54,7 +49,6 @@ export class FullTeacherDTO {
     this.highPostion = highPostion;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-    this.positionId = positionId;
   }
 }
 

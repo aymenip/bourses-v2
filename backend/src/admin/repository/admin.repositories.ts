@@ -61,7 +61,8 @@ export const allAdmins = async (): Promise<(AdminDTO & UserDTO)[]> => {
       null, // Ensure password is not returned
       userData.createdAt,
       userData.updatedAt,
-      userData.roleId
+      userData.roleId,
+      userData.positionId
     );
 
     return { ...adminDTO, ...userDTO };
@@ -93,10 +94,11 @@ export const admin = async (id: number): Promise<AdminDTO & UserDTO> => {
     userData.dob,
     userData.matrialStatus as MatrialStatus,
     userData.email,
-    userData.password = null,
+    (userData.password = null),
     userData.createdAt,
     userData.updatedAt,
-    userData.roleId
+    userData.roleId,
+    userData.positionId
   );
 
   return { ...adminDTO, ...userDTO };

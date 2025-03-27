@@ -52,6 +52,15 @@ function Sidebar({ role }: SidebarProps) {
     const handleOpenClose = () => {
         setIsOpen(!isOpen)
     }
+    const getExactMatch = (path: string) => {
+        const segments = location.pathname.split("/");
+        const basePath = `/${segments[segments.length > 2 ? 2 : 1]}`;
+        if (role === "ADMIN" || (role === "USER" && path === "/users")) return basePath === path;
+        if (role === "USER") return `/users${basePath}` === path;
+
+        return false;
+    };
+
     return (
         <motion.nav
             variants={containerVariants}
@@ -69,7 +78,8 @@ function Sidebar({ role }: SidebarProps) {
             <div className="flex flex-col w-full gap-3 h-full">
                 {
                     routes.map((route: Route) => {
-                        const exactMatch = `/${location.pathname.split("/")[1]}` === route.path;
+
+                        const exactMatch = getExactMatch(route.path);
                         if (route.roles.includes(role)) return <Link key={route.name} to={route.path} className={cn("header-item", { "header-item-active": exactMatch })}>
                             {
                                 () => <div className={cn("flex gap-2 items-center", { "justify-center": !isOpen })}>

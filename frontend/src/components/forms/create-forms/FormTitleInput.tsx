@@ -18,6 +18,7 @@ export const FormTitleInput: React.FC<FormTitleInputProps> = () => {
     const currentForm = useFormStore((state) => state.currentForm);
     const lastChange = useFormStore((state) => state.lastChange);
     const setCurrentForm = useFormStore((state) => state.setCurrentForm);
+    const setCurrentFormTitle = useFormStore((state) => state.setCurrentFormTitle);
     const [title, setTitle] = useState<string>();
 
     const onSaveClick = (newTitle: string) => {
@@ -28,7 +29,11 @@ export const FormTitleInput: React.FC<FormTitleInputProps> = () => {
     useEffect(() => {
         if (isSuccess) {
             toast.success(t("form-creation-success"))
-            setCurrentForm(createdForm!)
+            if (!currentForm) {
+                setCurrentForm(createdForm);
+            } else {
+                setCurrentFormTitle(createdForm.title)
+            }
         } else if (isPending) {
             toast.info(t("form-creation-pending"))
         } else if (isError) {
@@ -38,6 +43,7 @@ export const FormTitleInput: React.FC<FormTitleInputProps> = () => {
 
     return (
         <div>
+
             <div className='flex justify-end items-center'>
                 <Button disabled={title ? false : true} onClick={() => onSaveClick(title!)} className=' rounded-full absolute m-4'>
                     {t("save")}

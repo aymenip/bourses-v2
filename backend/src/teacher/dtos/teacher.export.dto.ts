@@ -9,7 +9,6 @@ export class TeacherExportDTO {
   matrialStatus: MatrialStatus;
   highPostion: boolean;
   createdAt: Date;
-  position: string;
   constructor(
     id: number,
     firstname: string,
@@ -18,8 +17,7 @@ export class TeacherExportDTO {
     dob: Date,
     matrialStatus: MatrialStatus,
     highPostion: boolean,
-    createdAt: Date,
-    position: string
+    createdAt: Date
   ) {
     (this.id = id),
       (this.firstname = firstname),
@@ -28,7 +26,6 @@ export class TeacherExportDTO {
       (this.dob = dob),
       (this.matrialStatus = matrialStatus),
       (this.highPostion = highPostion),
-      (this.createdAt = createdAt),
-      (this.position = position);
+      (this.createdAt = createdAt);
   }
 }

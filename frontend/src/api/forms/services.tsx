@@ -2,6 +2,7 @@ import { TCreateForm, TForm } from "@/types";
 import { axiosInstance } from ".."
 import { authenticationContext } from "../auth/services";
 import { TCreateFormBlock, TFormBlock, TSourceableField, TTypedField } from "@/types/forms";
+import { TCreateFormAccess } from "@/types/form-acess";
 
 export async function forms(): Promise<TForm[]> {
     const token = authenticationContext().token;
@@ -33,6 +34,7 @@ export async function form(id: number): Promise<TForm> {
 }
 
 export async function createAForm(createForm: TCreateForm): Promise<TForm> {
+
     const token = authenticationContext().token;
     if (!token) {
         throw new Error();
@@ -42,7 +44,7 @@ export async function createAForm(createForm: TCreateForm): Promise<TForm> {
             Authorization: token,
         },
     })
-    
+
     return response.data;
 }
 
@@ -79,7 +81,7 @@ export async function createTypedField(typedField: TTypedField): Promise<TTypedF
     if (!token) {
         throw new Error();
     }
-    const response = await axiosInstance.post<TTypedField>(`field/typed/create`, {...typedField, fieldId: typedField.blockId}, {
+    const response = await axiosInstance.post<TTypedField>(`field/typed/create`, { ...typedField, fieldId: typedField.blockId }, {
         headers: {
             Authorization: token,
         },
@@ -91,10 +93,24 @@ export async function createSourceableField(sourceableField: TSourceableField): 
     if (!token) {
         throw new Error();
     }
-    const response = await axiosInstance.post<TSourceableField>(`field/sourceable/create`, {...sourceableField, fieldId: sourceableField.blockId}, {
+    const response = await axiosInstance.post<TSourceableField>(`field/sourceable/create`, { ...sourceableField, fieldId: sourceableField.blockId }, {
         headers: {
             Authorization: token,
         },
     });
+    return response.data;
+}
+
+export async function changeFormAccess(createFormAccess: TCreateFormAccess): Promise<TCreateFormAccess> {
+
+    const token = authenticationContext().token;
+    if (!token) {
+        throw new Error();
+    }
+    const response = await axiosInstance.post<TCreateFormAccess>("form/access/change", createFormAccess, {
+        headers: {
+            Authorization: token,
+        },
+    })
     return response.data;
 }

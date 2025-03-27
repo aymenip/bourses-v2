@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormStore } from '@/store/formStore';
 import { useCreateFormBlock } from '@/api/forms/mutations';
@@ -17,7 +17,6 @@ interface AddFormBlockButtonProps {
 
 export const AddFormBlockButton: React.FC<AddFormBlockButtonProps> = () => {
     const [t, i18n] = useTranslation("translation")
-    const [FormBlockTitle, setFormBlockTitle] = useState<string>()
     const currentForm = useFormStore((state) => state.currentForm);
     const addFormBlock = useFormStore((state) => state.addBlockToCurrentForm);
     const { data: createdFormBlock, mutate: createFormBlock, isError, isPending, isSuccess } = useCreateFormBlock()
@@ -35,11 +34,8 @@ export const AddFormBlockButton: React.FC<AddFormBlockButtonProps> = () => {
         resolver: zodResolver(FormBlockSchema),
     });
 
-    const formSubmit = () => {
-        createFormBlock({
-            formId: currentForm!.id,
-            label: FormBlockTitle!
-        })
+    const formSubmit = (formBlock: TFormBlock) => {
+        createFormBlock(formBlock)
     }
 
     useEffect(() => {

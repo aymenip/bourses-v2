@@ -16,11 +16,7 @@ import {
   updateTeacher,
 } from "../repository/teacher.repositories";
 import { handleError } from "../../utils/errors";
-import {
-  CreateUserDTO,
-  JwtResponsePayload,
-  UpdateUserDTO,
-} from "../../user/dtos";
+import { CreateUserDTO, JwtResponsePayload } from "../../user/dtos";
 import { Register } from "../../user/controller/user.controller";
 import { generateToken } from "../../utils/auth";
 import { mapCreateUserDTO, mapUpdateUserDTO } from "../../utils/mappers";
@@ -33,8 +29,7 @@ export const CreateTeacher = async (
     // Create an instance of UserDTO
     const createUserDTO: CreateUserDTO = mapCreateUserDTO(req);
     const createTeacherDTO: CreateTeacherDTO = new CreateTeacherDTO(
-      Boolean(req.body.highPosition),
-      req.body.positionId
+      Boolean(req.body.highPosition)
     );
     const createUserWithHashedPasswordDTO = await Register(createUserDTO);
     const createdUser = await createTeacher(
@@ -47,9 +42,9 @@ export const CreateTeacher = async (
       email: createdUser.email,
       firstname: createdUser.firstname,
       lastname: createdUser.lastname,
-      roleId: createdUser.roleId,
       teacherId: createdUser.teacherId,
       sub: createdUser.id,
+      positionId: createdUser.positionId,
     };
 
     const token = await generateToken(rgisterResponsePayload);
@@ -93,12 +88,11 @@ export const UpdateTeacher = async (
   res: express.Response
 ): Promise<any> => {
   try {
-    const { teacherId, highPostion, positionId } = req.body;
+    const { teacherId, highPostion } = req.body;
     // Create an instance of UserDTO
     const updateTeacherDTO = new UpdateTeacherDTO(
       teacherId,
-      Boolean(highPostion),
-      Number(positionId)
+      Boolean(highPostion)
     );
 
     const updateUserDto = mapUpdateUserDTO(req);
@@ -124,70 +118,3 @@ export const DeleteTeacher = async (
     return res.sendStatus(400);
   }
 };
-
-// import feature
-// export const ImportTeachersXlsx = async (req: express.Request, res: express.Response): Promise<any> => {
-//     try {
-//         const filePath = req.file.path;
-//         const {
-//             highPosition,
-//             positionId,
-//             worksheetIndex,
-//         } = req.query;
-//         const workbook = xlsx.readFile(filePath);
-//         const sheetName = workbook.SheetNames[Number(worksheetIndex) || 0]; // Assuming you want to read the first sheet
-//         const worksheet = workbook.Sheets[sheetName];
-//         const csvData = xlsx.utils.sheet_to_csv(worksheet).split("\n").splice(3);
-//         for (const _ of csvData) {
-//             const row = _.split(",");
-//             const createTeacherDto = new CreateTeacherDTO(
-//                 Boolean(highPosition),
-//                 Number(positionId),
-//             );
-//             try {
-//                 await createTeacherFromRow(createTeacherDto);
-//             } catch (error) {
-//                 continue;
-//             }
-//         }
-//         // Clean up the uploaded file
-//         fs.unlinkSync(filePath); // Remove the temporary file
-
-//         return res.status(200).json({
-//             msg: `${csvData.length} field(s) was added.`
-//         });
-//     } catch (error) {
-//         handleError(() => console.log(error));
-//         return res.sendStatus(400);
-//     }
-// }
-
-// Export teachers
-// export const ExportTeachersToXlsx = async (req: express.Request, res: express.Response): Promise<any> => {
-//     try {
-//         const teachers = await allTeachers();
-
-//         if (!teachers || teachers.length === 0) {
-//             return res.status(404).send("No teachers found.");
-//         }
-
-//         const worksheet = xlsx.utils.json_to_sheet(teachers);
-
-//         const workbook = xlsx.utils.book_new();
-//         xlsx.utils.book_append_sheet(workbook, worksheet, "Teachers");
-
-//         const excelBuffer = xlsx.write(workbook, { type: 'buffer', bookType: 'xlsx' });
-
-//         const day = moment().date().toString()
-//         const month = moment().month().toString();
-//         const filename = `teachers-${day}-${month}.xlsx`;
-//         res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
-//         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-
-//         res.status(200).send(excelBuffer);
-//     } catch (error) {
-
-//         console.error("Error exporting teachers:", error);
-//         res.status(500).send("Error exporting teachers.");
-//     }
-// }

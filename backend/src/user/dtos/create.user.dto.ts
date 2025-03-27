@@ -7,6 +7,7 @@ export class CreateUserDTO {
   matrialStatus: MatrialStatus;
   email: string;
   password: string;
+  positionId: number;
   roleId: number;
   constructor(
     firstname: string,
@@ -15,6 +16,7 @@ export class CreateUserDTO {
     matrialStatus: MatrialStatus,
     email: string,
     password: string,
+    positionId: number,
     roleId: number
   ) {
     this.firstname = firstname;
@@ -23,6 +25,7 @@ export class CreateUserDTO {
     this.matrialStatus = matrialStatus;
     this.email = email;
     this.password = password;
+    this.positionId = positionId;
     this.roleId = roleId;
   }
 }

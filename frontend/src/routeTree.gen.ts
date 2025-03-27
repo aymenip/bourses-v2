@@ -28,6 +28,9 @@ const UsersImport = createFileRoute('/users')()
 const UsersUsersLayoutIndexLazyImport = createFileRoute(
   '/users/_usersLayout/',
 )()
+const UsersUsersLayoutThesesIndexLazyImport = createFileRoute(
+  '/users/_usersLayout/theses/',
+)()
 const UsersUsersLayoutConferencesIndexLazyImport = createFileRoute(
   '/users/_usersLayout/conferences/',
 )()
@@ -90,6 +93,17 @@ const AdminAdminLayoutIndexRoute = AdminAdminLayoutIndexImport.update({
   path: '/',
   getParentRoute: () => AdminAdminLayoutRoute,
 } as any)
+
+const UsersUsersLayoutThesesIndexLazyRoute =
+  UsersUsersLayoutThesesIndexLazyImport.update({
+    id: '/theses/',
+    path: '/theses/',
+    getParentRoute: () => UsersUsersLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/users/_usersLayout/theses/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 const UsersUsersLayoutConferencesIndexLazyRoute =
   UsersUsersLayoutConferencesIndexLazyImport.update({
@@ -336,6 +350,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersUsersLayoutConferencesIndexLazyImport
       parentRoute: typeof UsersUsersLayoutImport
     }
+    '/users/_usersLayout/theses/': {
+      id: '/users/_usersLayout/theses/'
+      path: '/theses'
+      fullPath: '/users/theses'
+      preLoaderRoute: typeof UsersUsersLayoutThesesIndexLazyImport
+      parentRoute: typeof UsersUsersLayoutImport
+    }
   }
 }
 
@@ -378,6 +399,7 @@ interface UsersUsersLayoutRouteChildren {
   UsersUsersLayoutArticlesIndexLazyRoute: typeof UsersUsersLayoutArticlesIndexLazyRoute
   UsersUsersLayoutBooksIndexLazyRoute: typeof UsersUsersLayoutBooksIndexLazyRoute
   UsersUsersLayoutConferencesIndexLazyRoute: typeof UsersUsersLayoutConferencesIndexLazyRoute
+  UsersUsersLayoutThesesIndexLazyRoute: typeof UsersUsersLayoutThesesIndexLazyRoute
 }
 
 const UsersUsersLayoutRouteChildren: UsersUsersLayoutRouteChildren = {
@@ -387,6 +409,7 @@ const UsersUsersLayoutRouteChildren: UsersUsersLayoutRouteChildren = {
   UsersUsersLayoutBooksIndexLazyRoute: UsersUsersLayoutBooksIndexLazyRoute,
   UsersUsersLayoutConferencesIndexLazyRoute:
     UsersUsersLayoutConferencesIndexLazyRoute,
+  UsersUsersLayoutThesesIndexLazyRoute: UsersUsersLayoutThesesIndexLazyRoute,
 }
 
 const UsersUsersLayoutRouteWithChildren =
@@ -420,6 +443,7 @@ export interface FileRoutesByFullPath {
   '/users/articles': typeof UsersUsersLayoutArticlesIndexLazyRoute
   '/users/books': typeof UsersUsersLayoutBooksIndexLazyRoute
   '/users/conferences': typeof UsersUsersLayoutConferencesIndexLazyRoute
+  '/users/theses': typeof UsersUsersLayoutThesesIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -438,6 +462,7 @@ export interface FileRoutesByTo {
   '/users/articles': typeof UsersUsersLayoutArticlesIndexLazyRoute
   '/users/books': typeof UsersUsersLayoutBooksIndexLazyRoute
   '/users/conferences': typeof UsersUsersLayoutConferencesIndexLazyRoute
+  '/users/theses': typeof UsersUsersLayoutThesesIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -460,6 +485,7 @@ export interface FileRoutesById {
   '/users/_usersLayout/articles/': typeof UsersUsersLayoutArticlesIndexLazyRoute
   '/users/_usersLayout/books/': typeof UsersUsersLayoutBooksIndexLazyRoute
   '/users/_usersLayout/conferences/': typeof UsersUsersLayoutConferencesIndexLazyRoute
+  '/users/_usersLayout/theses/': typeof UsersUsersLayoutThesesIndexLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -482,6 +508,7 @@ export interface FileRouteTypes {
     | '/users/articles'
     | '/users/books'
     | '/users/conferences'
+    | '/users/theses'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -499,6 +526,7 @@ export interface FileRouteTypes {
     | '/users/articles'
     | '/users/books'
     | '/users/conferences'
+    | '/users/theses'
   id:
     | '__root__'
     | '/_admin/_adminLayout'
@@ -519,6 +547,7 @@ export interface FileRouteTypes {
     | '/users/_usersLayout/articles/'
     | '/users/_usersLayout/books/'
     | '/users/_usersLayout/conferences/'
+    | '/users/_usersLayout/theses/'
   fileRoutesById: FileRoutesById
 }
 
@@ -582,7 +611,8 @@ export const routeTree = rootRoute
         "/users/_usersLayout/",
         "/users/_usersLayout/articles/",
         "/users/_usersLayout/books/",
-        "/users/_usersLayout/conferences/"
+        "/users/_usersLayout/conferences/",
+        "/users/_usersLayout/theses/"
       ]
     },
     "/_admin/_adminLayout/": {
@@ -639,6 +669,10 @@ export const routeTree = rootRoute
     },
     "/users/_usersLayout/conferences/": {
       "filePath": "users/_usersLayout/conferences/index.lazy.tsx",
+      "parent": "/users/_usersLayout"
+    },
+    "/users/_usersLayout/theses/": {
+      "filePath": "users/_usersLayout/theses/index.lazy.tsx",
       "parent": "/users/_usersLayout"
     }
   }

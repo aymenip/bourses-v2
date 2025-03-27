@@ -41,25 +41,31 @@ export const routes: Route[] = [
         name: "usersDashboard",
         icon: <DashboardIcon />,
         path: "/users",
-        roles: ["TEACHER", "STUDENT", "EMPLOYEE"]
+        roles: ["USER"]
     },
     {
         name: "usersConferences",
         icon: <PersonIcon />,
         path: "/users/conferences",
-        roles: ["TEACHER", "STUDENT", "EMPLOYEE"]
+        roles: ["USER"]
     },
     {
         name: "usersArticles",
         icon: <PersonIcon />,
         path: "/users/articles",
-        roles: ["TEACHER", "STUDENT", "EMPLOYEE"]
+        roles: ["USER"]
     },
     {
         name: "usersBooks",
         icon: <PersonIcon />,
         path: "/users/books",
-        roles: ["TEACHER", "STUDENT", "EMPLOYEE"]
+        roles: ["USER"]
+    },
+    {
+        name: "usersTheses",
+        icon: <PersonIcon />,
+        path: "/users/theses",
+        roles: ["USER"]
     },
 ]
 

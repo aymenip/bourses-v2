@@ -14,7 +14,6 @@ export const FormBlocksList: React.FC<FormBlocksListProps> = () => {
 
     const [t, i18n] = useTranslation("translation");
     const currentForm = useFormStore((state) => state.currentForm);
-
     return (
         <>
             {currentForm?.blocks?.length ? (
@@ -45,7 +44,7 @@ export const FormBlocksList: React.FC<FormBlocksListProps> = () => {
                                     {fields.type && (
                                         <div>
                                             <Muted>{t("field-type")}</Muted>
-                                            <p>{fields.type}</p>
+                                            <p>{t(fields.type)}</p>
                                         </div>
                                     )}
                                 </div>
@@ -56,9 +55,10 @@ export const FormBlocksList: React.FC<FormBlocksListProps> = () => {
             ) : (
                 <div>
                     <Muted>
-                        {t("no-elements-yet")} <span className='font-bold'>{t("add-new-block")}</span>
+                        {t("no-elements-yet")}
+                        <span className='font-bold'>{t("add-new-block")}</span>
                     </Muted>
-                </div>
+                </div >
             )}
         </>
     );

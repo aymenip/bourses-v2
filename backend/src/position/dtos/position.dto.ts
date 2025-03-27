@@ -3,7 +3,6 @@ export class positionDTO {
     name: string;
     createdAt: Date;
     updateAt: Date;
-
     constructor(
         id: number,
         name: string,

@@ -80,7 +80,8 @@ export const Login = async (
     const response: LoginUserOutputDTO = new LoginUserOutputDTO(
       token,
       user.id,
-      user.roleId
+      user.roleId,
+      user.positionId
     ); // Create the response object
 
     return res.status(200).json(response); // Send response as JSON
@@ -92,6 +93,7 @@ export const Login = async (
 
 export const Register = async (createUserDTO: CreateUserDTO): Promise<any> => {
   try {
+ 
     if (!createUserDTO) {
       throw new Error();
     }

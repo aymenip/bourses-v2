@@ -9,6 +9,7 @@ export const mapCreateUserDTO = (req: express.Request): CreateUserDTO => {
     req.body.matrialStatus as MatrialStatus,
     req.body.email,
     req.body.password,
+    req.body.positionId,
     req.body.roleId
   );
 };

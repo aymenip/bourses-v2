@@ -46,6 +46,7 @@ export const getUserByEmail = async (
       user.password,
       user.createdAt,
       user.updatedAt,
+      user.positionId,
       user.roleId
     );
   } catch (error) {
@@ -78,6 +79,7 @@ export const getUserById = async (id: number): Promise<UserDTO | null> => {
       (user.password = null),
       user.createdAt,
       user.updatedAt,
+      user.positionId,
       user.roleId
     );
   } catch (error) {

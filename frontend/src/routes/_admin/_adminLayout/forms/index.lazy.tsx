@@ -1,6 +1,6 @@
 import { useForms } from '@/api/queries'
 import { columns } from '@/components/forms/data-table-forms/columns';
-import { DataTable } from '@/components/forms/data-table-forms/data-table';
+import { DataTable as FormDataTable } from '@/components/forms/data-table-forms/data-table';
 import { Loader } from '@/components/global/loader';
 import { TopBar } from '@/components/global/topBar'
 import { createLazyFileRoute } from '@tanstack/react-router'
@@ -16,7 +16,10 @@ function Forms() {
   return <div className='content-container'>
     <TopBar page_name='forms' />
     <div className='p-2'>
-      <DataTable data={forms || []} columns={columns} />
+      {
+        (isLoading || isFetching) ? <Loader /> : <FormDataTable data={forms || []} columns={columns} />
+      }
+
     </div>
   </div>
 }

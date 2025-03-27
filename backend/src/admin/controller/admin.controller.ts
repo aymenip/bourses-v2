@@ -37,10 +37,10 @@ export const CreateAdmin = async (
         email: createdUser.email,
         firstname: createdUser.firstname,
         lastname: createdUser.lastname,
-        roleId: createdUser.roleId,
         adminId: createdUser.adminId,
         permissionId: createdUser.permissionId,
         sub: createdUser.id,
+        positionId: createUserDTO.positionId,
       };
 
     const token = await generateToken(rgisterResponsePayload);

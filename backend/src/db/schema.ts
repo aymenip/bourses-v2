@@ -9,6 +9,7 @@ import {
   mysqlEnum,
   date,
   boolean,
+  year,
 } from "drizzle-orm/mysql-core";
 
 /// USER SCHEMA
@@ -28,10 +29,17 @@ export const users = mysqlTable("users", {
   roleId: bigint("roleId", { mode: "number", unsigned: true })
     .notNull()
     .references(() => roles.id),
+  positionId: bigint("positionId", { mode: "number", unsigned: true })
+    .notNull()
+    .references(() => positions.id),
 });
 
 export const userRelations = relations(users, ({ one }) => ({
   role: one(roles, { fields: [users.roleId], references: [roles.id] }),
+  position: one(positions, {
+    fields: [users.positionId],
+    references: [positions.id],
+  }),
 }));
 
 /// STUDENTS SCHEMA
@@ -64,6 +72,8 @@ export const logs = mysqlTable("logs", {
     .autoincrement()
     .primaryKey(),
   details: text("details"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 
   userId: bigint("userId", { mode: "number", unsigned: true })
     .notNull()
@@ -80,6 +90,8 @@ export const roles = mysqlTable("roles", {
     .primaryKey(),
   code: varchar("code", { length: 256 }).notNull(),
   title: varchar("title", { length: 256 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export const permissions = mysqlTable("permissions", {
@@ -88,6 +100,8 @@ export const permissions = mysqlTable("permissions", {
     .primaryKey(),
   code: varchar("code", { length: 256 }).notNull(),
   title: varchar("title", { length: 256 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export const adminRelations = relations(admins, ({ one }) => ({
@@ -102,26 +116,17 @@ export const teachers = mysqlTable("teachers", {
   id: bigint("id", { mode: "number", unsigned: true })
     .autoincrement()
     .primaryKey(),
-  highPostion: boolean("highPostion")
-    .notNull()
-    .$default(() => false),
+  highPosition: boolean("highPosition").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 
   userId: bigint("userId", { mode: "number", unsigned: true })
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
-  positionId: bigint("positionId", { mode: "number", unsigned: true })
-    .notNull()
-    .references(() => positions.id, { onDelete: "cascade" }),
 });
 
 export const teachersRelations = relations(teachers, ({ one }) => ({
   user: one(users, { fields: [teachers.userId], references: [users.id] }),
-  postion: one(positions, {
-    fields: [teachers.positionId],
-    references: [positions.id],
-  }),
 }));
 
 /// POSTION SCHEMA
@@ -180,6 +185,8 @@ export const forms = mysqlTable("forms", {
   creator: bigint("creator", { mode: "number", unsigned: true })
     .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export const formsRelations = relations(forms, ({ one }) => ({
@@ -194,14 +201,19 @@ export const formsAccess = mysqlTable("formsAccess", {
   formId: bigint("formId", { mode: "number", unsigned: true })
     .references(() => forms.id, { onDelete: "cascade" })
     .notNull(),
-  roleId: bigint("roleId", { mode: "number", unsigned: true })
-    .references(() => roles.id, { onDelete: "cascade" })
+  positionId: bigint("positionId", { mode: "number", unsigned: true })
+    .references(() => positions.id, { onDelete: "cascade" })
     .notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export const formsAccessRelations = relations(formsAccess, ({ one }) => ({
   form: one(forms, { fields: [formsAccess.formId], references: [forms.id] }),
-  role: one(roles, { fields: [formsAccess.roleId], references: [roles.id] }),
+  position: one(positions, {
+    fields: [formsAccess.positionId],
+    references: [positions.id],
+  }),
 }));
 
 // FIELD SCHEMA (unofficiel)
@@ -214,6 +226,8 @@ export const fields = mysqlTable("fields", {
   formId: bigint("formId", { mode: "number", unsigned: true })
     .references(() => forms.id, { onDelete: "cascade" })
     .notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export const fieldsRelations = relations(fields, ({ one }) => ({
@@ -230,6 +244,8 @@ export const typedFields = mysqlTable("typedFields", {
   fieldId: bigint("fieldId", { mode: "number", unsigned: true })
     .references(() => fields.id, { onDelete: "cascade" })
     .notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export const typedFieldsRelations = relations(typedFields, ({ one }) => ({
@@ -243,12 +259,20 @@ export const sourceableFields = mysqlTable("sourceableFields", {
   id: bigint("id", { mode: "number", unsigned: true })
     .autoincrement()
     .primaryKey(),
-  type: mysqlEnum("type", ["certificate", "book", "article", "conference"]),
+  type: mysqlEnum("type", [
+    "certificate",
+    "book",
+    "article",
+    "conference",
+    "thesis",
+  ]),
   points: int("points", { unsigned: true }),
   label: varchar("label", { length: 256 }),
   fieldId: bigint("fieldId", { mode: "number", unsigned: true })
     .references(() => fields.id, { onDelete: "cascade" })
     .notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export const sourceableFieldsRelations = relations(
@@ -271,6 +295,8 @@ export const documents = mysqlTable("documents", {
   userId: bigint("userId", { mode: "number", unsigned: true })
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export const documentsRelations = relations(documents, ({ one }) => ({
@@ -284,6 +310,8 @@ export const certificates = mysqlTable("certeficates", {
   documentId: bigint("documentId", { mode: "number", unsigned: true })
     .references(() => documents.id, { onDelete: "cascade" })
     .notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export const certificatesRelations = relations(certificates, ({ one }) => ({
@@ -300,6 +328,8 @@ export const books = mysqlTable("books", {
   documentId: bigint("documentId", { mode: "number", unsigned: true })
     .references(() => documents.id, { onDelete: "cascade" })
     .notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export const booksRelations = relations(books, ({ one }) => ({
@@ -316,6 +346,8 @@ export const articles = mysqlTable("articles", {
   documentId: bigint("documentId", { mode: "number", unsigned: true })
     .references(() => documents.id, { onDelete: "cascade" })
     .notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export const articlesRelations = relations(articles, ({ one }) => ({
@@ -332,12 +364,45 @@ export const conferences = mysqlTable("conferencse", {
   documentId: bigint("documentId", { mode: "number", unsigned: true })
     .references(() => documents.id, { onDelete: "cascade" })
     .notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export const conferencesRelations = relations(conferences, ({ one }) => ({
   document: one(documents, {
     fields: [conferences.documentId],
     references: [documents.id],
+  }),
+}));
+
+export const theses = mysqlTable("theses", {
+  id: bigint("id", { mode: "number", unsigned: true })
+    .autoincrement()
+    .primaryKey(),
+
+  documentId: bigint("documentId", { mode: "number", unsigned: true })
+    .references(() => documents.id, { onDelete: "cascade" })
+    .notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  isSupervisor: boolean("isSupervisor").default(false).notNull(),
+  isCosupervisor: boolean("isCosupervisor").default(false).notNull(),
+  year: year("year").notNull(),
+  type: mysqlEnum("type", ["PhD", "Master", "License"]).notNull(),
+  userId: bigint("userId", { mode: "number", unsigned: true })
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export const thesesRelations = relations(theses, ({ one }) => ({
+  document: one(documents, {
+    fields: [theses.documentId],
+    references: [documents.id],
+  }),
+  user: one(users, {
+    fields: [theses.userId],
+    references: [users.id],
   }),
 }));
 

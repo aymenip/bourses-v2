@@ -10,6 +10,7 @@ export class UserDTO {
   password: string;
   createdAt: Date;
   updatedAt: Date;
+  positionId: number;
   roleId: number;
   constructor(
     id: number,
@@ -21,6 +22,7 @@ export class UserDTO {
     password: string,
     createdAt: Date,
     updatedAt: Date,
+    positionId: number,
     roleId: number
   ) {
     this.password = password;
@@ -32,6 +34,7 @@ export class UserDTO {
     this.email = email;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.positionId = positionId;
     this.roleId = roleId;
   }
 }

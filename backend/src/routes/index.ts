@@ -6,15 +6,17 @@ import role from "./role.routes";
 import form from "./form.routes";
 import field from "./field.routes";
 import admin from "./admin.routes";
+import thesis from "./thesis.routes";
 const router = express.Router();
 
 export default (): express.Router => {
+  admin(router);
+  user(router);
   teacher(router);
   position(router);
-  user(router);
   role(router);
   form(router);
   field(router);
-  admin(router);
+  thesis(router);
   return router;
 };

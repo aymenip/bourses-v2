@@ -1,14 +1,8 @@
 export class UpdateTeacherDTO {
-    id: number;
-    highPostion?: boolean;
-    positionId?: number;
-    constructor(
-        id: number,
-        highPostion?: boolean,
-        positionId?: number,
-    ) {
-        this.id = id;
-        this.highPostion = highPostion;
-        this.positionId = positionId;
-    }
+  id: number;
+  highPosition?: boolean;
+  constructor(id: number, highPosition?: boolean) {
+    this.id = id;
+    this.highPosition = highPosition;
+  }
 }

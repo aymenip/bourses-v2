@@ -1,5 +1,5 @@
 import express from "express";
-import { verifyToken } from "../middlewares/auth.middleware";
+import { isAdmin, verifyToken } from "../middlewares/auth.middleware";
 import {
   AllForms,
   CreateForm,
@@ -7,6 +7,7 @@ import {
   GetForm,
   UpdateForm,
 } from "../form/controller/form.controller";
+import { ChangeFormAccess } from "../form/controller/form.access.controller";
 
 export default (router: express.Router) => {
   router.get("/form/all", verifyToken, AllForms);
@@ -14,4 +15,7 @@ export default (router: express.Router) => {
   router.post("/form/create", verifyToken, CreateForm);
   router.post("/form/update", verifyToken, UpdateForm);
   router.delete("/form/:id", verifyToken, DeleteForm);
+
+  // formsaccess
+  router.post("/form/access/change", verifyToken, isAdmin, ChangeFormAccess);
 };

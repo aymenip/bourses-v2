@@ -1,5 +1,5 @@
 import { TLogin, TLoginResponse, TAuthenticationContext, TUser } from "@/types";
-import { roleIdToRole } from "../utils";
+import { positionIdToPermission, roleIdToRole } from "../utils";
 import { axiosInstance } from ".."
 
 export async function login(loginInput: TLogin) {
@@ -31,11 +31,12 @@ export function clearSotrage() {
 
 export function authenticationContext(): TAuthenticationContext {
     if (localStorage.getItem("user") === null)
-        return { isAuthenticated: false, role: null, token: null };
+        return { isAuthenticated: false, role: null, token: null, position: null };
     const user: TLoginResponse = JSON.parse(localStorage.getItem("user")!);
     return {
         isAuthenticated: user.token !== null,
         role: roleIdToRole(user.roleId),
+        position: positionIdToPermission(user.positionId),
         token: user.token,
     };
 }
