@@ -10,6 +10,9 @@ import {
 import {
     useRoles
 } from "./roles/queries";
+import {
+    useThesesForUser
+} from "./theses/queries";
 
 export {
     useUser,
@@ -17,4 +20,5 @@ export {
     useForm,
     useForms,
     useRoles,
+    useThesesForUser,
 }

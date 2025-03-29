@@ -2,22 +2,37 @@ export class CreateThesisDTO {
   documentId: number;
   title: string;
   isSupervisor: boolean;
-  isCosupervisor: boolean;
-  year: number;
-  type: "PhD" | "Master" | "License";
+  year: Date;
+  type:
+    | "phd"
+    | "master"
+    | "license"
+    | "phd"
+    | "master"
+    | "license"
+    | "phd"
+    | "master"
+    | "license";
 
   constructor(
     documentId: number,
     title: string,
     isSupervisor: boolean,
-    isCosupervisor: boolean,
-    year: number,
-    type: "PhD" | "Master" | "License"
+    year: Date,
+    type:
+      | "phd"
+      | "master"
+      | "license"
+      | "phd"
+      | "master"
+      | "license"
+      | "phd"
+      | "master"
+      | "license"
   ) {
     this.documentId = documentId;
     this.title = title;
     this.isSupervisor = isSupervisor;
-    this.isCosupervisor = isCosupervisor;
     this.year = year;
     this.type = type;
   }

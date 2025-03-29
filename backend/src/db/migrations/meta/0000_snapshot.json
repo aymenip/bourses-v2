@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "308d3215-fde4-412f-8a02-4d50850894bb",
+  "id": "86981386-80f7-4852-bc9e-dc746223332b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "admins": {
@@ -102,6 +102,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "userId": {
+          "name": "userId",
+          "type": "bigint unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "createdAt": {
           "name": "createdAt",
           "type": "timestamp",
@@ -134,6 +141,19 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "articles_userId_users_id_fk": {
+          "name": "articles_userId_users_id_fk",
+          "tableFrom": "articles",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -158,6 +178,13 @@
         },
         "documentId": {
           "name": "documentId",
+          "type": "bigint unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "userId": {
+          "name": "userId",
           "type": "bigint unsigned",
           "primaryKey": false,
           "notNull": true,
@@ -195,6 +222,19 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "books_userId_users_id_fk": {
+          "name": "books_userId_users_id_fk",
+          "tableFrom": "books",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -219,6 +259,13 @@
         },
         "documentId": {
           "name": "documentId",
+          "type": "bigint unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "userId": {
+          "name": "userId",
           "type": "bigint unsigned",
           "primaryKey": false,
           "notNull": true,
@@ -256,6 +303,19 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "certeficates_userId_users_id_fk": {
+          "name": "certeficates_userId_users_id_fk",
+          "tableFrom": "certeficates",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -280,6 +340,13 @@
         },
         "documentId": {
           "name": "documentId",
+          "type": "bigint unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "userId": {
+          "name": "userId",
           "type": "bigint unsigned",
           "primaryKey": false,
           "notNull": true,
@@ -317,6 +384,19 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "conferencse_userId_users_id_fk": {
+          "name": "conferencse_userId_users_id_fk",
+          "tableFrom": "conferencse",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -341,6 +421,13 @@
         },
         "type": {
           "name": "type",
+          "type": "varchar(5)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "path": {
+          "name": "path",
           "type": "varchar(2048)",
           "primaryKey": false,
           "notNull": false,
@@ -1013,7 +1100,7 @@
         },
         "type": {
           "name": "type",
-          "type": "enum('certificate','book','article','conference')",
+          "type": "enum('certificate','book','article','conference','thesis')",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -1205,6 +1292,116 @@
       "compositePrimaryKeys": {
         "teachers_id": {
           "name": "teachers_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "theses": {
+      "name": "theses",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "documentId": {
+          "name": "documentId",
+          "type": "bigint unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "isSupervisor": {
+          "name": "isSupervisor",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "year": {
+          "name": "year",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "type": {
+          "name": "type",
+          "type": "enum('phd','master','license')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "bigint unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "onUpdate": true,
+          "default": "(now())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "theses_documentId_documents_id_fk": {
+          "name": "theses_documentId_documents_id_fk",
+          "tableFrom": "theses",
+          "tableTo": "documents",
+          "columnsFrom": [
+            "documentId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "theses_userId_users_id_fk": {
+          "name": "theses_userId_users_id_fk",
+          "tableFrom": "theses",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "theses_id": {
+          "name": "theses_id",
           "columns": [
             "id"
           ]

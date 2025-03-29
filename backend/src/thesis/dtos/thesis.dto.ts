@@ -4,9 +4,17 @@ export class ThesisDTO {
   userId: number;
   title: string;
   isSupervisor: boolean;
-  isCosupervisor: boolean;
-  year: number;
-  type: "PhD" | "Master" | "License";
+  year: Date;
+  type:
+    | "phd"
+    | "master"
+    | "license"
+    | "phd"
+    | "master"
+    | "license"
+    | "phd"
+    | "master"
+    | "license";
 
   constructor(
     id: number,
@@ -14,16 +22,23 @@ export class ThesisDTO {
     userId: number,
     title: string,
     isSupervisor: boolean,
-    isCosupervisor: boolean,
-    year: number,
-    type: "PhD" | "Master" | "License"
+    year: Date,
+    type:
+      | "phd"
+      | "master"
+      | "license"
+      | "phd"
+      | "master"
+      | "license"
+      | "phd"
+      | "master"
+      | "license"
   ) {
     this.id = id;
     this.documentId = documentId;
     this.userId = userId;
     this.title = title;
     this.isSupervisor = isSupervisor;
-    this.isCosupervisor = isCosupervisor;
     this.year = year;
     this.type = type;
   }

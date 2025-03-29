@@ -413,9 +413,8 @@ export const theses = mysqlTable("theses", {
     .notNull(),
   title: varchar("title", { length: 255 }).notNull(),
   isSupervisor: boolean("isSupervisor").default(false).notNull(),
-  isCosupervisor: boolean("isCosupervisor").default(false).notNull(),
-  year: year("year").notNull(),
-  type: mysqlEnum("type", ["PhD", "Master", "License"]).notNull(),
+  year: date("year").notNull(),
+  type: mysqlEnum("type", ["phd", "master", "license"]).notNull(),
   userId: bigint("userId", { mode: "number", unsigned: true })
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),

@@ -16,9 +16,6 @@ function FormCreate() {
     // form store
     const currentForm = useFormStore((state) => state.currentForm);
 
-
-
-
     return <div className='content-container'>
         <TopBar page_name='forms/create' />
         <div className='px-2 pt-6 grid grid-cols-8 gap-x-2 '>

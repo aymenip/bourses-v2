@@ -56,11 +56,10 @@ export const getAllThesesForUser = async (
         (thesis) =>
           new ThesisDTO(
             thesis.id,
-            userId,
             thesis.documentId,
+            userId,
             thesis.title,
             thesis.isSupervisor,
-            thesis.isCosupervisor,
             thesis.year,
             thesis.type
           )
@@ -86,7 +85,6 @@ export const getAllTheses = async (): Promise<ThesisDTO[]> => {
             thesis.userId,
             thesis.title,
             thesis.isSupervisor,
-            thesis.isCosupervisor,
             thesis.year,
             thesis.type
           )
@@ -107,6 +105,20 @@ export const getThesisById = async (id: number): Promise<ThesisDTO | null> => {
       .execute();
     // Return the first user or null if none found
     return result.length > 0 ? result[0] : null;
+  } catch (error) {
+    throw new Error("Failed to get Role"); // Handle errors appropriately
+  }
+};
+export const deleteThesis = async (id: number): Promise<void> => {
+  try {
+    const dbInstance = await db;
+    const result = await dbInstance
+      .delete(theses)
+      .where(eq(theses.id, id))
+      .execute();
+    // Return the first user or null if none found
+
+    return;
   } catch (error) {
     throw new Error("Failed to get Role"); // Handle errors appropriately
   }

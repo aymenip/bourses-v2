@@ -35,7 +35,6 @@ export const GetDocumentById = async (
   try {
     const { id } = req.params;
     const document = await getDocumentById(Number(id));
-
     if (!document)
       return res.status(404).json({ message: "Document not found" });
 

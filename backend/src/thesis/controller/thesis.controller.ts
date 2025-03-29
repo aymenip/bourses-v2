@@ -3,6 +3,7 @@ import express from "express";
 import { handleError } from "../../utils/errors";
 import {
   createThesis,
+  deleteThesis,
   getAllTheses,
   getAllThesesForUser,
   getThesisById,
@@ -83,5 +84,24 @@ export const GetAllTheses = async (
   } catch (error) {
     handleError(() => console.log(error));
     return res.sendStatus(400);
+  }
+};
+
+export const DeleteThesis = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.sub;
+
+    const thesis = await getThesisById(Number(id));
+    if (thesis.userId !== userId)
+      return res.status(401).json({ message: "Unauthorized" });
+    await deleteThesis(Number(id));
+    return res.status(204).json({ message: "Thesis deleted" });
+  } catch (error) {
+    console.error("GetThesisById Error:", error);
+    return res.status(500).json({ message: "Failed to fetch document" });
   }
 };

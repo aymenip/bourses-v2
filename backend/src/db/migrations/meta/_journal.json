@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1742882839419,
-      "tag": "0000_serious_the_hunter",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1743057137206,
-      "tag": "0001_silly_polaris",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1743057653719,
-      "tag": "0002_lucky_harry_osborn",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1743057855221,
-      "tag": "0003_dark_sersi",
+      "when": 1743231270728,
+      "tag": "0000_ancient_marvel_apes",
       "breakpoints": true
     }
   ]

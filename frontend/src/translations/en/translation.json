@@ -54,8 +54,10 @@
   "desc": "Desc",
   "hide": "Hide",
   "forms/create": "Create new form",
+  "theses/create": "Create new thesis",
   "type-form-name": "Form title...",
   "create-new-form": "Create new form",
+  "create-new-thesis": "Create new thesis",
   "field-label": "Field label",
   "field-type": "Field type",
   "field-points": "Field points",
@@ -99,6 +101,18 @@
   "emp": "Employee",
   "form-access-change-success": "The form access was changed successfully.",
   "form-access-change-pending": "Form access changing is pending.",
-  "form-access-change-error": "An error occurred while changing the form access."
-
+  "form-access-change-error": "An error occurred while changing the form access.",
+  "isSupervisor": "Supervisor",
+  "isCosupervisor": "Cosupervisor",
+  "document": "Document",
+  "thesis-type": "Thesis type",
+  "phd-thesis": "PhD thesis",
+  "master-thesis": "Master thesis",
+  "license-thesis": "License thesis",
+  "are-you-supervisor": "Were you a supervisor on this thesis ?",
+  "supervisor-unchecked": "Uncheking this option means that you were not a supervisor in this thesis, and you will be registered as co-supervisor.",
+  "attach-file": "Attach a file",
+  "thesis-year": "Date of supervision",
+  "select-thesis-type": "Select thesis type",
+  "download": "Download"
 }
