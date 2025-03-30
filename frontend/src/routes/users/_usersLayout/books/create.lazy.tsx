@@ -178,7 +178,7 @@ function CreateBook() {
                 </div>
 
                 <div className="form-group col-span-3  flex flex-col">
-                  <Label>{t('book-year')}</Label>
+                  <Label>{t('year')}</Label>
                   <Controller
                     control={form.control}
                     name="year"

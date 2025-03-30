@@ -162,7 +162,7 @@ function CreateThesis() {
                 </div>
 
                 <div className="form-group col-span-3  flex flex-col">
-                  <Label>{t("thesis-year")}</Label>
+                  <Label>{t("year")}</Label>
                   <Controller
                     control={form.control}
                     name="year"

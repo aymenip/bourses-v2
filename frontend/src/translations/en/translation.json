@@ -113,7 +113,7 @@
   "are-you-supervisor": "Were you a supervisor on this thesis ?",
   "supervisor-unchecked": "Uncheking this option means that you were not a supervisor in this thesis, and you will be registered as co-supervisor.",
   "attach-file": "Attach a file",
-  "thesis-year": "Date of supervision",
+  "year": "Date",
   "select-thesis-type": "Select thesis type",
   "download": "Download"
 }
