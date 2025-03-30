@@ -338,6 +338,11 @@ export const books = mysqlTable("books", {
   userId: bigint("userId", { mode: "number", unsigned: true })
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  title: varchar("title", { length: 255 }).notNull(), // Optional
+  year: date("year").notNull(), // Optional
+  author: varchar("author", { length: 255 }), // Optional
+  isbn: varchar("isbn", { length: 20 }).unique(), // Optional
+  publisher: varchar("publisher", { length: 255 }), // Optional
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

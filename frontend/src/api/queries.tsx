@@ -13,6 +13,10 @@ import {
 import {
     useThesesForUser
 } from "./theses/queries";
+import {
+    useBooksForUser
+} from "./books/queries";
+
 
 export {
     useUser,
@@ -21,4 +25,5 @@ export {
     useForms,
     useRoles,
     useThesesForUser,
+    useBooksForUser
 }

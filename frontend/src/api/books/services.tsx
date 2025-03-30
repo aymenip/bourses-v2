@@ -1,14 +1,14 @@
-import { TCreateThesis, TThesis } from "@/types/thesis";
 import { axiosInstance } from ".."
 import { authenticationContext } from "../auth/services";
+import { TBook, TCreateBook } from "@/types";
 
 
-export async function theses(): Promise<TThesis[]> {
+export async function books(): Promise<TBook[]> {
     const token = authenticationContext().token;
     if (!token) {
         throw new Error();
     }
-    const response = await axiosInstance.get<TThesis[]>("thesis/user", {
+    const response = await axiosInstance.get<TBook[]>("/book/user", {
         headers: {
             Authorization: token,
         },
@@ -16,12 +16,12 @@ export async function theses(): Promise<TThesis[]> {
     return response.data || [];
 }
 
-export async function createThesis(thesis: TCreateThesis): Promise<TThesis> {
+export async function createBook(book: TCreateBook): Promise<TBook> {
     const token = authenticationContext().token;
     if (!token) {
         throw new Error();
     }
-    const response = await axiosInstance.post<TThesis>("/thesis/create", thesis, {
+    const response = await axiosInstance.post<TBook>("/book/create", book, {
         headers: {
             Authorization: token,
         },
@@ -29,12 +29,12 @@ export async function createThesis(thesis: TCreateThesis): Promise<TThesis> {
     return response.data || null;
 }
 
-export async function deleteThesis(id: number): Promise<void> {
+export async function deleteBook(id: number): Promise<void> {
     const token = authenticationContext().token;
     if (!token) {
         throw new Error();
     }
-    await axiosInstance.delete(`/thesis/${id}`, {
+    await axiosInstance.delete(`/book/${id}`, {
         headers: {
             Authorization: token,
         },

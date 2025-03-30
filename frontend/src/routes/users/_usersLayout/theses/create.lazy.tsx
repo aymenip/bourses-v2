@@ -92,7 +92,7 @@ function CreateThesis() {
       return;
     }
     try {
-      createThesis({...values, year: format(new Date(values.year), "yyyy-MM-dd")});
+      createThesis({ ...values, year: format(new Date(values.year), "yyyy-MM-dd") });
     } catch (error) {
       console.error("Form submission error", error);
       toast.error("Failed to submit the form. Please try again.");
@@ -111,6 +111,7 @@ function CreateThesis() {
     if (isThesisCreationSuccess) {
       if (toastId) toast.dismiss(toastId); // Dismiss loading toast
       toast.success(t("thesis-creation-success"));
+
     }
 
     if (isThesisCreationError) {

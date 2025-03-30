@@ -11,10 +11,10 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTranslation } from "react-i18next";
-import { useDeleteThesis } from "@/api/theses/mutations";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { useThesesForUser } from "@/api/queries";
+import { useDeleteBook } from "@/api/books/mutations";
+import { useBooksForUser } from "@/api/queries";
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>;
@@ -25,17 +25,17 @@ export function DataTableRowActions<TData>({
 }: DataTableRowActionsProps<TData>) {
     // const task = taskSchema.parse(row.original);
     const [t, i18n] = useTranslation("translation")
-    const { mutate, isSuccess } = useDeleteThesis();
-    const { refetch } = useThesesForUser({
+    const { mutate, isSuccess } = useDeleteBook();
+    const { refetch } = useBooksForUser({
         enabled: false,
     });
-    const deleteThesis = () => {
+    const deleteBook = () => {
         const id = parseInt(row.getValue("id"));
         mutate(id);
     }
     useEffect(() => {
         if (isSuccess) {
-            toast.success(t("thesis-deleted"));
+            toast.success(t("book-deleted"));
             refetch();
         }
     }, [isSuccess]);
@@ -54,7 +54,7 @@ export function DataTableRowActions<TData>({
             <DropdownMenuContent align="end" className="w-[160px]">
                 <DropdownMenuItem>{t("edit")}</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={deleteThesis}>
+                <DropdownMenuItem onClick={deleteBook}>
                     {t("delete")}
                 </DropdownMenuItem>
             </DropdownMenuContent>

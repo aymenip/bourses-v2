@@ -1,7 +1,8 @@
 import { db } from "../../db/setup";
-import { theses } from "../../db/schema";
+import { documents, theses } from "../../db/schema";
 import { CreateThesisDTO, ThesisDTO, UpdateThesisDTO } from "../dtos";
 import { eq } from "drizzle-orm";
+import { deleteDocument } from "../../utils/uploads";
 
 export const createThesis = async (
   createThesisDTO: CreateThesisDTO,
@@ -106,20 +107,41 @@ export const getThesisById = async (id: number): Promise<ThesisDTO | null> => {
     // Return the first user or null if none found
     return result.length > 0 ? result[0] : null;
   } catch (error) {
-    throw new Error("Failed to get Role"); // Handle errors appropriately
+    throw new Error("Failed to get Thesis"); // Handle errors appropriately
   }
 };
 export const deleteThesis = async (id: number): Promise<void> => {
   try {
     const dbInstance = await db;
+    const deletedThesis = await getThesisById(id);
     const result = await dbInstance
       .delete(theses)
       .where(eq(theses.id, id))
       .execute();
-    // Return the first user or null if none found
+
+    try {
+      // delete the document from the documents table
+      const document = await dbInstance
+        .select({
+          path: documents.path,
+        })
+        .from(documents)
+        .where(eq(documents.id, deletedThesis.documentId))
+        .limit(1)
+        .execute();
+
+      await dbInstance
+        .delete(documents)
+        .where(eq(documents.id, deletedThesis.documentId))
+        .then(async () => {
+          deleteDocument(document[0].path);
+        });
+    } catch (error) {
+      throw new Error("Failed to delete thesis"); // Handle errors appropriately
+    }
 
     return;
   } catch (error) {
-    throw new Error("Failed to get Role"); // Handle errors appropriately
+    throw new Error("Failed to delete thesis"); // Handle errors appropriately
   }
 };

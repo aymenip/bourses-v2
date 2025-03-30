@@ -16,7 +16,6 @@ export const createAdmin = async (
 ): Promise<AdminDTO & UserDTO> => {
   try {
     const dbInstance = await db;
-
     const adminId = await dbInstance.transaction(
       async (tx: MySqlTransaction<any, any>) => {
         const userId = await createUser(createUserDTO, tx);

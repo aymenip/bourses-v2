@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "157937f8-d1f7-4d9c-8872-63f4a3686a90",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "4b8500f0-0178-4929-a6ad-fb62478983fb",
+  "prevId": "157937f8-d1f7-4d9c-8872-63f4a3686a90",
   "tables": {
     "admins": {
       "name": "admins",
@@ -280,7 +280,14 @@
           ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "books_isbn_unique": {
+          "name": "books_isbn_unique",
+          "columns": [
+            "isbn"
+          ]
+        }
+      }
     },
     "certeficates": {
       "name": "certeficates",

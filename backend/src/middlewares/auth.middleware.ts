@@ -17,6 +17,7 @@ export const verifyToken = (
 ) => {
   const token = req.header("Authorization");
   if (!token) return res.status(401).json({ error: "Access denied" });
+  
   try {
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     req.user = decoded;
@@ -43,7 +44,7 @@ export const verifyAdminKey = (
 };
 
 export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
-  if (req.user["role"] !== 1) {
+  if (!req.user["adminId"]) {
     res.status(401).json({ error: "Access denied" });
   } else {
     next();

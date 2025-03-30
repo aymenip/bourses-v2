@@ -6,10 +6,13 @@ import {
     useDeleteForm,
     useCreateTypedField
 } from "./forms/mutations";
-
+import {
+    useCreateBook
+} from "./books/mutations";
 export {
     useAuth,
     useCreateForm,
     useDeleteForm,
-    useCreateTypedField
+    useCreateTypedField,
+    useCreateBook
 }

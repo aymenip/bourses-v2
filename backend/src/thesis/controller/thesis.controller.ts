@@ -94,7 +94,6 @@ export const DeleteThesis = async (
   try {
     const { id } = req.params;
     const userId = req.user.sub;
-
     const thesis = await getThesisById(Number(id));
     if (thesis.userId !== userId)
       return res.status(401).json({ message: "Unauthorized" });
@@ -102,6 +101,6 @@ export const DeleteThesis = async (
     return res.status(204).json({ message: "Thesis deleted" });
   } catch (error) {
     console.error("GetThesisById Error:", error);
-    return res.status(500).json({ message: "Failed to fetch document" });
+    return res.status(500).json({ message: "Failed to fetch thesis" });
   }
 };

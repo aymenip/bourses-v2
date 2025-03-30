@@ -4,6 +4,7 @@ import { TStudent } from "./student";
 import { TEmployee } from "./employee";
 import { TUser } from "./user";
 import { TForm, TCreateForm, TField } from "./forms";
+import { TBook, TCreateBook } from "./book";
 export type {
   TLogin,
   TLoginResponse,
@@ -14,5 +15,7 @@ export type {
   TEmployee,
   TStudent,
   TTeacher,
+  TBook,
+  TCreateBook,
   TAuthenticationContext,
 };

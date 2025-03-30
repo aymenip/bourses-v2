@@ -26,12 +26,13 @@ export const CreateAdmin = async (
     const createAdminDTO: CreateAdminDTO = new CreateAdminDTO(
       req.body.permissionId
     );
-
     const createUserWithHashedPasswordDTO = await Register(createUserDTO);
+
     const createdUser = await createAdmin(
       createAdminDTO,
       createUserWithHashedPasswordDTO
     );
+
     const rgisterResponsePayload: JwtResponsePayload & JwtAdminResponsePayload =
       {
         email: createdUser.email,

@@ -13,6 +13,7 @@ import { verifyToken, isAdmin } from "../middlewares/auth.middleware";
 const UPLOADS_DIR = "uploads";
 if (!fs.existsSync(UPLOADS_DIR)) {
   fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+  
 }
 
 // Multer storage configuration for 'thesis' documents

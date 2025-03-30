@@ -21,10 +21,10 @@ export const DocumentDownloadButton = ({ documentId }: { documentId: number }) =
         <Button variant="outline" onClick={handleDownloadClick}>
             {fetchDocument && document?.path ? (
                 <Link href={`${document.path}`} download>
-                    <Download />
+                    {isPending ? <LoaderIcon className="animate-spin" /> : <Download />}
                 </Link>
             ) : (
-                !isPending ? t("download") : <LoaderIcon className="animate-spin" />
+                t("download")
             )}
         </Button>
     );
