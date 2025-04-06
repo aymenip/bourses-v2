@@ -21,10 +21,12 @@ function UsersLayout() {
     const { role } = authenticationContext()
 
     return (
-        <>
+        <div className='flex w-screen h-screen'>
             <Sidebar role={role!} />
-            <Outlet />
-        </>
+            <div className='flex-1 h-screen overflow-y-auto overflow-x-hidden'>
+                <Outlet />
+            </div>
+        </div>
     )
 }
 

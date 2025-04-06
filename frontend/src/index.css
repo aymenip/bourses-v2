@@ -85,7 +85,7 @@
   }
 
   .form {
-    @apply grid gap-y-10 max-h-[850px] overflow-y-auto;
+    @apply grid gap-y-10;
   }
 
   .form-group {

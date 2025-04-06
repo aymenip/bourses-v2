@@ -4,6 +4,8 @@ export const FormSchema = z.object({
   id: z.number(),
   title: z.string(),
   creator: z.number(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
 
 export const CreateFormSchema = z.object({
