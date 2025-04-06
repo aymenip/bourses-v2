@@ -30,11 +30,13 @@ import { useTranslation } from "react-i18next";
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    canCreate?: boolean;
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
+    canCreate = true,
 }: DataTableProps<TData, TValue>) {
     const [t, _] = useTranslation("translation")
     const [rowSelection, setRowSelection] = React.useState({});
@@ -69,7 +71,7 @@ export function DataTable<TData, TValue>({
 
     return (
         <div className="space-y-4">
-            <DataTableToolbar table={table} />
+            {canCreate && <DataTableToolbar table={table} />}
             <div className="overflow-y-auto rounded-md border dark:border-zinc-800">
                 <Table>
                     <TableHeader>
@@ -106,6 +108,7 @@ export function DataTable<TData, TValue>({
                                                 cell.column.columnDef.cell,
                                                 cell.getContext(),
                                             )}
+
                                         </TableCell>
                                     ))}
                                 </TableRow>

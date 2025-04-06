@@ -114,3 +114,20 @@ export async function changeFormAccess(createFormAccess: TCreateFormAccess): Pro
     })
     return response.data;
 }
+
+
+export async function getFormsForUser(positionId: number): Promise<TForm[]> {
+    const token = authenticationContext().token;
+    
+    if (!token) {
+        throw new Error();
+    }
+
+    const response = await axiosInstance.get<TForm[]>(`form/user/${positionId}`, {
+        headers: {
+            Authorization: token,
+        },
+    });
+
+    return response.data || [];
+}

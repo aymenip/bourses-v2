@@ -2,6 +2,7 @@ import { db } from "../../db/setup";
 import { formsAccess } from "../../db/schema";
 import { eq, inArray } from "drizzle-orm";
 import { CreateFormAccessDTO } from "../dtos/form-access";
+import { and } from "drizzle-orm";
 
 export const changeFormAccess = async (
   createFormAccessDTO: CreateFormAccessDTO
@@ -28,7 +29,12 @@ export const changeFormAccess = async (
     if (toDelete.length !== 0) {
       await dbInstance
         .delete(formsAccess)
-        .where(inArray(formsAccess.positionId, toDelete));
+        .where(
+          and(
+            inArray(formsAccess.positionId, toDelete),
+            eq(formsAccess.formId, createFormAccessDTO.formId)
+          )
+        );
     }
 
     // Step 3: Insert only missing positions

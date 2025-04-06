@@ -5,6 +5,7 @@ import {
   CreateForm,
   DeleteForm,
   GetForm,
+  GetFormsForUser,
   UpdateForm,
 } from "../form/controller/form.controller";
 import { ChangeFormAccess } from "../form/controller/form.access.controller";
@@ -18,4 +19,7 @@ export default (router: express.Router) => {
 
   // formsaccess
   router.post("/form/access/change", verifyToken, isAdmin, ChangeFormAccess);
+
+
+  router.get("/form/user/:positionId", verifyToken, GetFormsForUser);
 };

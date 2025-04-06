@@ -10,6 +10,7 @@ import {
   updateForm,
   getFormsById,
   deleteForm,
+  getFormsForUser,
 } from "../repository/form.repository";
 
 dotenv.config();
@@ -127,6 +128,24 @@ export const DeleteForm = async (
     await deleteForm(formId);
 
     return res.status(200).json(form);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
+
+
+export const GetFormsForUser = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+
+    const positionId = parseInt(req.params.positionId);
+
+    const forms = await getFormsForUser(positionId);
+
+    return res.status(200).json(forms);
   } catch (error) {
     handleError(() => console.log(error));
     return res.sendStatus(400);

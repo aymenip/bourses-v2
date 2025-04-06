@@ -44,7 +44,7 @@ export const updateForm = async (
       .execute();
 
     const form = await getFormById(updateFormDTO.id);
-    
+
     return form;
   } catch (error) {
     console.log(error);
@@ -55,7 +55,6 @@ export const updateForm = async (
 /// GET FORM BY ID
 export const getFormById = async (id: number): Promise<FormDTO | null> => {
   try {
-
     const dbInstance = await db; // Ensure db instance is awaited once
     const result = await dbInstance
       .select()
@@ -123,29 +122,32 @@ export const deleteForm = async (id: number): Promise<void> => {
   try {
     const dbInstance = await db; // Ensure db instance is awaited once
 
-    const result = await dbInstance.delete(forms).where(eq(forms.id, id));
+    await dbInstance.delete(forms).where(eq(forms.id, id));
   } catch (error) {
     console.error("Error fetching form by id:", error); // Log the error for debugging
     return null; // Handle errors appropriately
   }
 };
 
-
-export const getFormsForUser = async (positionId: number): Promise<FormDTO[]> => {
+export const getFormsForUser = async (
+  positionId: number
+): Promise<FormDTO[]> => {
   try {
     const dbInstance = await db; // Ensure db instance is awaited once
-    const formsIds = await dbInstance
-    .select({
-      formId: formsAccess.formId,
-    })
-    .from(formsAccess)
-    .where(eq(formsAccess.positionId, positionId))
-    .execute();
-    
-    const result = await dbInstance
-      .select()
-      .from(forms)
 
+    const result = await dbInstance
+      .select({
+        id: forms.id,
+        title: forms.title,
+        creator: forms.creator,
+        createdAt: forms.createdAt,
+        updatedAt: forms.updatedAt,
+      })
+      .from(forms)
+      .innerJoin(formsAccess, eq(forms.id, formsAccess.formId))
+      .where(eq(formsAccess.positionId, positionId));
+
+    return result;
   } catch (error) {
     console.error("Error fetching forms by position:", error); // Log the error for debugging
     return null; // Handle errors appropriately
