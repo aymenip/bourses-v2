@@ -303,7 +303,7 @@ export const documentsRelations = relations(documents, ({ one }) => ({
   creator: one(users, { fields: [documents.userId], references: [users.id] }),
 }));
 
-export const certificates = mysqlTable("certeficates", {
+export const certificates = mysqlTable("certificates", {
   id: bigint("id", { mode: "number", unsigned: true })
     .autoincrement()
     .primaryKey(),
@@ -313,6 +313,11 @@ export const certificates = mysqlTable("certeficates", {
   userId: bigint("userId", { mode: "number", unsigned: true })
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  title: varchar("title", { length: 255 }).notNull(),
+  issuer: varchar("issuer", { length: 255 }).notNull(), // Organization that issued the certificate
+  issueDate: date("issueDate").notNull(),
+  expirationDate: date("expirationDate"),
+  certificateId: varchar("certificateId", { length: 100 }).unique(), // Optional (for tracking)
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -368,6 +373,17 @@ export const articles = mysqlTable("articles", {
   userId: bigint("userId", { mode: "number", unsigned: true })
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  title: varchar("title", { length: 255 }).notNull(), // Optional
+  authors: varchar("authors", { length: 1024 }), // Optional (comma-separated list or JSON array)
+  journal: varchar("journal", { length: 255 }).notNull(), // Optional (Journal name)
+  volume: varchar("volume", { length: 50 }), // Optional (Volume number)
+  issue: varchar("issue", { length: 50 }), // Optional (Issue number)
+  pages: varchar("pages", { length: 50 }), // Optional (Page range)
+  publicationDate: date("publicationDate"), // Optional
+  doi: varchar("doi", { length: 100 }), // Optional (DOI for reference)
+  classification: mysqlEnum("classification", ["A", "B", "C", "D", "E", "F"])
+    .notNull()
+    .default("C"), // Article classification
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -383,7 +399,7 @@ export const articlesRelations = relations(articles, ({ one }) => ({
   }),
 }));
 
-export const conferences = mysqlTable("conferencse", {
+export const conferences = mysqlTable("conferences", {
   id: bigint("id", { mode: "number", unsigned: true })
     .autoincrement()
     .primaryKey(),
@@ -393,6 +409,17 @@ export const conferences = mysqlTable("conferencse", {
   userId: bigint("userId", { mode: "number", unsigned: true })
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  title: varchar("title", { length: 255 }).notNull(), // (Conference Paper Title)
+  conferenceName: varchar("conferenceName", { length: 255 }).notNull(), // (Conference Name)
+  location: varchar("location", { length: 255 }).notNull(), // (Conference Location)
+  date: date("date"), // Optional (Conference Date)
+  classification: mysqlEnum("classification", [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+  ]).default("C"), // Conference classification/ranking
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

@@ -1,5 +1,5 @@
 import { db } from "../../db/setup";
-import { forms } from "../../db/schema";
+import { forms, formsAccess } from "../../db/schema";
 import { CreateFormDTO, FormDTO, UpdateFormDTO } from "../dtos";
 import { eq } from "drizzle-orm";
 import { CAE } from "../../utils/constants";
@@ -126,6 +126,28 @@ export const deleteForm = async (id: number): Promise<void> => {
     const result = await dbInstance.delete(forms).where(eq(forms.id, id));
   } catch (error) {
     console.error("Error fetching form by id:", error); // Log the error for debugging
+    return null; // Handle errors appropriately
+  }
+};
+
+
+export const getFormsForUser = async (positionId: number): Promise<FormDTO[]> => {
+  try {
+    const dbInstance = await db; // Ensure db instance is awaited once
+    const formsIds = await dbInstance
+    .select({
+      formId: formsAccess.formId,
+    })
+    .from(formsAccess)
+    .where(eq(formsAccess.positionId, positionId))
+    .execute();
+    
+    const result = await dbInstance
+      .select()
+      .from(forms)
+
+  } catch (error) {
+    console.error("Error fetching forms by position:", error); // Log the error for debugging
     return null; // Handle errors appropriately
   }
 };

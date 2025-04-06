@@ -67,5 +67,11 @@ export const routes: Route[] = [
         path: "/users/theses",
         roles: ["USER"]
     },
+    {
+        name: "usersCertificates",
+        icon: <PersonIcon />,
+        path: "/users/certificates",
+        roles: ["USER"]
+    },
 ]
 

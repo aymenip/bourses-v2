@@ -34,6 +34,9 @@ const UsersUsersLayoutThesesIndexLazyImport = createFileRoute(
 const UsersUsersLayoutConferencesIndexLazyImport = createFileRoute(
   '/users/_usersLayout/conferences/',
 )()
+const UsersUsersLayoutCertificatesIndexLazyImport = createFileRoute(
+  '/users/_usersLayout/certificates/',
+)()
 const UsersUsersLayoutBooksIndexLazyImport = createFileRoute(
   '/users/_usersLayout/books/',
 )()
@@ -55,8 +58,17 @@ const AdminAdminLayoutEmployeesIndexLazyImport = createFileRoute(
 const UsersUsersLayoutThesesCreateLazyImport = createFileRoute(
   '/users/_usersLayout/theses/create',
 )()
+const UsersUsersLayoutConferencesCreateLazyImport = createFileRoute(
+  '/users/_usersLayout/conferences/create',
+)()
+const UsersUsersLayoutCertificatesCreateLazyImport = createFileRoute(
+  '/users/_usersLayout/certificates/create',
+)()
 const UsersUsersLayoutBooksCreateLazyImport = createFileRoute(
   '/users/_usersLayout/books/create',
+)()
+const UsersUsersLayoutArticlesCreateLazyImport = createFileRoute(
+  '/users/_usersLayout/articles/create',
 )()
 const AdminAdminLayoutFormsCreateLazyImport = createFileRoute(
   '/_admin/_adminLayout/forms/create',
@@ -118,6 +130,17 @@ const UsersUsersLayoutConferencesIndexLazyRoute =
     getParentRoute: () => UsersUsersLayoutRoute,
   } as any).lazy(() =>
     import('./routes/users/_usersLayout/conferences/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const UsersUsersLayoutCertificatesIndexLazyRoute =
+  UsersUsersLayoutCertificatesIndexLazyImport.update({
+    id: '/certificates/',
+    path: '/certificates/',
+    getParentRoute: () => UsersUsersLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/users/_usersLayout/certificates/index.lazy').then(
       (d) => d.Route,
     ),
   )
@@ -197,6 +220,28 @@ const UsersUsersLayoutThesesCreateLazyRoute =
     ),
   )
 
+const UsersUsersLayoutConferencesCreateLazyRoute =
+  UsersUsersLayoutConferencesCreateLazyImport.update({
+    id: '/conferences/create',
+    path: '/conferences/create',
+    getParentRoute: () => UsersUsersLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/users/_usersLayout/conferences/create.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const UsersUsersLayoutCertificatesCreateLazyRoute =
+  UsersUsersLayoutCertificatesCreateLazyImport.update({
+    id: '/certificates/create',
+    path: '/certificates/create',
+    getParentRoute: () => UsersUsersLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/users/_usersLayout/certificates/create.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 const UsersUsersLayoutBooksCreateLazyRoute =
   UsersUsersLayoutBooksCreateLazyImport.update({
     id: '/books/create',
@@ -204,6 +249,17 @@ const UsersUsersLayoutBooksCreateLazyRoute =
     getParentRoute: () => UsersUsersLayoutRoute,
   } as any).lazy(() =>
     import('./routes/users/_usersLayout/books/create.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const UsersUsersLayoutArticlesCreateLazyRoute =
+  UsersUsersLayoutArticlesCreateLazyImport.update({
+    id: '/articles/create',
+    path: '/articles/create',
+    getParentRoute: () => UsersUsersLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/users/_usersLayout/articles/create.lazy').then(
       (d) => d.Route,
     ),
   )
@@ -329,11 +385,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminLayoutFormsCreateLazyImport
       parentRoute: typeof AdminAdminLayoutImport
     }
+    '/users/_usersLayout/articles/create': {
+      id: '/users/_usersLayout/articles/create'
+      path: '/articles/create'
+      fullPath: '/users/articles/create'
+      preLoaderRoute: typeof UsersUsersLayoutArticlesCreateLazyImport
+      parentRoute: typeof UsersUsersLayoutImport
+    }
     '/users/_usersLayout/books/create': {
       id: '/users/_usersLayout/books/create'
       path: '/books/create'
       fullPath: '/users/books/create'
       preLoaderRoute: typeof UsersUsersLayoutBooksCreateLazyImport
+      parentRoute: typeof UsersUsersLayoutImport
+    }
+    '/users/_usersLayout/certificates/create': {
+      id: '/users/_usersLayout/certificates/create'
+      path: '/certificates/create'
+      fullPath: '/users/certificates/create'
+      preLoaderRoute: typeof UsersUsersLayoutCertificatesCreateLazyImport
+      parentRoute: typeof UsersUsersLayoutImport
+    }
+    '/users/_usersLayout/conferences/create': {
+      id: '/users/_usersLayout/conferences/create'
+      path: '/conferences/create'
+      fullPath: '/users/conferences/create'
+      preLoaderRoute: typeof UsersUsersLayoutConferencesCreateLazyImport
       parentRoute: typeof UsersUsersLayoutImport
     }
     '/users/_usersLayout/theses/create': {
@@ -383,6 +460,13 @@ declare module '@tanstack/react-router' {
       path: '/books'
       fullPath: '/users/books'
       preLoaderRoute: typeof UsersUsersLayoutBooksIndexLazyImport
+      parentRoute: typeof UsersUsersLayoutImport
+    }
+    '/users/_usersLayout/certificates/': {
+      id: '/users/_usersLayout/certificates/'
+      path: '/certificates'
+      fullPath: '/users/certificates'
+      preLoaderRoute: typeof UsersUsersLayoutCertificatesIndexLazyImport
       parentRoute: typeof UsersUsersLayoutImport
     }
     '/users/_usersLayout/conferences/': {
@@ -438,21 +522,33 @@ const AdminAdminLayoutRouteWithChildren =
 
 interface UsersUsersLayoutRouteChildren {
   UsersUsersLayoutIndexLazyRoute: typeof UsersUsersLayoutIndexLazyRoute
+  UsersUsersLayoutArticlesCreateLazyRoute: typeof UsersUsersLayoutArticlesCreateLazyRoute
   UsersUsersLayoutBooksCreateLazyRoute: typeof UsersUsersLayoutBooksCreateLazyRoute
+  UsersUsersLayoutCertificatesCreateLazyRoute: typeof UsersUsersLayoutCertificatesCreateLazyRoute
+  UsersUsersLayoutConferencesCreateLazyRoute: typeof UsersUsersLayoutConferencesCreateLazyRoute
   UsersUsersLayoutThesesCreateLazyRoute: typeof UsersUsersLayoutThesesCreateLazyRoute
   UsersUsersLayoutArticlesIndexLazyRoute: typeof UsersUsersLayoutArticlesIndexLazyRoute
   UsersUsersLayoutBooksIndexLazyRoute: typeof UsersUsersLayoutBooksIndexLazyRoute
+  UsersUsersLayoutCertificatesIndexLazyRoute: typeof UsersUsersLayoutCertificatesIndexLazyRoute
   UsersUsersLayoutConferencesIndexLazyRoute: typeof UsersUsersLayoutConferencesIndexLazyRoute
   UsersUsersLayoutThesesIndexLazyRoute: typeof UsersUsersLayoutThesesIndexLazyRoute
 }
 
 const UsersUsersLayoutRouteChildren: UsersUsersLayoutRouteChildren = {
   UsersUsersLayoutIndexLazyRoute: UsersUsersLayoutIndexLazyRoute,
+  UsersUsersLayoutArticlesCreateLazyRoute:
+    UsersUsersLayoutArticlesCreateLazyRoute,
   UsersUsersLayoutBooksCreateLazyRoute: UsersUsersLayoutBooksCreateLazyRoute,
+  UsersUsersLayoutCertificatesCreateLazyRoute:
+    UsersUsersLayoutCertificatesCreateLazyRoute,
+  UsersUsersLayoutConferencesCreateLazyRoute:
+    UsersUsersLayoutConferencesCreateLazyRoute,
   UsersUsersLayoutThesesCreateLazyRoute: UsersUsersLayoutThesesCreateLazyRoute,
   UsersUsersLayoutArticlesIndexLazyRoute:
     UsersUsersLayoutArticlesIndexLazyRoute,
   UsersUsersLayoutBooksIndexLazyRoute: UsersUsersLayoutBooksIndexLazyRoute,
+  UsersUsersLayoutCertificatesIndexLazyRoute:
+    UsersUsersLayoutCertificatesIndexLazyRoute,
   UsersUsersLayoutConferencesIndexLazyRoute:
     UsersUsersLayoutConferencesIndexLazyRoute,
   UsersUsersLayoutThesesIndexLazyRoute: UsersUsersLayoutThesesIndexLazyRoute,
@@ -482,7 +578,10 @@ export interface FileRoutesByFullPath {
   '/students/$id': typeof AdminAdminLayoutStudentsIdRoute
   '/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
   '/forms/create': typeof AdminAdminLayoutFormsCreateLazyRoute
+  '/users/articles/create': typeof UsersUsersLayoutArticlesCreateLazyRoute
   '/users/books/create': typeof UsersUsersLayoutBooksCreateLazyRoute
+  '/users/certificates/create': typeof UsersUsersLayoutCertificatesCreateLazyRoute
+  '/users/conferences/create': typeof UsersUsersLayoutConferencesCreateLazyRoute
   '/users/theses/create': typeof UsersUsersLayoutThesesCreateLazyRoute
   '/employees': typeof AdminAdminLayoutEmployeesIndexLazyRoute
   '/forms': typeof AdminAdminLayoutFormsIndexLazyRoute
@@ -490,6 +589,7 @@ export interface FileRoutesByFullPath {
   '/teachers': typeof AdminAdminLayoutTeachersIndexLazyRoute
   '/users/articles': typeof UsersUsersLayoutArticlesIndexLazyRoute
   '/users/books': typeof UsersUsersLayoutBooksIndexLazyRoute
+  '/users/certificates': typeof UsersUsersLayoutCertificatesIndexLazyRoute
   '/users/conferences': typeof UsersUsersLayoutConferencesIndexLazyRoute
   '/users/theses': typeof UsersUsersLayoutThesesIndexLazyRoute
 }
@@ -503,7 +603,10 @@ export interface FileRoutesByTo {
   '/students/$id': typeof AdminAdminLayoutStudentsIdRoute
   '/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
   '/forms/create': typeof AdminAdminLayoutFormsCreateLazyRoute
+  '/users/articles/create': typeof UsersUsersLayoutArticlesCreateLazyRoute
   '/users/books/create': typeof UsersUsersLayoutBooksCreateLazyRoute
+  '/users/certificates/create': typeof UsersUsersLayoutCertificatesCreateLazyRoute
+  '/users/conferences/create': typeof UsersUsersLayoutConferencesCreateLazyRoute
   '/users/theses/create': typeof UsersUsersLayoutThesesCreateLazyRoute
   '/employees': typeof AdminAdminLayoutEmployeesIndexLazyRoute
   '/forms': typeof AdminAdminLayoutFormsIndexLazyRoute
@@ -511,6 +614,7 @@ export interface FileRoutesByTo {
   '/teachers': typeof AdminAdminLayoutTeachersIndexLazyRoute
   '/users/articles': typeof UsersUsersLayoutArticlesIndexLazyRoute
   '/users/books': typeof UsersUsersLayoutBooksIndexLazyRoute
+  '/users/certificates': typeof UsersUsersLayoutCertificatesIndexLazyRoute
   '/users/conferences': typeof UsersUsersLayoutConferencesIndexLazyRoute
   '/users/theses': typeof UsersUsersLayoutThesesIndexLazyRoute
 }
@@ -528,7 +632,10 @@ export interface FileRoutesById {
   '/_admin/_adminLayout/students/$id': typeof AdminAdminLayoutStudentsIdRoute
   '/_admin/_adminLayout/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
   '/_admin/_adminLayout/forms/create': typeof AdminAdminLayoutFormsCreateLazyRoute
+  '/users/_usersLayout/articles/create': typeof UsersUsersLayoutArticlesCreateLazyRoute
   '/users/_usersLayout/books/create': typeof UsersUsersLayoutBooksCreateLazyRoute
+  '/users/_usersLayout/certificates/create': typeof UsersUsersLayoutCertificatesCreateLazyRoute
+  '/users/_usersLayout/conferences/create': typeof UsersUsersLayoutConferencesCreateLazyRoute
   '/users/_usersLayout/theses/create': typeof UsersUsersLayoutThesesCreateLazyRoute
   '/_admin/_adminLayout/employees/': typeof AdminAdminLayoutEmployeesIndexLazyRoute
   '/_admin/_adminLayout/forms/': typeof AdminAdminLayoutFormsIndexLazyRoute
@@ -536,6 +643,7 @@ export interface FileRoutesById {
   '/_admin/_adminLayout/teachers/': typeof AdminAdminLayoutTeachersIndexLazyRoute
   '/users/_usersLayout/articles/': typeof UsersUsersLayoutArticlesIndexLazyRoute
   '/users/_usersLayout/books/': typeof UsersUsersLayoutBooksIndexLazyRoute
+  '/users/_usersLayout/certificates/': typeof UsersUsersLayoutCertificatesIndexLazyRoute
   '/users/_usersLayout/conferences/': typeof UsersUsersLayoutConferencesIndexLazyRoute
   '/users/_usersLayout/theses/': typeof UsersUsersLayoutThesesIndexLazyRoute
 }
@@ -553,7 +661,10 @@ export interface FileRouteTypes {
     | '/students/$id'
     | '/teachers/$id'
     | '/forms/create'
+    | '/users/articles/create'
     | '/users/books/create'
+    | '/users/certificates/create'
+    | '/users/conferences/create'
     | '/users/theses/create'
     | '/employees'
     | '/forms'
@@ -561,6 +672,7 @@ export interface FileRouteTypes {
     | '/teachers'
     | '/users/articles'
     | '/users/books'
+    | '/users/certificates'
     | '/users/conferences'
     | '/users/theses'
   fileRoutesByTo: FileRoutesByTo
@@ -573,7 +685,10 @@ export interface FileRouteTypes {
     | '/students/$id'
     | '/teachers/$id'
     | '/forms/create'
+    | '/users/articles/create'
     | '/users/books/create'
+    | '/users/certificates/create'
+    | '/users/conferences/create'
     | '/users/theses/create'
     | '/employees'
     | '/forms'
@@ -581,6 +696,7 @@ export interface FileRouteTypes {
     | '/teachers'
     | '/users/articles'
     | '/users/books'
+    | '/users/certificates'
     | '/users/conferences'
     | '/users/theses'
   id:
@@ -596,7 +712,10 @@ export interface FileRouteTypes {
     | '/_admin/_adminLayout/students/$id'
     | '/_admin/_adminLayout/teachers/$id'
     | '/_admin/_adminLayout/forms/create'
+    | '/users/_usersLayout/articles/create'
     | '/users/_usersLayout/books/create'
+    | '/users/_usersLayout/certificates/create'
+    | '/users/_usersLayout/conferences/create'
     | '/users/_usersLayout/theses/create'
     | '/_admin/_adminLayout/employees/'
     | '/_admin/_adminLayout/forms/'
@@ -604,6 +723,7 @@ export interface FileRouteTypes {
     | '/_admin/_adminLayout/teachers/'
     | '/users/_usersLayout/articles/'
     | '/users/_usersLayout/books/'
+    | '/users/_usersLayout/certificates/'
     | '/users/_usersLayout/conferences/'
     | '/users/_usersLayout/theses/'
   fileRoutesById: FileRoutesById
@@ -667,10 +787,14 @@ export const routeTree = rootRoute
       "parent": "/users",
       "children": [
         "/users/_usersLayout/",
+        "/users/_usersLayout/articles/create",
         "/users/_usersLayout/books/create",
+        "/users/_usersLayout/certificates/create",
+        "/users/_usersLayout/conferences/create",
         "/users/_usersLayout/theses/create",
         "/users/_usersLayout/articles/",
         "/users/_usersLayout/books/",
+        "/users/_usersLayout/certificates/",
         "/users/_usersLayout/conferences/",
         "/users/_usersLayout/theses/"
       ]
@@ -703,8 +827,20 @@ export const routeTree = rootRoute
       "filePath": "_admin/_adminLayout/forms/create.lazy.tsx",
       "parent": "/_admin/_adminLayout"
     },
+    "/users/_usersLayout/articles/create": {
+      "filePath": "users/_usersLayout/articles/create.lazy.tsx",
+      "parent": "/users/_usersLayout"
+    },
     "/users/_usersLayout/books/create": {
       "filePath": "users/_usersLayout/books/create.lazy.tsx",
+      "parent": "/users/_usersLayout"
+    },
+    "/users/_usersLayout/certificates/create": {
+      "filePath": "users/_usersLayout/certificates/create.lazy.tsx",
+      "parent": "/users/_usersLayout"
+    },
+    "/users/_usersLayout/conferences/create": {
+      "filePath": "users/_usersLayout/conferences/create.lazy.tsx",
       "parent": "/users/_usersLayout"
     },
     "/users/_usersLayout/theses/create": {
@@ -733,6 +869,10 @@ export const routeTree = rootRoute
     },
     "/users/_usersLayout/books/": {
       "filePath": "users/_usersLayout/books/index.lazy.tsx",
+      "parent": "/users/_usersLayout"
+    },
+    "/users/_usersLayout/certificates/": {
+      "filePath": "users/_usersLayout/certificates/index.lazy.tsx",
       "parent": "/users/_usersLayout"
     },
     "/users/_usersLayout/conferences/": {

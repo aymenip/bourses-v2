@@ -6,6 +6,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
 import router from "./routes";
+import helmet from "helmet";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(compression());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(helmet());
 
 // ✅ Serve static files from the "uploads" folder
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));

@@ -9,10 +9,29 @@ import {
 import {
     useCreateBook
 } from "./books/mutations";
+import {
+    useCreateCertificate,
+    useDeleteCertificate
+} from "./certificates/mutations"
+import {
+    useCreateArticle,
+    useDeleteArticle
+} from "./articles/mutations"
+import {
+    useCreateConference,
+    useDeleteConference
+} from "./conferences/mutations"
+
 export {
     useAuth,
     useCreateForm,
     useDeleteForm,
     useCreateTypedField,
-    useCreateBook
+    useCreateBook,
+    useCreateCertificate,
+    useDeleteCertificate,
+    useCreateArticle,
+    useDeleteArticle,
+    useCreateConference,
+    useDeleteConference
 }

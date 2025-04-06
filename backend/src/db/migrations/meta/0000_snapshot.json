@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "157937f8-d1f7-4d9c-8872-63f4a3686a90",
+  "id": "3a6672b3-e025-4ac6-a884-4ecbe1f4294e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "admins": {
@@ -108,6 +108,63 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "journal": {
+          "name": "journal",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "volume": {
+          "name": "volume",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "issue": {
+          "name": "issue",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "pages": {
+          "name": "pages",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "publicationDate": {
+          "name": "publicationDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "doi": {
+          "name": "doi",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "classification": {
+          "name": "classification",
+          "type": "enum('A','B','C','D','E','F')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'C'"
         },
         "createdAt": {
           "name": "createdAt",
@@ -280,10 +337,17 @@
           ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "books_isbn_unique": {
+          "name": "books_isbn_unique",
+          "columns": [
+            "isbn"
+          ]
+        }
+      }
     },
-    "certeficates": {
-      "name": "certeficates",
+    "certificates": {
+      "name": "certificates",
       "columns": {
         "id": {
           "name": "id",
@@ -306,6 +370,41 @@
           "notNull": true,
           "autoincrement": false
         },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "issuer": {
+          "name": "issuer",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "issueDate": {
+          "name": "issueDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expirationDate": {
+          "name": "expirationDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "certificateId": {
+          "name": "certificateId",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "createdAt": {
           "name": "createdAt",
           "type": "timestamp",
@@ -326,9 +425,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "certeficates_documentId_documents_id_fk": {
-          "name": "certeficates_documentId_documents_id_fk",
-          "tableFrom": "certeficates",
+        "certificates_documentId_documents_id_fk": {
+          "name": "certificates_documentId_documents_id_fk",
+          "tableFrom": "certificates",
           "tableTo": "documents",
           "columnsFrom": [
             "documentId"
@@ -339,9 +438,9 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "certeficates_userId_users_id_fk": {
-          "name": "certeficates_userId_users_id_fk",
-          "tableFrom": "certeficates",
+        "certificates_userId_users_id_fk": {
+          "name": "certificates_userId_users_id_fk",
+          "tableFrom": "certificates",
           "tableTo": "users",
           "columnsFrom": [
             "userId"
@@ -354,17 +453,24 @@
         }
       },
       "compositePrimaryKeys": {
-        "certeficates_id": {
-          "name": "certeficates_id",
+        "certificates_id": {
+          "name": "certificates_id",
           "columns": [
             "id"
           ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "certificates_certificateId_unique": {
+          "name": "certificates_certificateId_unique",
+          "columns": [
+            "certificateId"
+          ]
+        }
+      }
     },
-    "conferencse": {
-      "name": "conferencse",
+    "conferences": {
+      "name": "conferences",
       "columns": {
         "id": {
           "name": "id",
@@ -387,6 +493,42 @@
           "notNull": true,
           "autoincrement": false
         },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "conferenceName": {
+          "name": "conferenceName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "location": {
+          "name": "location",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "date": {
+          "name": "date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "classification": {
+          "name": "classification",
+          "type": "enum('A','B','C','D','E')",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'C'"
+        },
         "createdAt": {
           "name": "createdAt",
           "type": "timestamp",
@@ -407,9 +549,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "conferencse_documentId_documents_id_fk": {
-          "name": "conferencse_documentId_documents_id_fk",
-          "tableFrom": "conferencse",
+        "conferences_documentId_documents_id_fk": {
+          "name": "conferences_documentId_documents_id_fk",
+          "tableFrom": "conferences",
           "tableTo": "documents",
           "columnsFrom": [
             "documentId"
@@ -420,9 +562,9 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "conferencse_userId_users_id_fk": {
-          "name": "conferencse_userId_users_id_fk",
-          "tableFrom": "conferencse",
+        "conferences_userId_users_id_fk": {
+          "name": "conferences_userId_users_id_fk",
+          "tableFrom": "conferences",
           "tableTo": "users",
           "columnsFrom": [
             "userId"
@@ -435,8 +577,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "conferencse_id": {
-          "name": "conferencse_id",
+        "conferences_id": {
+          "name": "conferences_id",
           "columns": [
             "id"
           ]

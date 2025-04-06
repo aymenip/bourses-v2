@@ -8,6 +8,9 @@ import field from "./field.routes";
 import admin from "./admin.routes";
 import thesis from "./thesis.routes";
 import book from "./book.routes";
+import certificate from "./certificate.routes";
+import articles from "./articles.routes";
+import conferences from "./conference.routes";
 import document from "./document.routes";
 const router = express.Router();
 
@@ -22,5 +25,8 @@ export default (): express.Router => {
   document(router);
   thesis(router);
   book(router);
+  certificate(router);
+  articles(router);
+  conferences(router);
   return router;
 };
