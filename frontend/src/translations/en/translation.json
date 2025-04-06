@@ -127,8 +127,8 @@
   "type": "Type",
   "issuer": "Issuer",
   "issuedate": "Issue date",
-  "create-new-conferences ": "Create new conferences",
-  "create new article": "Create new article",
+  "create-new-conferences": "Create new conferences",
+  "create-new-article": "Create new article",
   "create-new-certificate": "Create new certificate",
   "download": "Download"
 }
