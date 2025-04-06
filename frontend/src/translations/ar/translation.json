@@ -118,5 +118,15 @@
   "year": "التاريخ",
   "select-thesis-type": "إختر نوع المذكرة",
   "classification": "التصنيف",
+  "authors": "المؤلفون",
+  "documentId": "معرف الوثيقة",
+  "journal": "المجلة",
+  "conferenceName": "اسم الملتقى",
+  "location": "المكان",
+  "publisher": "الناشر",
+  "isbn": "رقم الكتاب",
+  "type": "النوع",
+  "issuer": "الجهة المصدرة",
+  "issueDate": "تاريخ الإصدار",
   "download": "تحميل"
 }

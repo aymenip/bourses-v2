@@ -117,5 +117,15 @@
   "year": "Date",
   "select-thesis-type": "Select thesis type",
   "classification": "Classification",
+  "authors": "Authors",
+  "documentid": "Document id",
+  "journal": "Journal",
+  "conferencename": "Conference name",
+  "location": "Location",
+  "publisher": "Publisher",
+  "isbn": "ISBN",
+  "type": "Type",
+  "issuer": "Issuer",
+  "issuedate": "Issue date",
   "download": "Download"
 }
