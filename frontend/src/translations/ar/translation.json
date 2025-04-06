@@ -128,5 +128,8 @@
   "type": "النوع",
   "issuer": "الجهة المصدرة",
   "issueDate": "تاريخ الإصدار",
+  "create-new-conferences": "إنشاء ملتقى جديد",
+  "create-new-article": "إنشاء مقال جديد",
+  "create-new-certificate": "إنشاء شهادة جديدة",
   "download": "تحميل"
 }
