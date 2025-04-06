@@ -1,9 +1,19 @@
 import { db } from "../../db/setup";
-import { forms, formsAccess } from "../../db/schema";
+import {
+  fields,
+  forms,
+  formsAccess,
+  sourceableFields,
+  typedFields,
+} from "../../db/schema";
 import { CreateFormDTO, FormDTO, UpdateFormDTO } from "../dtos";
 import { eq } from "drizzle-orm";
 import { CAE } from "../../utils/constants";
 import { and } from "drizzle-orm";
+import { FullFormDTO } from "../dtos/form.dto";
+import { FullFormBlockDTO } from "../../field/dtos/field.dto";
+import { TypedFieldDTO } from "../../field/dtos/typedField";
+import { SourceabledFieldDTO } from "../../field/dtos/sourceableField";
 
 export const createForm = async (
   createFormDTO: CreateFormDTO,
@@ -151,5 +161,89 @@ export const getFormsForUser = async (
   } catch (error) {
     console.error("Error fetching forms by position:", error); // Log the error for debugging
     return null; // Handle errors appropriately
+  }
+};
+
+export const getFullFormById = async (
+  id: number
+): Promise<FullFormDTO | null> => {
+  try {
+    const dbInstance = await db;
+
+    // 1. Fetch the form
+    const form = await dbInstance
+      .select()
+      .from(forms)
+      .where(eq(forms.id, id))
+      .limit(1)
+      .then((res) => res[0]);
+
+    if (!form) return null;
+
+    // 2. Fetch fields (form blocks) for this form
+    const formBlocks = await dbInstance
+      .select()
+      .from(fields)
+      .where(eq(fields.formId, id));
+
+    // 3. Build DTOs for blocks and their fields
+    const blockDTOs: FullFormBlockDTO[] = [];
+
+    for (const block of formBlocks) {
+      const typed = await dbInstance
+        .select()
+        .from(typedFields)
+        .where(eq(typedFields.fieldId, block.id));
+
+      const sourceable = await dbInstance
+        .select()
+        .from(sourceableFields)
+        .where(eq(sourceableFields.fieldId, block.id));
+
+      const fieldsDTO: (TypedFieldDTO | SourceabledFieldDTO)[] = [];
+
+      for (const tf of typed) {
+        fieldsDTO.push(
+          new TypedFieldDTO(
+            tf.id,
+            tf.type,
+            block.label,
+            tf.points,
+            tf.required,
+            tf.fieldId
+          )
+        );
+      }
+
+      for (const sf of sourceable) {
+        fieldsDTO.push(
+          new SourceabledFieldDTO(
+            sf.id,
+            sf.type,
+            sf.points,
+            block.label,
+            sf.required,
+            sf.fieldId
+          )
+        );
+      }
+
+      blockDTOs.push(
+        new FullFormBlockDTO(block.id, block.label, block.formId, fieldsDTO.map(field => [field]))
+      );
+    }
+
+    // 4. Construct FullFormDTO
+    const fullForm = new FullFormDTO(
+      form.id,
+      form.title,
+      form.creator,
+      blockDTOs
+    );
+
+    return fullForm;
+  } catch (error) {
+    console.error("Error fetching the full form by id:", error);
+    return null;
   }
 };

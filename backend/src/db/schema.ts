@@ -241,6 +241,7 @@ export const typedFields = mysqlTable("typedFields", {
   type: mysqlEnum("type", ["text", "date", "number", "url", "email"]),
   points: int("points", { unsigned: true }),
   label: varchar("label", { length: 256 }),
+  required: boolean("required").default(false).notNull(),
   fieldId: bigint("fieldId", { mode: "number", unsigned: true })
     .references(() => fields.id, { onDelete: "cascade" })
     .notNull(),
@@ -268,6 +269,7 @@ export const sourceableFields = mysqlTable("sourceableFields", {
   ]),
   points: int("points", { unsigned: true }),
   label: varchar("label", { length: 256 }),
+  required: boolean("required").default(false).notNull(),
   fieldId: bigint("fieldId", { mode: "number", unsigned: true })
     .references(() => fields.id, { onDelete: "cascade" })
     .notNull(),

@@ -31,7 +31,7 @@ function Dashboard() {
             forms?.map((form) => <div className='flex justify-between bg-slate-100 p-2 rounded-sm border cursor-pointer hover:bg-slate-200/50 hover:ring-2 ring-slate-200 transition-all'>
               <div className='truncate ltr:pr-2 rtl:pl-2'>
                 <H4>{form.title}</H4>
-                <Muted>{format(form.createdAt, 'yyyy-MM-dd, hh:mm b')}</Muted>
+                <Muted>{format(new Date(form.createdAt), 'yyyy-MM-dd hh:mm b')}</Muted>
               </div>
               <ExternalLink className='text-slate-400 w-5 h-5' />
             </div>)
@@ -48,7 +48,7 @@ function Dashboard() {
             forms?.map((form) => <div className='flex justify-between bg-slate-100 p-2 rounded-sm border cursor-pointer hover:bg-slate-200/50 hover:ring-2 ring-slate-200 transition-all'>
               <div className='truncate ltr:pr-2 rtl:pl-2'>
                 <H4>{form.title}</H4>
-                <Muted>{format(form.createdAt, 'yyyy-MM-dd hh:mm b')}</Muted>
+                <Muted>{format(new Date(form.createdAt), 'yyyy-MM-dd hh:mm b')}</Muted>
               </div>
               <ExternalLink className='text-slate-400 w-5 h-5' />
             </div>)

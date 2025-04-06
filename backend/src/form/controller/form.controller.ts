@@ -11,6 +11,7 @@ import {
   getFormsById,
   deleteForm,
   getFormsForUser,
+  getFullFormById,
 } from "../repository/form.repository";
 
 dotenv.config();
@@ -27,18 +28,16 @@ export const CreateForm = async (
       return res.status(400).json({ message: SW });
     }
 
-
     const form = await getFormByTitle(createFormDTO.title, creator);
 
     if (form) {
       return res.status(400).json({ message: FAE });
     }
-    
+
     const createdForm = await createForm(createFormDTO, creator);
 
     return res.status(200).json(createdForm);
   } catch (error) {
-    
     handleError(() => console.log(error));
     return res.sendStatus(400);
   }
@@ -134,18 +133,32 @@ export const DeleteForm = async (
   }
 };
 
-
 export const GetFormsForUser = async (
   req: express.Request,
   res: express.Response
 ): Promise<any> => {
   try {
-
     const positionId = parseInt(req.params.positionId);
 
     const forms = await getFormsForUser(positionId);
 
     return res.status(200).json(forms);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
+
+export const GetFullFormById = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+    const formId = parseInt(req.params.id);
+
+    const fullForm = await getFullFormById(formId);
+
+    return res.status(200).json(fullForm);
   } catch (error) {
     handleError(() => console.log(error));
     return res.sendStatus(400);

@@ -72,6 +72,7 @@ export const getTypedFieldById = async (
       typedFieldData.type,
       typedFieldData.label,
       typedFieldData.points,
+      typedFieldData.required,
       typedFieldData.fieldId
     );
   } catch (error) {

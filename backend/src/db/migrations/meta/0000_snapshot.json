@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "a4352497-978c-4a85-885f-67853c22d9b8",
+  "id": "5c281a0c-61ef-4e1a-ace6-d07e247a5d9d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "admins": {
@@ -1303,6 +1303,14 @@
           "notNull": false,
           "autoincrement": false
         },
+        "required": {
+          "name": "required",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
         "fieldId": {
           "name": "fieldId",
           "type": "bigint unsigned",
@@ -1623,6 +1631,14 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "required": {
+          "name": "required",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
         },
         "fieldId": {
           "name": "fieldId",

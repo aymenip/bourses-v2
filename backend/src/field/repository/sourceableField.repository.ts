@@ -72,6 +72,7 @@ export const getSourceableFieldById = async (
       sourceableFieldData.type,
       sourceableFieldData.points,
       sourceableFieldData.label,
+      sourceableFieldData.required,
       sourceableFieldData.fieldId
     );
   } catch (error) {

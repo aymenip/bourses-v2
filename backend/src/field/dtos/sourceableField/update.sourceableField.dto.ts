@@ -1,20 +1,23 @@
 export class UpdateSourceabledFieldDTO {
   id: number;
+  fieldId: number;
   type?: string;
   points?: number;
   label?: string;
-  fieldId?: number;
+  required?: boolean;
   constructor(
     id: number,
+    fieldId: number,
     type?: string,
     points?: number,
     label?: string,
-    fieldId?: number
+    required?: boolean
   ) {
     this.id = id;
+    this.fieldId = fieldId;
     this.type = type;
     this.points = points;
     this.label = label;
-    this.fieldId = fieldId;
+    this.required = required;
   }
 }
