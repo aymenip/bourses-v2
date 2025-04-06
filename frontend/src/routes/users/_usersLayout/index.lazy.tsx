@@ -1,8 +1,6 @@
 import { Loader } from '@/components/global/loader';
 import { TopBar } from '@/components/global/topBar';
 import { createLazyFileRoute } from '@tanstack/react-router';
-import { columns } from '@/components/forms/data-table-forms/columns';
-import { DataTable as FormDataTable } from '@/components/forms/data-table-forms/data-table';
 import { useGetFormsForUser } from '@/api/forms/queries';
 import { useUser } from '@/api/queries';
 import { H3, H4, Muted } from '@/components/ui/typography';
