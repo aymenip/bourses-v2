@@ -43,7 +43,6 @@ export const CreateAdmin = async (
         sub: createdUser.id,
         positionId: createUserDTO.positionId,
       };
-
     const token = await generateToken(rgisterResponsePayload);
 
     return res.status(200).json({ token: token });

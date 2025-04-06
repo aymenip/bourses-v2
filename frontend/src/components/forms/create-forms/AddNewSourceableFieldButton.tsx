@@ -8,7 +8,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CrossCircledIcon, PlusCircledIcon } from '@radix-ui/react-icons';
 import { TSourceableField, SourceableFieldSchema } from '@/types/forms';
