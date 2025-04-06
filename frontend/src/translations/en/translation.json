@@ -130,5 +130,6 @@
   "create-new-conferences": "Create new conferences",
   "create-new-article": "Create new article",
   "create-new-certificate": "Create new certificate",
+  "conferences/create": "Create conference",
   "download": "Download"
 }
