@@ -12,6 +12,7 @@ CREATE TABLE `articles` (
 	`documentId` bigint unsigned NOT NULL,
 	`userId` bigint unsigned NOT NULL,
 	`title` varchar(255) NOT NULL,
+	`authors` varchar(1024),
 	`journal` varchar(255) NOT NULL,
 	`volume` varchar(50),
 	`issue` varchar(50),

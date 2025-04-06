@@ -16,7 +16,7 @@
   "students": "الطلبة",
   "employee": "موظف",
   "employees": "الموظفون",
-  "cu": "المركز الجامعي",
+  "cu": "المركز الجامعي", 
   "cherif": "الشريف بوشوشة",
   "aflou": "أفلو",
   "number-of-teachers": "عدد الأساتذة",
@@ -117,5 +117,6 @@
   "attach-file": "قم بإرفاق ملف",
   "year": "التاريخ",
   "select-thesis-type": "إختر نوع المذكرة",
+  "classification": "التصنيف",
   "download": "تحميل"
 }

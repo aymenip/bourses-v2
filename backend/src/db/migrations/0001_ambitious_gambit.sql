@@ -1,1 +1,0 @@
-ALTER TABLE `articles` ADD `authors` varchar(1024);

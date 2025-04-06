@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "3a6672b3-e025-4ac6-a884-4ecbe1f4294e",
+  "id": "d94cf0fd-7f5c-436a-9ede-4c874e19490c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "admins": {
@@ -114,6 +114,13 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "authors": {
+          "name": "authors",
+          "type": "varchar(1024)",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "journal": {

@@ -27,7 +27,7 @@
   "request-password": "Please enter your password",
   "invalid-email": "Please enter a valid email",
   "at-least-8": "At least 8 characters",
-  "login-faild": "Oops! check your informations and try again.",
+  "login-faild": "Oops! check your informations and try again.", 
   "usersDashboard": "Dashboard",
   "usersConferences": "Conferences",
   "usersArticles": "Articles",
@@ -116,5 +116,6 @@
   "attach-file": "Attach a file",
   "year": "Date",
   "select-thesis-type": "Select thesis type",
+  "classification": "Classification",
   "download": "Download"
 }

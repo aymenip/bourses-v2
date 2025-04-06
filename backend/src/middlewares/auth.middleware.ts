@@ -44,7 +44,7 @@ export const verifyAdminKey = (
 };
 
 export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
-  if (!req.user["adminId"]) {
+  if ((req.user["role"] !== 1)) {
     res.status(401).json({ error: "Access denied" });
   } else {
     next();
