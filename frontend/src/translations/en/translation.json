@@ -33,6 +33,7 @@
   "usersArticles": "Articles",
   "usersBooks": "Books",
   "usersTheses": "Theses",
+  "usersCertificates": "Certificates",
   "forms": "Forms",
   "delete": "Delete",
   "filter-titles": "Filter titles...",
@@ -54,8 +55,8 @@
   "desc": "Desc",
   "hide": "Hide",
   "forms/create": "Create new form",
-  "theses/create": "Create new thesis",
-  "books/create": "Create new book",
+  "theses/create": "Create thesis",
+  "books/create": "Create book",
   "type-form-name": "Form title...",
   "create-new-form": "Create new form",
   "create-new-thesis": "Create new thesis",
@@ -131,5 +132,8 @@
   "create-new-article": "Create new article",
   "create-new-certificate": "Create new certificate",
   "conferences/create": "Create conference",
+  "articles/create": "Create article",
+  "certificates/create": "Create certificate",
+  "upload": "Upload",
   "download": "Download"
 }
