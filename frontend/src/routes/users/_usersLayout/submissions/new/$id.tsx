@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useForm, Controller } from 'react-hook-form';
 import { SearchableInput } from '@/components/searchable-input'; // Import the updated searchable input component
 import { TField } from '@/types';
+import { sourceableFieldsEnum } from '@/enums';
 
 export const Route = createFileRoute('/users/_usersLayout/submissions/new/$id')({
   component: NewSubmissionComponent,
@@ -65,7 +66,7 @@ function NewSubmissionComponent() {
             control={control}
             render={({ field: controllerField }) => (
               <SearchableInput
-                target={"article"}
+                target={field.type as sourceableFieldsEnum}
                 onChange={(id) => controllerField.onChange(id)}
               />
             )}

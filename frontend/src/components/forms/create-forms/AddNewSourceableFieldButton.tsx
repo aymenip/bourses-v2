@@ -23,6 +23,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { LoaderIcon } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Muted } from '@/components/ui/typography';
+import { sourceableFieldsEnum } from '@/enums';
 
 interface AddNewSourceableFieldButtonProps {
     blockId: number;
@@ -126,7 +127,7 @@ export const AddNewSourceableFieldButton: React.FC<AddNewSourceableFieldButtonPr
                             dir={i18n.dir()}
                             value={watch("type")}
                             onValueChange={(value) => {
-                                setValue("type", value as "certificate" | "book" | "article" | "conference" | "thesis");
+                                setValue("type", value as sourceableFieldsEnum);
                             }}
                         >
                             {["article", "certificate", "book", "conference", "thesis"].map((type) => (

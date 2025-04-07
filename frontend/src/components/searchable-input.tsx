@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button"; // ShadCN Button
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"; // ShadCN Dialog
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "@/components/ui/command"; // ShadCN Command
+import { sourceableFieldsEnum } from "@/enums";
 
 interface SearchableInputProps {
-    target?: "article" | "book" | "certificate" | "thesis" | "conference";
+    target?: sourceableFieldsEnum;
     mutipleSelect?: boolean;
     onChange: (id: number) => void; // Callback for when an item is selected
 }
