@@ -139,5 +139,9 @@
   "delete-file-message": "Are you sure you want to delete this file ?",
   "Click to upload": "Click to upload",
   "or drag and drop": "or drag and drop",
-  "download": "Download"
+  "download": "Download",
+  "export-pdf": "Export PDF",
+  "export-pdf-loading": "Generating PDF...",
+  "export-pdf-error": "Error exporting PDF",
+  "export-pdf-success": "PDF exported successfully"
 }

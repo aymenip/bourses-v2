@@ -140,5 +140,9 @@
   "delete-file-message": "هل أنت متأكد أنك تريد حذف هذا الملف؟",
   "Click to upload": "اضغط لتحميل",
   "or drag and drop": "أو اسحب وأفلت",
-  "download": "تحميل"
+  "download": "تحميل",
+  "export-pdf": "تصدير PDF",
+  "export-pdf-loading": "جاري إنشاء PDF...",
+  "export-pdf-error": "حدث خطأ أثناء تصدير PDF.",
+  "export-pdf-success": "تم تصدير PDF بنجاح."
 }
