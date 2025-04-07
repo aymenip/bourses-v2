@@ -136,5 +136,9 @@
   "articles/create": "إنشاء مقال",
   "certificates/create": "إنشاء شهادة",
   "upload": "تحميل",
+  "delete-file": "حذف الملف",
+  "delete-file-message": "هل أنت متأكد أنك تريد حذف هذا الملف؟",
+  "Click to upload": "اضغط لتحميل",
+  "or drag and drop": "أو اسحب وأفلت",
   "download": "تحميل"
 }

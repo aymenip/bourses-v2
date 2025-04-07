@@ -135,5 +135,9 @@
   "articles/create": "Create article",
   "certificates/create": "Create certificate",
   "upload": "Upload",
+  "delete-file": "Delete file",
+  "delete-file-message": "Are you sure you want to delete this file ?",
+  "Click to upload": "Click to upload",
+  "or drag and drop": "or drag and drop",
   "download": "Download"
 }

@@ -6,8 +6,10 @@ import {
     FileInput,
 } from "./ui/file-upload";
 import { Paperclip } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const FileSvgDraw = () => {
+    const { t } = useTranslation();
     return (
         <>
             <svg
