@@ -5,7 +5,7 @@ export const SubmissionSchema = z.object({
   formId: z.number(),
   userId: z.number(),
   status: z.enum(["draft", "submitted"]),
-  data: z.string().transform((data) => JSON.parse(data)),
+  data: z.record(z.string(), z.any()), // better than z.string().transform(...) for working with raw objects
   createdAt: z.date(),
   updatedAt: z.date(),
 });

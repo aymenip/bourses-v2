@@ -18,8 +18,10 @@ export const Route = createFileRoute('/_admin/_adminLayout')({
 
 function AdminLayout() {
   const role = authenticationContext().role;
-  return <>
+  return <div className='flex w-screen h-screen'>
     <Sidebar role={role!} />
-    <Outlet />
-  </>
+    <div className='flex-1 h-screen overflow-y-auto overflow-x-hidden'>
+      <Outlet />
+    </div>
+  </div>
 }

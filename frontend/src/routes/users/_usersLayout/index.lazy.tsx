@@ -1,6 +1,6 @@
 import { Loader } from '@/components/global/loader';
 import { TopBar } from '@/components/global/topBar';
-import { createLazyFileRoute } from '@tanstack/react-router';
+import { createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useGetFormsForUser } from '@/api/forms/queries';
 import { useUser } from '@/api/queries';
 import { H3, H4, Muted } from '@/components/ui/typography';
@@ -22,35 +22,37 @@ function Dashboard() {
     <TopBar page_name='dashboard' />
     <div className='p-2 grid grid-cols-5 gap-6'>
 
-      <div className='flex border p-2 shadow-sm col-span-2 flex-col'>
-        <div className='border-b-2 py-2'>
+      <div className='flex border dark:border-zinc-800 p-2 shadow-sm col-span-2 flex-col'>
+        <div className='border-b-2 dark:border-b-zinc-800 py-2'>
           <H3>New forms</H3>
         </div>
         <div className='py-2 space-y-2 mb-5 mt-2'>
           {
-            forms?.map((form) => <div className='flex justify-between bg-slate-100 p-2 rounded-sm border cursor-pointer hover:bg-slate-200/50 hover:ring-2 ring-slate-200 transition-all'>
-              <div className='truncate ltr:pr-2 rtl:pl-2'>
-                <H4>{form.title}</H4>
-                <Muted>{format(new Date(form.createdAt), 'yyyy-MM-dd hh:mm b')}</Muted>
+            forms?.map((form) => <Link to="/users/submissions/new/$id" params={{ id: form.id.toString() }}>
+              <div className='flex justify-between bg-slate-100 dark:bg-zinc-800 p-2 rounded-sm border dark:border-zinc-800 cursor-pointer hover:bg-slate-200/50 dark:hover:bg-zinc-800/70 hover:ring-2 ring-slate-200 dark:ring-zinc-700 transition-all'>
+                <div className='truncate ltr:pr-2 rtl:pl-2'>
+                  <H4>{form.title}</H4>
+                  <Muted>{format(new Date(form.createdAt), 'yyyy-MM-dd hh:mm b')}</Muted>
+                </div>
+                <ExternalLink className='text-slate-400 dark:text-zinc-400 w-5 h-5' />
               </div>
-              <ExternalLink className='text-slate-400 w-5 h-5' />
-            </div>)
+            </Link>)
           }
         </div>
       </div>
 
-      <div className='flex border p-2 shadow-sm col-start-3 col-span-3 flex-col'>
-        <div className='border-b-2 py-2'>
+      <div className='flex border dark:border-zinc-800 p-2 shadow-sm col-start-3 col-span-3 flex-col'>
+        <div className='border-b-2 dark:border-b-zinc-800 py-2'>
           <H3>Your submissions</H3>
         </div>
         <div className='py-2 space-y-2 mb-5 mt-2'>
           {
-            forms?.map((form) => <div className='flex justify-between bg-slate-100 p-2 rounded-sm border cursor-pointer hover:bg-slate-200/50 hover:ring-2 ring-slate-200 transition-all'>
+            forms?.map((form) => <div className='flex justify-between bg-slate-100 dark:bg-zinc-800 p-2 rounded-sm border dark:border-zinc-800 cursor-pointer hover:bg-slate-200/50 dark:hover:bg-zinc-800/70 hover:ring-2 ring-slate-200 dark:ring-zinc-700 transition-all'>
               <div className='truncate ltr:pr-2 rtl:pl-2'>
                 <H4>{form.title}</H4>
                 <Muted>{format(new Date(form.createdAt), 'yyyy-MM-dd hh:mm b')}</Muted>
               </div>
-              <ExternalLink className='text-slate-400 w-5 h-5' />
+              <ExternalLink className='text-slate-400 dark:text-zinc-400 w-5 h-5' />
             </div>)
           }
         </div>

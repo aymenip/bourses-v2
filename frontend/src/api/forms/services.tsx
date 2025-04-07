@@ -1,7 +1,7 @@
 import { TCreateForm, TForm } from "@/types";
 import { axiosInstance } from ".."
 import { authenticationContext } from "../auth/services";
-import { TCreateFormBlock, TFormBlock, TSourceableField, TTypedField } from "@/types/forms";
+import { TCreateFormBlock, TFormBlock, TFullForm, TSourceableField, TTypedField } from "@/types/forms";
 import { TCreateFormAccess } from "@/types/form-acess";
 
 export async function forms(): Promise<TForm[]> {
@@ -22,12 +22,9 @@ export async function form(id: number): Promise<TForm> {
     if (!token) {
         throw new Error();
     }
-    const response = await axiosInstance.get<TForm>("form", {
+    const response = await axiosInstance.get<TForm>(`form/${id}`, {
         headers: {
             Authorization: token,
-        },
-        params: {
-            id: id,
         },
     });
     return response.data;
@@ -130,4 +127,18 @@ export async function getFormsForUser(positionId: number): Promise<TForm[]> {
     });
 
     return response.data || [];
+}
+
+
+export async function getFullForm(id: number): Promise<TFullForm> {
+    const token = authenticationContext().token;
+    if (!token) {
+        throw new Error();
+    }
+    const response = await axiosInstance.get<TFullForm>(`form/full/${id}`, {
+        headers: {
+            Authorization: token,
+        },
+    });
+    return response.data;
 }

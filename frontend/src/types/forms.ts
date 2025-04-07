@@ -31,6 +31,7 @@ export const TypedFieldSchema = z.object({
   }),
   points: z.number({ required_error: "required-input" }).min(0).default(0),
   label: z.string({ required_error: "required-input" }).min(1),
+  required: z.boolean().default(true),
   blockId: z.number(),
 });
 
@@ -41,6 +42,7 @@ export const SourceableFieldSchema = z.object({
   }),
   points: z.number({ required_error: "required-input" }).min(0).default(0),
   label: z.string({ required_error: "required-input" }).min(1),
+  required: z.boolean().default(true),
   blockId: z.number(),
 });
 

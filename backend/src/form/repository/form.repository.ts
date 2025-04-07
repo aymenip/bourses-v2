@@ -207,7 +207,7 @@ export const getFullFormById = async (
           new TypedFieldDTO(
             tf.id,
             tf.type,
-            block.label,
+            tf.label,
             tf.points,
             tf.required,
             tf.fieldId
@@ -221,7 +221,7 @@ export const getFullFormById = async (
             sf.id,
             sf.type,
             sf.points,
-            block.label,
+            sf.label,
             sf.required,
             sf.fieldId
           )
@@ -229,7 +229,12 @@ export const getFullFormById = async (
       }
 
       blockDTOs.push(
-        new FullFormBlockDTO(block.id, block.label, block.formId, fieldsDTO.map(field => [field]))
+        new FullFormBlockDTO(
+          block.id,
+          block.label,
+          block.formId,
+          fieldsDTO.map((field) => [field])
+        )
       );
     }
 

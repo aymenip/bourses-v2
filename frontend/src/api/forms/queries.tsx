@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { form, forms, getFormsForUser } from "./services";
+import { form, forms, getFormsForUser, getFullForm } from "./services";
 
 
 
@@ -15,6 +15,12 @@ export function useForm(id: number) {
     return useQuery({
         queryKey: ["form"],
         queryFn: () => form(id),
+    })
+}
+export function useFullForm(id: number) {
+    return useQuery({
+        queryKey: ["fullForm"],
+        queryFn: () => getFullForm(id),
     })
 }
 

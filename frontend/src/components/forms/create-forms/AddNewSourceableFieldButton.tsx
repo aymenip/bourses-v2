@@ -12,7 +12,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CrossCircledIcon, PlusCircledIcon } from '@radix-ui/react-icons';
 import { TSourceableField, SourceableFieldSchema } from '@/types/forms';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateSourceableField } from '@/api/forms/mutations';
 import { toast } from 'sonner';
@@ -21,6 +21,8 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { LoaderIcon } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Muted } from '@/components/ui/typography';
 
 interface AddNewSourceableFieldButtonProps {
     blockId: number;
@@ -44,6 +46,7 @@ export const AddNewSourceableFieldButton: React.FC<AddNewSourceableFieldButtonPr
         watch,
         reset,
         formState: { errors, isSubmitting },
+        control
     } = useForm<TSourceableField>({
         defaultValues: {
             id: 0,
@@ -51,6 +54,7 @@ export const AddNewSourceableFieldButton: React.FC<AddNewSourceableFieldButtonPr
             points: 0,
             type: "certificate",
             label: "",
+            required: true
         },
         resolver: zodResolver(SourceableFieldSchema),
     });
@@ -161,7 +165,26 @@ export const AddNewSourceableFieldButton: React.FC<AddNewSourceableFieldButtonPr
                             </div>
                         )}
                     </div>
-
+                    <div className="form-group">
+                        <Label>{t("field-required")}</Label>
+                        <Controller
+                            control={control}
+                            name="required"
+                            render={({ field }) => (
+                                <div className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                                    <Checkbox
+                                        className='rtl:ml-2'
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                    />
+                                    <div className="space-y-1 leading-none">
+                                        <div>{t("field-required-description")}</div>
+                                        <Muted>{t("field-required-unchecked")}</Muted>
+                                    </div>
+                                </div>
+                            )}
+                        />
+                    </div>
                     <DialogFooter>
                         <Button
                             form="sourceable-field-form"

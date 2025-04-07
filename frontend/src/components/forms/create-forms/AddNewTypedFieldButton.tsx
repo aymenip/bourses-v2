@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CrossCircledIcon, PlusCircledIcon } from '@radix-ui/react-icons';
 import { TTypedField, TypedFieldSchema } from '@/types/forms';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoaderIcon } from 'lucide-react';
 import { Label } from '@/components/ui/label';
@@ -13,6 +13,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useCreateTypedField } from '@/api/forms/mutations';
 import { toast } from 'sonner';
 import { useFormStore } from '@/store/formStore';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Muted } from '@/components/ui/typography';
 
 interface AddNewTypedFieldButtonProps {
     blockId: number;
@@ -32,12 +34,14 @@ export const AddNewTypedFieldButton: React.FC<AddNewTypedFieldButtonProps> = ({
         watch,
         reset,
         formState: { errors, isSubmitting },
+        control
     } = useForm<TTypedField>({
         defaultValues: {
             id: 0,
             blockId,
             points: 0,
             type: "text",
+            required: true
         },
         resolver: zodResolver(TypedFieldSchema),
     });
@@ -82,7 +86,7 @@ export const AddNewTypedFieldButton: React.FC<AddNewTypedFieldButtonProps> = ({
                         </div>
                     </DialogDescription>
                 </DialogHeader>
-                
+
                 <form id="typed-field-form" className="form" onSubmit={handleSubmit(formSubmit)}>
                     <div className="form-group">
                         <Label>{t("field-label")}</Label>
@@ -132,7 +136,26 @@ export const AddNewTypedFieldButton: React.FC<AddNewTypedFieldButtonProps> = ({
                             </div>
                         )}
                     </div>
-
+                    <div className="form-group">
+                        <Label>{t("field-required")}</Label>
+                        <Controller
+                            control={control}
+                            name="required"
+                            render={({ field }) => (
+                                <div className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                                    <Checkbox
+                                        className='rtl:ml-2'
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                    />
+                                    <div className="space-y-1 leading-none">
+                                        <div>{t("field-required-description")}</div>
+                                        <Muted>{t("field-required-unchecked")}</Muted>
+                                    </div>
+                                </div>
+                            )}
+                        />
+                    </div>
                     <DialogFooter>
                         <Button form="typed-field-form" type="submit" className="w-full text-md font-bold" disabled={isPending || isSubmitting}>
                             {isPending ? <LoaderIcon className="animate-spin" /> : t("add")}
