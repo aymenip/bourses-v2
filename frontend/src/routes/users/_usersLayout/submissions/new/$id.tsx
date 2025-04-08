@@ -11,11 +11,13 @@ import { useTranslation } from 'react-i18next';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { TField } from '@/types';
 import { sourceableFieldsEnum } from '@/enums';
 import { Button } from '@/components/ui/button';
 import { SearchableInput } from '@/components/searchable-input';
+import { useCreateSubmission } from '@/api/mutations';
+import { toast } from 'sonner';
 
 // Route definition
 export const Route = createFileRoute('/users/_usersLayout/submissions/new/$id')({
@@ -52,6 +54,7 @@ const generateZodSchema = (fields: TField[]) => {
 
 function NewSubmissionComponent() {
   const { id } = Route.useParams();
+
   const { data: form, isFetching, isLoading } = useFullForm(parseInt(id));
   const { t } = useTranslation("translation");
 
@@ -63,7 +66,7 @@ function NewSubmissionComponent() {
   });
 
   if (isLoading || isFetching || !form) return <Loader />;
-
+  const { mutate: createSubmission, isSuccess: isSubmissionCreationSuccess, isPending: isSubmissionCreationPending, isError: isSubmissionCreationError } = useCreateSubmission();
   const onSubmit = (data: any) => {
 
     const result: Record<string, any> = {};
@@ -75,8 +78,30 @@ function NewSubmissionComponent() {
       });
     });
 
-    console.log("✅ Final Submission JSON:", result);
+    createSubmission({ data: result, status: "draft", formId: form.id, })
   };
+
+  useEffect(() => {
+    let toastId: string | number | null = null
+
+    if (isSubmissionCreationPending) {
+      toastId = toast.loading(t('book-creation-pending')) // Save toast ID
+    }
+
+    if (isSubmissionCreationSuccess) {
+      if (toastId) toast.dismiss(toastId) // Dismiss loading toast
+      toast.success(t('book-creation-success'))
+    }
+
+    if (isSubmissionCreationError) {
+      if (toastId) toast.dismiss(toastId)
+      toast.error(t('book-creation-error'))
+    }
+
+    return () => {
+      if (toastId) toast.dismiss(toastId) // Cleanup on unmount
+    }
+  }, [isSubmissionCreationSuccess, isSubmissionCreationPending, isSubmissionCreationError])
 
   const renderInput = (field: TField) => {
     const name = generateFieldName(field.blockId, field.id);
@@ -88,7 +113,7 @@ function NewSubmissionComponent() {
           {field.label}
           {field.required && <BadgeAlert className="h-4 w-4 text-red-400" />}
           {field.points > 0 && (
-            <Badge className="bg-green-100 ltr:ml-auto rtl:mr-auto border-green-200" variant="outline">
+            <Badge className="bg-green-100 dark:bg-green-900 text-green-900 dark:text-green-100 ltr:ml-auto rtl:mr-auto border-green-200 dark:border-green-700" variant="outline">
               {t("points")} {field.points}
             </Badge>
           )}

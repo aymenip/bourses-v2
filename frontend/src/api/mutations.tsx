@@ -22,6 +22,11 @@ import {
     useDeleteConference
 } from "./conferences/mutations"
 
+import {
+    useCreateSubmission,
+    useDeleteSubmission
+} from "./submissions/mutations"
+
 export {
     useAuth,
     useCreateForm,
@@ -33,5 +38,7 @@ export {
     useCreateArticle,
     useDeleteArticle,
     useCreateConference,
-    useDeleteConference
+    useDeleteConference,
+    useCreateSubmission,
+    useDeleteSubmission
 }

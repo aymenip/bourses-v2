@@ -9,7 +9,7 @@ import admin from "./admin.routes";
 import thesis from "./thesis.routes";
 import book from "./book.routes";
 import certificate from "./certificate.routes";
-import articles from "./articles.routes";
+import articles from "./article.routes";
 import conferences from "./conference.routes";
 import document from "./document.routes";
 const router = express.Router();

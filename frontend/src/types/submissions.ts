@@ -13,7 +13,6 @@ export const SubmissionSchema = z.object({
 export const CreateSubmissionSchema = SubmissionSchema.omit({
   id: true,
   userId: true,
-  formId: true,
   createdAt: true,
   updatedAt: true,
 });
