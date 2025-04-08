@@ -7,7 +7,7 @@ import { TCreateSubmission } from "@/types/submissions";
 
 export function useCreateSubmission() {
     return useMutation({
-        mutationKey: ["Submision"],
+        mutationKey: ["createSubmision"],
         mutationFn: async (createSubmision: TCreateSubmission) => await createSubmission(createSubmision)
     })
 }

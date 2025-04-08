@@ -60,13 +60,16 @@ function NewSubmissionComponent() {
 
   const allFields = useMemo(() => form?.blocks?.flatMap(block => block.fields.flat()) ?? [], [form]);
   const schema = useMemo(() => generateZodSchema(allFields), [allFields]);
+
   const { control, handleSubmit, formState: { errors } } = useForm<Record<string, any>>({
     resolver: zodResolver(schema),
     defaultValues: {},
   });
 
-  if (isLoading || isFetching || !form) return <Loader />;
   const { mutate: createSubmission, isSuccess: isSubmissionCreationSuccess, isPending: isSubmissionCreationPending, isError: isSubmissionCreationError } = useCreateSubmission();
+
+  if (isLoading || isFetching || !form) return <Loader />;
+
   const onSubmit = (data: any) => {
 
     const result: Record<string, any> = {};
@@ -79,29 +82,30 @@ function NewSubmissionComponent() {
     });
 
     createSubmission({ data: result, status: "draft", formId: form.id, })
+    if (isSubmissionCreationSuccess) toast.success(t('submision-creation-success'))
   };
 
-  useEffect(() => {
-    let toastId: string | number | null = null
+  // useEffect(() => {
+  //   let toastId: string | number | null = null
 
-    if (isSubmissionCreationPending) {
-      toastId = toast.loading(t('book-creation-pending')) // Save toast ID
-    }
+  //   if (isSubmissionCreationPending) {
+  //     toastId = toast.loading(t('submision-creation-pending')) // Save toast ID
+  //   }
 
-    if (isSubmissionCreationSuccess) {
-      if (toastId) toast.dismiss(toastId) // Dismiss loading toast
-      toast.success(t('book-creation-success'))
-    }
+  //   if (isSubmissionCreationSuccess) {
+  //     if (toastId) toast.dismiss(toastId) // Dismiss loading toast
+  //     toast.success(t('submision-creation-success'))
+  //   }
 
-    if (isSubmissionCreationError) {
-      if (toastId) toast.dismiss(toastId)
-      toast.error(t('book-creation-error'))
-    }
+  //   if (isSubmissionCreationError) {
+  //     if (toastId) toast.dismiss(toastId)
+  //     toast.error(t('submision-creation-error'))
+  //   }
 
-    return () => {
-      if (toastId) toast.dismiss(toastId) // Cleanup on unmount
-    }
-  }, [isSubmissionCreationSuccess, isSubmissionCreationPending, isSubmissionCreationError])
+  //   return () => {
+  //     if (toastId) toast.dismiss(toastId) // Cleanup on unmount
+  //   }
+  // }, [isSubmissionCreationSuccess, isSubmissionCreationPending, isSubmissionCreationError])
 
   const renderInput = (field: TField) => {
     const name = generateFieldName(field.blockId, field.id);

@@ -16,14 +16,17 @@ export const CreateSubmission = async (
   res: express.Response
 ): Promise<any> => {
   try {
-    const createSubmissionDTO: CreateSubmissionDTO = req.body;
-    
+    let createSubmissionDTO: CreateSubmissionDTO = req.body;
+
     const userId = req.user?.sub;
+    createSubmissionDTO.userId = userId;
+    createSubmissionDTO = {...createSubmissionDTO, data: JSON.stringify(createSubmissionDTO.data)};
+
     if (!createSubmissionDTO) {
       return res.sendStatus(400);
     }
 
-    const createdSubmission = await createSubmission(createSubmissionDTO, userId);
+    const createdSubmission = await createSubmission(createSubmissionDTO,);
 
     return res.status(200).json(createdSubmission);
   } catch (error) {
@@ -95,7 +98,7 @@ export const DeleteSubmission = async (
   try {
     const { id } = req.params;
     const userId = req.user.sub;
-    
+
     const submission = await getSubmissionById(Number(id));
     if (submission.userId !== userId)
       return res.status(401).json({ message: "Unauthorized" });

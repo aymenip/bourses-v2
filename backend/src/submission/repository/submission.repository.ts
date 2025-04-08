@@ -9,20 +9,19 @@ import { eq } from "drizzle-orm";
 import { SubmissionStatus } from "submission/submission.enums";
 
 export const createSubmission = async (
-  createformSubmissionDTO: CreateSubmissionDTO,
-  userId: number
+  createformSubmissionDTO: CreateSubmissionDTO
 ): Promise<CreateSubmissionDTO> => {
   try {
     const dbInstance = await db;
     const result = await dbInstance
       .insert(formSubmissions)
-      .values({ ...createformSubmissionDTO, userId })
+      .values(createformSubmissionDTO)
       .execute();
-    const book = await getSubmissionById(result[0].insertId);
-    return book;
+    const Submission = await getSubmissionById(result[0].insertId);
+    return Submission;
   } catch (error) {
     console.log(error);
-    throw new Error("Failed to create formformSubmission"); // Handle errors appropriately
+    throw new Error("Failed to create Submission"); // Handle errors appropriately
   }
 };
 

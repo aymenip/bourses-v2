@@ -11,6 +11,7 @@ import book from "./book.routes";
 import certificate from "./certificate.routes";
 import articles from "./article.routes";
 import conferences from "./conference.routes";
+import submissions from "./submission.routes";
 import document from "./document.routes";
 const router = express.Router();
 
@@ -28,5 +29,6 @@ export default (): express.Router => {
   certificate(router);
   articles(router);
   conferences(router);
+  submissions(router);
   return router;
 };
