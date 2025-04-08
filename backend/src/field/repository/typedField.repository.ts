@@ -37,7 +37,7 @@ export const updateTypedField = async (
       .where(
         and(
           eq(typedFields.id, updateTypedFieldDTO.id),
-          eq(typedFields.fieldId, updateTypedFieldDTO.fieldId)
+          eq(typedFields.blockId, updateTypedFieldDTO.blockId)
         )
       )
       .execute();
@@ -73,7 +73,7 @@ export const getTypedFieldById = async (
       typedFieldData.label,
       typedFieldData.points,
       typedFieldData.required,
-      typedFieldData.fieldId
+      typedFieldData.blockId
     );
   } catch (error) {
     console.error("Error fetching typedField by id:", error); // Log the error for debugging

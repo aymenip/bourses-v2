@@ -242,7 +242,7 @@ export const typedFields = mysqlTable("typedFields", {
   points: int("points", { unsigned: true }),
   label: varchar("label", { length: 256 }),
   required: boolean("required").default(false).notNull(),
-  fieldId: bigint("fieldId", { mode: "number", unsigned: true })
+  blockId: bigint("blockId", { mode: "number", unsigned: true })
     .references(() => fields.id, { onDelete: "cascade" })
     .notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -251,7 +251,7 @@ export const typedFields = mysqlTable("typedFields", {
 
 export const typedFieldsRelations = relations(typedFields, ({ one }) => ({
   field: one(fields, {
-    fields: [typedFields.fieldId],
+    fields: [typedFields.blockId],
     references: [fields.id],
   }),
 }));
@@ -270,7 +270,7 @@ export const sourceableFields = mysqlTable("sourceableFields", {
   points: int("points", { unsigned: true }),
   label: varchar("label", { length: 256 }),
   required: boolean("required").default(false).notNull(),
-  fieldId: bigint("fieldId", { mode: "number", unsigned: true })
+  blockId: bigint("blockId", { mode: "number", unsigned: true })
     .references(() => fields.id, { onDelete: "cascade" })
     .notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -281,7 +281,7 @@ export const sourceableFieldsRelations = relations(
   sourceableFields,
   ({ one }) => ({
     field: one(fields, {
-      fields: [sourceableFields.fieldId],
+      fields: [sourceableFields.blockId],
       references: [fields.id],
     }),
   })

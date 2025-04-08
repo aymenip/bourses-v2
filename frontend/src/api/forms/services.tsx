@@ -78,7 +78,7 @@ export async function createTypedField(typedField: TTypedField): Promise<TTypedF
     if (!token) {
         throw new Error();
     }
-    const response = await axiosInstance.post<TTypedField>(`field/typed/create`, { ...typedField, fieldId: typedField.blockId }, {
+    const response = await axiosInstance.post<TTypedField>(`field/typed/create`, { ...typedField, blockId: typedField.blockId }, {
         headers: {
             Authorization: token,
         },
@@ -90,7 +90,7 @@ export async function createSourceableField(sourceableField: TSourceableField): 
     if (!token) {
         throw new Error();
     }
-    const response = await axiosInstance.post<TSourceableField>(`field/sourceable/create`, { ...sourceableField, fieldId: sourceableField.blockId }, {
+    const response = await axiosInstance.post<TSourceableField>(`field/sourceable/create`, { ...sourceableField, blockId: sourceableField.blockId }, {
         headers: {
             Authorization: token,
         },

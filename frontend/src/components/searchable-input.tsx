@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button"; // ShadCN Button
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"; // ShadCN Dialog
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "@/components/ui/command"; // ShadCN Command
 import { sourceableFieldsEnum } from "@/enums";
+import { useTranslation } from "react-i18next";
+import { AddNewSourceableFieldButton } from "./forms/create-forms";
 
 interface SearchableInputProps {
     target?: sourceableFieldsEnum;
@@ -12,6 +14,7 @@ interface SearchableInputProps {
 }
 
 export function SearchableInput({ target = "article", mutipleSelect = false, onChange }: SearchableInputProps) {
+    const [t, i18n] = useTranslation("translation");
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [data, setData] = useState<any[]>([]);
@@ -71,17 +74,19 @@ export function SearchableInput({ target = "article", mutipleSelect = false, onC
         <div>
             <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
                 <DialogTrigger asChild>
-                    <Button variant="outline">Select {target}</Button>
+                    <Button className="w-full" variant="outline">
+                        Select {target}
+                    </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
+                <DialogContent dir={i18n.dir()} className="sm:max-w-[500px] p-0">
+                    <DialogHeader className="bg-slate-200 dark:bg-zinc-800 p-5 rounded-sm rounded-b-none">
                         <DialogTitle>Select {target}</DialogTitle>
                     </DialogHeader>
-                    <div className="py-4">
+                    <div className="p-5">
                         <Command>
                             <CommandInput placeholder={`Search ${target}s...`} />
                             <CommandList>
-                                {data.length === 0 && <CommandEmpty>No results found.</CommandEmpty>}
+                                {data.length === 0 && <CommandEmpty>{t("no-results")}</CommandEmpty>}
                                 {data.map((item) => (
                                     <CommandItem key={item.id} onSelect={() => handleSelect(item.id)}>
                                         {item.title}
@@ -90,7 +95,7 @@ export function SearchableInput({ target = "article", mutipleSelect = false, onC
                             </CommandList>
                         </Command>
                     </div>
-                    <DialogFooter>
+                    <DialogFooter className="p-5">
                         <Button variant="outline" onClick={closeDialog}>Close</Button>
                     </DialogFooter>
                 </DialogContent>

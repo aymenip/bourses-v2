@@ -8,6 +8,13 @@
       "when": 1744011900139,
       "tag": "0000_grey_ulik",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1744102161788,
+      "tag": "0001_light_swordsman",
+      "breakpoints": true
     }
   ]
 }
