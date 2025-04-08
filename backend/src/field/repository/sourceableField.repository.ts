@@ -37,7 +37,7 @@ export const updateSourceableField = async (
       .where(
         and(
           eq(sourceableFields.id, updateSourceableFieldDTO.id),
-          eq(sourceableFields.fieldId, updateSourceableFieldDTO.fieldId)
+          eq(sourceableFields.blockId, updateSourceableFieldDTO.blockId)
         )
       )
       .execute();
@@ -73,7 +73,7 @@ export const getSourceableFieldById = async (
       sourceableFieldData.points,
       sourceableFieldData.label,
       sourceableFieldData.required,
-      sourceableFieldData.fieldId
+      sourceableFieldData.blockId
     );
   } catch (error) {
     console.error("Error fetching sourceabledField by id:", error); // Log the error for debugging

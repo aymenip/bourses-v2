@@ -8,6 +8,13 @@
       "when": 1744053091896,
       "tag": "0000_tan_rick_jones",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1744102161788,
+      "tag": "0001_light_swordsman",
+      "breakpoints": true
     }
   ]
 }

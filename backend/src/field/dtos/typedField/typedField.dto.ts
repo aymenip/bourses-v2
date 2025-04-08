@@ -4,20 +4,20 @@ export class TypedFieldDTO {
   label: string;
   points: number;
   required: boolean;
-  fieldId: number;
+  blockId: number;
   constructor(
     id: number,
     type: string,
     label: string,
     points: number,
     required: boolean,
-    fieldId: number
+    blockId: number
   ) {
     this.id = id;
     this.type = type;
     this.label = label;
     this.points = points;
     this.required = required;
-    this.fieldId = fieldId;
+    this.blockId = blockId;
   }
 }

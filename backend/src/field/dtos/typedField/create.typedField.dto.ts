@@ -3,12 +3,12 @@ export class CreateTypedFieldDTO {
   label: string;
   points: number;
   required: boolean;
-  fieldId: number;
-  constructor(type: string, label: string, points: number, required: boolean,fieldId: number) {
+  blockId: number;
+  constructor(type: string, label: string, points: number, required: boolean,blockId: number) {
     this.type = type;
     this.label = label;
     this.points = points;
     this.required = required;
-    this.fieldId = fieldId;
+    this.blockId = blockId;
   }
 }

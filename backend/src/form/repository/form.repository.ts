@@ -193,12 +193,12 @@ export const getFullFormById = async (
       const typed = await dbInstance
         .select()
         .from(typedFields)
-        .where(eq(typedFields.fieldId, block.id));
+        .where(eq(typedFields.blockId, block.id));
 
       const sourceable = await dbInstance
         .select()
         .from(sourceableFields)
-        .where(eq(sourceableFields.fieldId, block.id));
+        .where(eq(sourceableFields.blockId, block.id));
 
       const fieldsDTO: (TypedFieldDTO | SourceabledFieldDTO)[] = [];
 
@@ -210,7 +210,7 @@ export const getFullFormById = async (
             tf.label,
             tf.points,
             tf.required,
-            tf.fieldId
+            tf.blockId
           )
         );
       }
@@ -223,7 +223,7 @@ export const getFullFormById = async (
             sf.points,
             sf.label,
             sf.required,
-            sf.fieldId
+            sf.blockId
           )
         );
       }
