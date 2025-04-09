@@ -20,13 +20,16 @@ export const CreateSubmission = async (
 
     const userId = req.user?.sub;
     createSubmissionDTO.userId = userId;
-    createSubmissionDTO = {...createSubmissionDTO, data: JSON.stringify(createSubmissionDTO.data)};
+    createSubmissionDTO = {
+      ...createSubmissionDTO,
+      data: JSON.stringify(createSubmissionDTO.data),
+    };
 
     if (!createSubmissionDTO) {
       return res.sendStatus(400);
     }
 
-    const createdSubmission = await createSubmission(createSubmissionDTO,);
+    const createdSubmission = await createSubmission(createSubmissionDTO);
 
     return res.status(200).json(createdSubmission);
   } catch (error) {
@@ -71,6 +74,27 @@ export const GetAllSubmissionsForUser = async (
     const submissions = await getAllSubmissionsForUser(userId);
 
     return res.status(200).json(submissions);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
+export const GetSubmissionById = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+    const userId = req.user?.sub;
+    const id = parseInt(req.params.id);
+    if (!userId) {
+      return res.sendStatus(400);
+    }
+
+    const submission = await getSubmissionById(id);
+    if (submission.userId !== userId) {
+      return res.sendStatus(401);
+    }
+    return res.status(200).json(submission);
   } catch (error) {
     handleError(() => console.log(error));
     return res.sendStatus(400);

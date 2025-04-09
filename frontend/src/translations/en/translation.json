@@ -116,5 +116,10 @@
   "attach-file": "Attach a file",
   "year": "Date",
   "select-thesis-type": "Select thesis type",
-  "download": "Download"
+  "download": "Download",
+  "submit": "Submit",
+  "number-of-fields": "Number of fields",
+  "mode": "Mode",
+  "draft": "Draft",
+  "submitted": "Submit"
 }

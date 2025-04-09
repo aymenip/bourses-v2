@@ -117,5 +117,10 @@
   "attach-file": "قم بإرفاق ملف",
   "year": "التاريخ",
   "select-thesis-type": "إختر نوع المذكرة",
-  "download": "تحميل"
+  "download": "تحميل",
+  "submit": "إرسال",
+  "number-of-fields": "عدد الحقول",
+  "mode": "الوضع",
+  "draft": "مسودة",
+  "submitted": "إرسال"
 }

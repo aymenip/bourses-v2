@@ -1,5 +1,5 @@
 import { db } from "../../db/setup";
-import { formSubmissions } from "../../db/schema";
+import { forms, formSubmissions } from "../../db/schema";
 import {
   CreateSubmissionDTO,
   SubmissionDTO,
@@ -45,7 +45,7 @@ export const updateSubmission = async (
 
 export const getAllSubmissionsForUser = async (
   userId: number
-): Promise<SubmissionDTO[]> => {
+): Promise<(SubmissionDTO & { formTitle: string })[]> => {
   try {
     const dbInstance = await db;
     const result = await dbInstance
@@ -53,10 +53,17 @@ export const getAllSubmissionsForUser = async (
       .from(formSubmissions)
       .where(eq(formSubmissions.userId, userId))
       .execute();
-    const _submissions: SubmissionDTO[] = result.map((submission) => ({
-      ...submission,
-      status: submission.status as SubmissionStatus,
-    }));
+    const _submissions: (SubmissionDTO & { formTitle: string })[] = await Promise.all(
+      result.map(async (submission) => {
+        let formTitleResult = await dbInstance.select({ title: forms.title }).from(forms).where(eq(forms.id, submission.formId)).execute();
+        let formTitle = formTitleResult.length > 0 ? formTitleResult[0].title : "";
+        return {
+          ...submission,
+          status: submission.status as SubmissionStatus,
+          formTitle: formTitle,
+        };
+      })
+    );
     // Return the first role or null if none found
     return _submissions || [];
   } catch (error) {

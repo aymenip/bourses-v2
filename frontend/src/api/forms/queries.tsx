@@ -17,10 +17,11 @@ export function useForm(id: number) {
         queryFn: () => form(id),
     })
 }
-export function useFullForm(id: number) {
+export function useFullForm(id: number, options?: { enabled: boolean }) {
     return useQuery({
         queryKey: ["fullForm"],
         queryFn: () => getFullForm(id),
+        enabled: options?.enabled
     })
 }
 

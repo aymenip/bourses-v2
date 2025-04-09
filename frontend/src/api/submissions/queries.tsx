@@ -19,10 +19,10 @@ export function useSubmission(id: number) {
 }
 
 
-export function useGetSubmissionsForUser(positionId: number, options?: { enabled: boolean }) {
+export function useGetSubmissionsForUser(options?: { enabled: boolean }) {
     return useQuery({
-        queryKey: ["getSubmissionsForUser", positionId],
-        queryFn: () => getSubmissionsForUser(positionId),
+        queryKey: ["getSubmissionsForUser"],
+        queryFn: () => getSubmissionsForUser(),
         enabled: options?.enabled
     })
 }

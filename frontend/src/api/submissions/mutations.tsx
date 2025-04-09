@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { createSubmission, deleteSubmission } from "./services";
+import { createSubmission, deleteSubmission, updateSubmission } from "./services";
 
-import { TCreateSubmission } from "@/types/submissions";
+import { TCreateSubmission, TUpdateSubmission } from "@/types/submissions";
 
 
 
@@ -20,5 +20,15 @@ export function useDeleteSubmission() {
         mutationFn: (id: number) => deleteSubmission(id)
     })
 }
+
+export function useUpdateSubmission() {
+    return useMutation({
+        mutationKey: ["updateSubmission"],
+        mutationFn: (updatedSubmission: TUpdateSubmission) => updateSubmission(updatedSubmission)
+    })
+}
+
+
+
 
 

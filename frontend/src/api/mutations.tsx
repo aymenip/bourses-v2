@@ -24,8 +24,10 @@ import {
 
 import {
     useCreateSubmission,
-    useDeleteSubmission
+    useDeleteSubmission,
+    useUpdateSubmission
 } from "./submissions/mutations"
+
 
 export {
     useAuth,
@@ -40,5 +42,6 @@ export {
     useCreateConference,
     useDeleteConference,
     useCreateSubmission,
-    useDeleteSubmission
+    useDeleteSubmission,
+    useUpdateSubmission
 }

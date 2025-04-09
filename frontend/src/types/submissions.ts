@@ -5,6 +5,7 @@ export const SubmissionSchema = z.object({
   formId: z.number(),
   userId: z.number(),
   status: z.enum(["draft", "submitted"]),
+  formTitle: z.string(),
   data: z.record(z.string(), z.any()), // better than z.string().transform(...) for working with raw objects
   createdAt: z.date(),
   updatedAt: z.date(),
@@ -13,8 +14,15 @@ export const SubmissionSchema = z.object({
 export const CreateSubmissionSchema = SubmissionSchema.omit({
   id: true,
   userId: true,
+  formTitle: true,
   createdAt: true,
   updatedAt: true,
+});
+
+// For update (make all fields optional except id + formId)
+export const UpdateSubmissionSchema = CreateSubmissionSchema.partial().extend({
+  id: z.number(),
+  formId: z.number(),
 });
 
 const DashboardSubmissionSchema = SubmissionSchema.omit({
@@ -23,4 +31,5 @@ const DashboardSubmissionSchema = SubmissionSchema.omit({
 
 export type TSubmission = z.infer<typeof SubmissionSchema>;
 export type TCreateSubmission = z.infer<typeof CreateSubmissionSchema>;
+export type TUpdateSubmission = z.infer<typeof UpdateSubmissionSchema>;
 export type TDashboardSubmission = z.infer<typeof DashboardSubmissionSchema>;
