@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
     FileUploader,
     FileUploaderContent,
@@ -7,6 +8,7 @@ import {
 import { Paperclip } from "lucide-react";
 
 const FileSvgDraw = () => {
+    const [t] = useTranslation("translation");
     return (
         <>
             <svg
@@ -25,11 +27,11 @@ const FileSvgDraw = () => {
                 />
             </svg>
             <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">Click to upload</span>
-                &nbsp; or drag and drop
+                <span className="font-semibold">{t("click-to-upload")}</span>
+                &nbsp; {t("or-drag-and-drop")}
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-                SVG, PNG, JPG or GIF
+                PNG, JPG, PDF, DOCX
             </p>
         </>
     );
