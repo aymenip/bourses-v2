@@ -21,17 +21,22 @@ function EditSubmissionPage() {
   const { data: form, isLoading: isFormLoading } = useFullForm(formId!, {
     enabled: !!formId,
   });
+
   const { mutate: updateSubmission } = useUpdateSubmission();
   const [t] = useTranslation("translation");
 
   if (isSubmissionLoading || isFormLoading || !form || !submission) return <Loader />;
+
+
+  const rawData = typeof submission.data === 'string'
+    ? JSON.parse(submission.data)
+    : submission.data;
+
   const defaultValues: Record<string, any> = {};
   form?.blocks?.forEach((block) => {
-    block.fields.forEach(field => {
-      console.log('field', field)
-      const key = generateFieldName(field.blockId, field.id);
-      console.log('key', key)
-      defaultValues[key] = submission.data?.[field.label] ?? '';
+    block.fields.flat().forEach(field => {
+      const key = generateFieldName(block.id, field.id);
+      defaultValues[key] = rawData?.[field.label] ?? '';
     });
   });
 
@@ -43,7 +48,6 @@ function EditSubmissionPage() {
         updatedData[field.label] = formData[key];
       });
     });
-
     updateSubmission({
       id: submission.id,
       formId: form.id,

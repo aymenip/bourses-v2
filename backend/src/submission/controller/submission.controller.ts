@@ -55,7 +55,10 @@ export const UpdateSubmission = async (
 
     if (submission.userId !== userId) return res.sendStatus(404);
 
-    const updatedSubmission = await updateSubmission(updateSubmissionDTO);
+    const updatedSubmission = await updateSubmission({
+      ...updateSubmissionDTO,
+      data: JSON.stringify(updateSubmissionDTO.data),
+    });
 
     return res.status(200).json(updatedSubmission);
   } catch (error) {
@@ -79,6 +82,7 @@ export const GetAllSubmissionsForUser = async (
     return res.sendStatus(400);
   }
 };
+
 export const GetSubmissionById = async (
   req: express.Request,
   res: express.Response

@@ -44,11 +44,11 @@ export async function createSubmission(createSubmission: TCreateSubmission): Pro
     return response.data;
 }
 export async function updateSubmission(updatedSubmission: TUpdateSubmission): Promise<TSubmission> {
-
     const token = authenticationContext().token;
     if (!token) {
         throw new Error();
     }
+
     const response = await axiosInstance.put<TSubmission>("submission/update", updatedSubmission, {
         headers: {
             Authorization: token,
@@ -75,12 +75,11 @@ export async function deleteSubmission(id: number): Promise<void> {
 
 export async function getSubmissionsForUser(): Promise<TSubmission[]> {
     const token = authenticationContext().token;
-
     if (!token) {
         throw new Error();
     }
 
-    const response = await axiosInstance.get<TSubmission[]>(`submission/user/`, {
+    const response = await axiosInstance.get<TSubmission[]>("submission/user", {
         headers: {
             Authorization: token,
         },

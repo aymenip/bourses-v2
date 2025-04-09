@@ -53,17 +53,23 @@ export const getAllSubmissionsForUser = async (
       .from(formSubmissions)
       .where(eq(formSubmissions.userId, userId))
       .execute();
-    const _submissions: (SubmissionDTO & { formTitle: string })[] = await Promise.all(
-      result.map(async (submission) => {
-        let formTitleResult = await dbInstance.select({ title: forms.title }).from(forms).where(eq(forms.id, submission.formId)).execute();
-        let formTitle = formTitleResult.length > 0 ? formTitleResult[0].title : "";
-        return {
-          ...submission,
-          status: submission.status as SubmissionStatus,
-          formTitle: formTitle,
-        };
-      })
-    );
+    const _submissions: (SubmissionDTO & { formTitle: string })[] =
+      await Promise.all(
+        result.map(async (submission) => {
+          let formTitleResult = await dbInstance
+            .select({ title: forms.title })
+            .from(forms)
+            .where(eq(forms.id, submission.formId))
+            .execute();
+          let formTitle =
+            formTitleResult.length > 0 ? formTitleResult[0].title : "";
+          return {
+            ...submission,
+            status: submission.status as SubmissionStatus,
+            formTitle: formTitle,
+          };
+        })
+      );
     // Return the first role or null if none found
     return _submissions || [];
   } catch (error) {
@@ -104,7 +110,7 @@ export const getSubmissionById = async (
         }
       : null;
   } catch (error) {
-    throw new Error("Failed to get formformSubmission"); // Handle errors appropriately
+    throw new Error("Failed to get formSubmission"); // Handle errors appropriately
   }
 };
 export const deleteSubmission = async (id: number): Promise<void> => {
