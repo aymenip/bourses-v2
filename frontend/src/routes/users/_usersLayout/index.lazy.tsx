@@ -25,9 +25,9 @@ function Dashboard() {
   if (isLoading || isFetching) return <Loader />
   return <div className='content-container'>
     <TopBar page_name='dashboard' />
-    <div className='p-2 grid grid-cols-5 gap-6'>
+    <div className='p-2 grid md:grid-cols-5 gap-6'>
 
-      <div className='flex border dark:border-zinc-800 p-2 shadow-sm col-span-2 flex-col'>
+      <div className='flex border dark:border-zinc-800 p-2 shadow-sm md:col-span-2 flex-col'>
         <div className='border-b-2 dark:border-b-zinc-800 py-2'>
           <H3>New forms</H3>
         </div>
@@ -46,7 +46,7 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className='flex border dark:border-zinc-800 p-2 shadow-sm col-start-3 col-span-3 flex-col'>
+      <div className='flex border dark:border-zinc-800 p-2 shadow-sm md:col-start-3 md:col-span-3 flex-col'>
         <div className='border-b-2 dark:border-b-zinc-800 py-2'>
           <H3>Your submissions</H3>
         </div>

@@ -96,7 +96,7 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
     };
 
     return (
-        <form className="form grid grid-cols-2 gap-2" onSubmit={handleSubmit(onSubmit)}>
+        <form className="form grid md:grid-cols-2 gap-2" onSubmit={handleSubmit(onSubmit)}>
             {form.blocks?.map((block: TFullFormBlock) => (
                 <div key={block.id} className="border shadow-sm rounded-sm dark:bg-zinc-800 dark:border-zinc-700">
                     <div className="p-2 bg-muted flex justify-between">
