@@ -22,7 +22,7 @@ function EditSubmissionPage() {
     enabled: !!formId,
   });
 
-  const { mutate: updateSubmission } = useUpdateSubmission();
+  const { mutate: updateSubmission, data: sbmission } = useUpdateSubmission();
   const [t] = useTranslation("translation");
 
   if (isSubmissionLoading || isFormLoading || !form || !submission) return <Loader />;

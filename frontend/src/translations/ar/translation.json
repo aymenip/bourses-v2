@@ -145,5 +145,8 @@
   "number-of-fields": "عدد الحقول",
   "mode": "الوضع",
   "draft": "مسودة",
-  "submitted": "إرسال"
+  "submitted": "إرسال",
+  "download-receipt": "تحميل الوصل",
+  "submissionReceipt": "وصل الإرسال",
+  "registration-receipt": "وصل التسجيل"
 }

@@ -144,5 +144,8 @@
   "number-of-fields": "Number of fields",
   "mode": "Mode",
   "draft": "Draft",
-  "submitted": "Submit"
+  "submitted": "Submit",
+  "download-receipt": "Download receipt",
+  "submissionReceipt": "Submission receipt",
+  "registration-receipt": "Registration receipt"
 }

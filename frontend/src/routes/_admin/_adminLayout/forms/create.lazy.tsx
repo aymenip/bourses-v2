@@ -18,22 +18,22 @@ function FormCreate() {
 
     return <div className='content-container'>
         <TopBar page_name='forms/create' />
-        <div className='px-2 pt-6 grid grid-cols-8 gap-x-2 '>
-            <div className='grid col-span-6 gap-y-8 '>
+        <div className='px-2 pt-6 md:grid grid-cols-8 gap-x-2 '>
+            <div className='grid md:col-span-6 gap-y-8 '>
                 {/* Form title */}
-                <div className='col-span-7 col-start-1'>
+                <div className='md:col-span-7 col-start-1'>
                     <FormTitleInput />
                 </div>
                 {currentForm && (
                     <>
 
                         {/* Form blocks list */}
-                        <div className='col-span-7 col-start-1'>
+                        <div className='md:col-span-7 col-start-1'>
                             <FormBlocksList />
                         </div>
 
                         {/* Add blocks button start */}
-                        <div className="col-span-7 col-start-1 py-2">
+                        <div className="md:col-span-7 col-start-1 py-2">
                             <AddFormBlockButton />
                         </div>
 
@@ -41,7 +41,7 @@ function FormCreate() {
                 )}
                 {/* Add blocks button end */}
             </div>
-            {currentForm && (<div className='col-start-7 col-span-2'>
+            {currentForm && (<div className='md:col-span-2 col-start-7'>
                 <FormAcess />
             </div>)}
 

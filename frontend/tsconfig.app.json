@@ -28,5 +28,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "i18next-scanner.config.cjs", "src/api/index.ts"]
+  "include": ["src", "i18next-scanner.config.cjs", "src/api/index.ts", "src/fonts"]
 }

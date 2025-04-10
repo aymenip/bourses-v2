@@ -21,6 +21,7 @@ import { Route as AdminAdminLayoutTeachersIdImport } from './routes/_admin/_admi
 import { Route as AdminAdminLayoutStudentsIdImport } from './routes/_admin/_adminLayout/students/$id'
 import { Route as AdminAdminLayoutFormsIdImport } from './routes/_admin/_adminLayout/forms/$id'
 import { Route as AdminAdminLayoutEmployeesIdImport } from './routes/_admin/_adminLayout/employees/$id'
+import { Route as UsersUsersLayoutSubmissionsReceiptIdImport } from './routes/users/_usersLayout/submissions/receipt/$id'
 import { Route as UsersUsersLayoutSubmissionsNewIdImport } from './routes/users/_usersLayout/submissions/new/$id'
 import { Route as UsersUsersLayoutSubmissionsEditIdImport } from './routes/users/_usersLayout/submissions/edit/$id'
 
@@ -306,6 +307,13 @@ const AdminAdminLayoutEmployeesIdRoute =
     getParentRoute: () => AdminAdminLayoutRoute,
   } as any)
 
+const UsersUsersLayoutSubmissionsReceiptIdRoute =
+  UsersUsersLayoutSubmissionsReceiptIdImport.update({
+    id: '/submissions/receipt/$id',
+    path: '/submissions/receipt/$id',
+    getParentRoute: () => UsersUsersLayoutRoute,
+  } as any)
+
 const UsersUsersLayoutSubmissionsNewIdRoute =
   UsersUsersLayoutSubmissionsNewIdImport.update({
     id: '/submissions/new/$id',
@@ -513,6 +521,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersUsersLayoutSubmissionsNewIdImport
       parentRoute: typeof UsersUsersLayoutImport
     }
+    '/users/_usersLayout/submissions/receipt/$id': {
+      id: '/users/_usersLayout/submissions/receipt/$id'
+      path: '/submissions/receipt/$id'
+      fullPath: '/users/submissions/receipt/$id'
+      preLoaderRoute: typeof UsersUsersLayoutSubmissionsReceiptIdImport
+      parentRoute: typeof UsersUsersLayoutImport
+    }
   }
 }
 
@@ -564,6 +579,7 @@ interface UsersUsersLayoutRouteChildren {
   UsersUsersLayoutThesesIndexLazyRoute: typeof UsersUsersLayoutThesesIndexLazyRoute
   UsersUsersLayoutSubmissionsEditIdRoute: typeof UsersUsersLayoutSubmissionsEditIdRoute
   UsersUsersLayoutSubmissionsNewIdRoute: typeof UsersUsersLayoutSubmissionsNewIdRoute
+  UsersUsersLayoutSubmissionsReceiptIdRoute: typeof UsersUsersLayoutSubmissionsReceiptIdRoute
 }
 
 const UsersUsersLayoutRouteChildren: UsersUsersLayoutRouteChildren = {
@@ -587,6 +603,8 @@ const UsersUsersLayoutRouteChildren: UsersUsersLayoutRouteChildren = {
   UsersUsersLayoutSubmissionsEditIdRoute:
     UsersUsersLayoutSubmissionsEditIdRoute,
   UsersUsersLayoutSubmissionsNewIdRoute: UsersUsersLayoutSubmissionsNewIdRoute,
+  UsersUsersLayoutSubmissionsReceiptIdRoute:
+    UsersUsersLayoutSubmissionsReceiptIdRoute,
 }
 
 const UsersUsersLayoutRouteWithChildren =
@@ -629,6 +647,7 @@ export interface FileRoutesByFullPath {
   '/users/theses': typeof UsersUsersLayoutThesesIndexLazyRoute
   '/users/submissions/edit/$id': typeof UsersUsersLayoutSubmissionsEditIdRoute
   '/users/submissions/new/$id': typeof UsersUsersLayoutSubmissionsNewIdRoute
+  '/users/submissions/receipt/$id': typeof UsersUsersLayoutSubmissionsReceiptIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -656,6 +675,7 @@ export interface FileRoutesByTo {
   '/users/theses': typeof UsersUsersLayoutThesesIndexLazyRoute
   '/users/submissions/edit/$id': typeof UsersUsersLayoutSubmissionsEditIdRoute
   '/users/submissions/new/$id': typeof UsersUsersLayoutSubmissionsNewIdRoute
+  '/users/submissions/receipt/$id': typeof UsersUsersLayoutSubmissionsReceiptIdRoute
 }
 
 export interface FileRoutesById {
@@ -687,6 +707,7 @@ export interface FileRoutesById {
   '/users/_usersLayout/theses/': typeof UsersUsersLayoutThesesIndexLazyRoute
   '/users/_usersLayout/submissions/edit/$id': typeof UsersUsersLayoutSubmissionsEditIdRoute
   '/users/_usersLayout/submissions/new/$id': typeof UsersUsersLayoutSubmissionsNewIdRoute
+  '/users/_usersLayout/submissions/receipt/$id': typeof UsersUsersLayoutSubmissionsReceiptIdRoute
 }
 
 export interface FileRouteTypes {
@@ -718,6 +739,7 @@ export interface FileRouteTypes {
     | '/users/theses'
     | '/users/submissions/edit/$id'
     | '/users/submissions/new/$id'
+    | '/users/submissions/receipt/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -744,6 +766,7 @@ export interface FileRouteTypes {
     | '/users/theses'
     | '/users/submissions/edit/$id'
     | '/users/submissions/new/$id'
+    | '/users/submissions/receipt/$id'
   id:
     | '__root__'
     | '/_admin/_adminLayout'
@@ -773,6 +796,7 @@ export interface FileRouteTypes {
     | '/users/_usersLayout/theses/'
     | '/users/_usersLayout/submissions/edit/$id'
     | '/users/_usersLayout/submissions/new/$id'
+    | '/users/_usersLayout/submissions/receipt/$id'
   fileRoutesById: FileRoutesById
 }
 
@@ -843,7 +867,8 @@ export const routeTree = rootRoute
         "/users/_usersLayout/conferences/",
         "/users/_usersLayout/theses/",
         "/users/_usersLayout/submissions/edit/$id",
-        "/users/_usersLayout/submissions/new/$id"
+        "/users/_usersLayout/submissions/new/$id",
+        "/users/_usersLayout/submissions/receipt/$id"
       ]
     },
     "/_admin/_adminLayout/": {
@@ -936,6 +961,10 @@ export const routeTree = rootRoute
     },
     "/users/_usersLayout/submissions/new/$id": {
       "filePath": "users/_usersLayout/submissions/new/$id.tsx",
+      "parent": "/users/_usersLayout"
+    },
+    "/users/_usersLayout/submissions/receipt/$id": {
+      "filePath": "users/_usersLayout/submissions/receipt/$id.tsx",
       "parent": "/users/_usersLayout"
     }
   }

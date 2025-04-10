@@ -4,11 +4,12 @@ import { createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useGetFormsForUser } from '@/api/forms/queries';
 import { useUser } from '@/api/queries';
 import { H3, H4, Muted } from '@/components/ui/typography';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, ReceiptText } from 'lucide-react';
 import { format } from 'date-fns';
 import { useGetSubmissionsForUser } from '@/api/submissions/queries';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 export const Route = createLazyFileRoute('/users/_usersLayout/')({
   component: Dashboard,
@@ -46,7 +47,7 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className='flex border dark:border-zinc-800 p-2 shadow-sm md:col-start-3 md:col-span-3 flex-col'>
+      <div className='flex border dark:border-zinc-800 p-2 shadow-sm md:col-start-3 md:col-span-3 flex-col '>
         <div className='border-b-2 dark:border-b-zinc-800 py-2'>
           <H3>Your submissions</H3>
         </div>
@@ -57,7 +58,20 @@ function Dashboard() {
                 <H4>{submission.formTitle}</H4>
                 <Muted>{format(new Date(submission.createdAt), 'yyyy-MM-dd hh:mm b')}</Muted>
               </div>
-              <Badge variant={submission.status === "draft" ? "destructive" : "default"}>{t(submission.status)}</Badge>
+              <div className='flex flex-col gap-1'>
+                <Badge variant={submission.status === "draft" ? "destructive" : "default"}>{t(submission.status)}</Badge>
+
+                {
+                  submission.status === "submitted" &&
+                  <Button size={"sm"} variant={"outline"}>
+                    <Link to='/users/submissions/receipt/$id' params={{ id: submission.id.toString() }} search={{
+                      formTitle: submission.formTitle
+                    }}>
+                      <ReceiptText className='w-5 h-5 gap-x-2' />
+                    </Link>
+                  </Button>
+                }
+              </div>
             </div>
             </Link>)
           }

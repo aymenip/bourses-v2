@@ -42,7 +42,7 @@ const generateZodSchema = (fields: TField[]) => {
     return z.object(shape);
 };
 
-export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel = "submit" }: {
+export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel = "submit", }: {
     form: any;
     onSubmit: (data: Record<string, any>) => void;
     defaultValues?: Record<string, any>;
