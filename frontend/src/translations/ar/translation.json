@@ -58,7 +58,6 @@
   "theses/create": "إنشاء مذكرة ",
   "books/create": "إنشاء كتاب ",
   "type-form-name": "عنوان النموذج...",
-  "add-block": "إضافة مجموعة جديد",
   "create-new-form": "إنشاء نموذج جديد",
   "create-new-thesis": "إنشاء مذكرة جديدة",
   "create-new-book": "إنشاء كتاب جديد",
@@ -145,5 +144,8 @@
   "number-of-fields": "عدد الحقول",
   "mode": "الوضع",
   "draft": "مسودة",
-  "submitted": "إرسال"
+  "submitted": "إرسال",
+  "submissionReceipt": "إيصال الإرسال",
+  "registration-receipt": "إيصال التسجيل",
+  "download-receipt": "تحميل الإيصال"
 }
