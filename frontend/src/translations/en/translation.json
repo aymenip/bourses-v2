@@ -155,5 +155,6 @@
   "select-thesis": "Select thesis",
   "select-certificate": "Select certificate",
   "select-article": "Select article",
-  "close": "Close"
+  "close": "Close",
+  "update": "Update"
 }
