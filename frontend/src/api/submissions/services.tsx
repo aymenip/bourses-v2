@@ -1,6 +1,6 @@
 import { axiosInstance } from ".."
 import { authenticationContext } from "../auth/services";
-import { TCreateSubmission, TSubmission, TUpdateSubmission } from "@/types/submissions";
+import { TCreateSubmission, TSubmission, TSubmissionsWithUserInfo, TUpdateSubmission } from "@/types/submissions";
 
 export async function submissions(): Promise<TSubmission[]> {
     const token = authenticationContext().token;
@@ -8,6 +8,19 @@ export async function submissions(): Promise<TSubmission[]> {
         throw new Error();
     }
     const response = await axiosInstance.get<TSubmission[]>("submission/all", {
+        headers: {
+            Authorization: token,
+        },
+    });
+    return response.data || [];
+}
+
+export async function submissionsForAForm(id: number): Promise<TSubmissionsWithUserInfo[]> {
+    const token = authenticationContext().token;
+    if (!token) {
+        throw new Error();
+    }
+    const response = await axiosInstance.get<TSubmissionsWithUserInfo[]>(`submission/all/${id}`, {
         headers: {
             Authorization: token,
         },

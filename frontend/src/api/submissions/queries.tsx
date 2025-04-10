@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getSubmissionsForUser, submission, submissions } from "./services";
+import { getSubmissionsForUser, submission, submissions, submissionsForAForm } from "./services";
 
 
 
@@ -10,6 +10,15 @@ export function useSubmissions() {
         queryFn: submissions,
     })
 }
+
+export function useSubmissionsForAForm(id: number, options?: { enabled: boolean }) {
+    return useQuery({
+        queryKey: ["submissionsForAForm"],
+        queryFn: () => submissionsForAForm(id),
+        enabled: options?.enabled
+    })
+}
+
 
 export function useSubmission(id: number) {
     return useQuery({

@@ -29,7 +29,22 @@ const DashboardSubmissionSchema = SubmissionSchema.omit({
   data: true,
 });
 
+const SubmissionsWithUserInfoSchema = z.object({
+  id: z.number(),
+  formId: z.number(),
+  userId: z.number(),
+  status: z.enum(["draft", "submitted"]),
+  firstname: z.string(),
+  lastname: z.string(),
+  position: z.string(),
+  updatedAt: z.date(),
+  createdAt: z.date(),
+})
+
+
+
 export type TSubmission = z.infer<typeof SubmissionSchema>;
+export type TSubmissionsWithUserInfo = z.infer<typeof SubmissionsWithUserInfoSchema>;
 export type TCreateSubmission = z.infer<typeof CreateSubmissionSchema>;
 export type TUpdateSubmission = z.infer<typeof UpdateSubmissionSchema>;
 export type TDashboardSubmission = z.infer<typeof DashboardSubmissionSchema>;

@@ -37,6 +37,9 @@ const generateZodSchema = (fields: TField[]) => {
             );
             shape[name] = rule;
         }
+        if (!field.required) {
+            shape[name] = shape[name].optional();
+        }
     });
 
     return z.object(shape);

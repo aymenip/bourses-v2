@@ -6,6 +6,7 @@ import {
   deleteSubmission,
   getAllSubmissions,
   getAllSubmissionsForUser,
+  getAllSubmissionsWithUserInfo,
   getSubmissionById,
   updateSubmission,
 } from "../repository/submission.repository";
@@ -111,6 +112,22 @@ export const GetAllSubmissions = async (
 ): Promise<any> => {
   try {
     const submissions = await getAllSubmissions();
+
+    return res.status(200).json(submissions);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
+
+// for specific form
+export const GetAllSubmissionsWithUserInfo = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+    const formId = parseInt(req.params.formId);
+    const submissions = await getAllSubmissionsWithUserInfo(formId);
 
     return res.status(200).json(submissions);
   } catch (error) {

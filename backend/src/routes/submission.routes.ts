@@ -4,6 +4,7 @@ import {
   DeleteSubmission,
   GetAllSubmissions,
   GetAllSubmissionsForUser,
+  GetAllSubmissionsWithUserInfo,
   GetSubmissionById,
   UpdateSubmission,
 } from "../submission/controller/submission.controller";
@@ -16,4 +17,5 @@ export default (router: express.Router) => {
   router.get("/submission/all", verifyToken, isAdmin, GetAllSubmissions);
   router.delete("/submission/:id", verifyToken, DeleteSubmission);
   router.get("/submission/:id", verifyToken, GetSubmissionById);
+  router.get("/submission/all/:formId", verifyToken, isAdmin, GetAllSubmissionsWithUserInfo);
 };
