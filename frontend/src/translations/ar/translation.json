@@ -122,5 +122,8 @@
   "number-of-fields": "عدد الحقول",
   "mode": "الوضع",
   "draft": "مسودة",
-  "submitted": "إرسال"
+  "submitted": "إرسال",
+  "field-required": "الحقل مطلوب",
+  "field-required-description": "هذا الحقل مطلوب لإنشاء النموذج.",
+  "field-required-unchecked": "هذا الحقل ليس مطلوبا لإنشاء النموذج."
 }
