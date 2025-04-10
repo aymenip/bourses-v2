@@ -19,7 +19,6 @@ function Forms() {
       {
         (isLoading || isFetching) ? <Loader /> : <FormDataTable data={forms || []} columns={columns} />
       }
-
     </div>
   </div>
 }
