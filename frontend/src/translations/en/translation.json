@@ -147,5 +147,13 @@
   "submitted": "Submit",
   "field-required": "Field is required",
   "field-required-description": "This field is required to create the form.",
-  "field-required-unchecked": "This field is not required to create the form."
+  "field-required-unchecked": "This field is not required to create the form.",
+  "new-form": "New form",
+  "your-submissions": "Your submissions",
+  "select-conference": "Select conference",
+  "select-book": "Select book",
+  "select-thesis": "Select thesis",
+  "select-certificate": "Select certificate",
+  "select-article": "Select article",
+  "close": "Close"
 }

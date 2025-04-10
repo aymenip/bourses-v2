@@ -148,5 +148,13 @@
   "submitted": "إرسال",
   "field-required": "الحقل مطلوب",
   "field-required-description": "هذا الحقل مطلوب لإنشاء النموذج.",
-  "field-required-unchecked": "هذا الحقل ليس مطلوبا لإنشاء النموذج."
+  "field-required-unchecked": "هذا الحقل ليس مطلوبا لإنشاء النموذج.",
+  "new-form": "نموذج جديد",
+  "your-submissions": "إرسالياتك",
+  "select-conference": "إختر ملتقى",
+  "select-book": "إختر كتاب",
+  "select-thesis": "إختر مذكرة",
+  "select-article": "إختر مقال",
+  "select-certificate": "إختر شهادة",
+  "close": "إغلاق"
 }
