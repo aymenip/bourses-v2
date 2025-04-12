@@ -23,20 +23,21 @@ export function DataTableToolbar<TData>({
         <div className="flex flex-wrap items-center justify-between">
             <div className="flex flex-1 flex-wrap items-center gap-2">
                 <Input
-                    placeholder={t("filter-titles")}
-                    value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+                    placeholder={t("filter-lastname")}
+                    value={(table.getColumn("lastname")?.getFilterValue() as string) ?? ""}
                     onChange={(event) => {
-                        table.getColumn("title")?.setFilterValue(event.target.value);
+                        table.getColumn("lastname")?.setFilterValue(event.target.value);
                     }}
                     className="h-8 w-[150px] lg:w-[250px]"
                 />
-
-                <Link to="/forms/create">
-                    <Button variant={"link"}>
-                        <span className="ltr:pr-2 rtl:pl-2"><PlusCircledIcon /></span>
-                        {t("create-new-form")}
-                    </Button>
-                </Link>
+                <Input
+                    placeholder={t("filter-firstname")}
+                    value={(table.getColumn("firstname")?.getFilterValue() as string) ?? ""}
+                    onChange={(event) => {
+                        table.getColumn("firstname")?.setFilterValue(event.target.value);
+                    }}
+                    className="h-8 w-[150px] lg:w-[250px]"
+                />
                 {table.getColumn("position") && (
                     <DataTableFacetedFilter
                         column={table.getColumn("position")}
@@ -61,6 +62,22 @@ export function DataTableToolbar<TData>({
                             {
                                 label: "emp",
                                 value: "emp",
+                            },
+                        ]}
+                    />
+                )}
+                {table.getColumn("status") && (
+                    <DataTableFacetedFilter
+                        column={table.getColumn("status")}
+                        title={t("status")}
+                        options={[
+                            {
+                                label: "Draft",
+                                value: "draft",
+                            },
+                            {
+                                label: "Submitted",
+                                value: "submitted",
                             },
                         ]}
                     />

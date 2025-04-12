@@ -23,9 +23,13 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
+
 import { DataTablePagination } from "./pagination";
 import { DataTableToolbar } from "./toolbar";
 import { useTranslation } from "react-i18next";
+import { Link } from "@tanstack/react-router";
+
+
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -100,15 +104,17 @@ export function DataTable<TData, TValue>({
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
-                                    className="odd:bg-gray-400/5 odd:dark:bg-zinc-400/5"
+                                    className="odd:bg-gray-400/5 odd:dark:bg-zinc-400/5 "
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell className="px-4 py-2" key={cell.id}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext(),
-                                            )}
+                                            <Link to="/forms/$id" params={{ id: (row.getValue("id") as string) }}>
 
+                                                {flexRender(
+                                                    cell.column.columnDef.cell,
+                                                    cell.getContext(),
+                                                )}
+                                            </Link>
                                         </TableCell>
                                     ))}
                                 </TableRow>

@@ -15,7 +15,8 @@ import {
 } from "./certificates/mutations"
 import {
     useCreateArticle,
-    useDeleteArticle
+    useDeleteArticle,
+    useUpdateArticle
 } from "./articles/mutations"
 import {
     useCreateConference,
@@ -39,6 +40,7 @@ export {
     useDeleteCertificate,
     useCreateArticle,
     useDeleteArticle,
+    useUpdateArticle,
     useCreateConference,
     useDeleteConference,
     useCreateSubmission,

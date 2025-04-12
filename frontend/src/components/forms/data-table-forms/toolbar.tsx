@@ -36,18 +36,7 @@ export function DataTableToolbar<TData>({
                         {t("create-new-form")}
                     </Button>
                 </Link>
-                {/* {table.getColumn("title") && (
-                    <DataTableFacetedFilter
-                        column={table.getColumn("title")}
-                        title={t("title")}
-                        options={[
-                            {
-                                label: "title",
-                                value: "إستمارة تحسين المستوى با",
-                            }
-                        ]}
-                    />
-                )} */}
+
                 {isFiltered && (
                     <Button
                         variant="ghost"

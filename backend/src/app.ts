@@ -5,9 +5,8 @@ import compression from "compression";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
-import router from "./routes";
 import helmet from "helmet";
-
+import router from "./routes";
 dotenv.config();
 
 const app = express();
@@ -30,6 +29,11 @@ app.use(helmet());
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 const server = http.createServer(app);
+
+// (async () => {
+//   await notifyUser("a.hadouara@cu-aflou.edu.dz", "Test");
+// })();
+
 app.use("/", router());
 
 server.listen(port, () => {

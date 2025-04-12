@@ -50,8 +50,10 @@ export const Login = async (
   req: express.Request,
   res: express.Response
 ): Promise<any> => {
+
   try {
     const loginUserDto: LoginUserDTO = req.body;
+
     if (!loginUserDto) {
       return res.sendStatus(400);
     }

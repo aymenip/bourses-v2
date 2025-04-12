@@ -3,10 +3,14 @@ import { positionIdToPermission, roleIdToRole } from "../utils";
 import { axiosInstance } from ".."
 
 export async function login(loginInput: TLogin) {
+
+    console.log('loginInput', loginInput)
+
     const response = await axiosInstance.post<TLoginResponse>(
         "user/login",
         loginInput
     );
+
     response.data.token &&
         localStorage.setItem("user", JSON.stringify(response.data));
     return response.data;

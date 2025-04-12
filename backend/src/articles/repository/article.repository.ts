@@ -10,7 +10,6 @@ export const createArticle = async (
   userId: number
 ): Promise<CreateArticleDTO> => {
   try {
-    console.log('createArticleDTO', createArticleDTO)
     const dbInstance = await db;
     const result = await dbInstance
       .insert(articles)
@@ -38,7 +37,7 @@ export const updateArticle = async (
     return thesis;
   } catch (error) {
     console.log(error);
-    throw new Error("Failed to create Article"); // Handle errors appropriately
+    throw new Error("Failed to update Article"); // Handle errors appropriately
   }
 };
 

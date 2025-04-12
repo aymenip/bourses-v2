@@ -24,5 +24,10 @@ export const CreateArticleSchema = ArticleSchema.omit({
   userId: true,
 });
 
+export const UpdateArticleSchema = CreateArticleSchema.partial().extend({
+  id: z.number(),
+});
+
 export type TArticle = z.infer<typeof ArticleSchema>;
 export type TCreateArticle = z.infer<typeof CreateArticleSchema>;
+export type TUpdateArticle = z.infer<typeof UpdateArticleSchema>;

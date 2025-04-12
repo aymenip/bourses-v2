@@ -5,6 +5,7 @@ import { DataTableRowActions } from "./row-actions";
 import { Checkbox } from "@/components/ui/checkbox";
 import i18n from "@/i18n";
 import { TSubmissionsWithUserInfo } from "@/types/submissions";
+import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<TSubmissionsWithUserInfo>[] = [
     {
@@ -57,6 +58,23 @@ export const columns: ColumnDef<TSubmissionsWithUserInfo>[] = [
                 <div className="flex space-x-2">
                     <span className="max-w-[500px] truncate font-medium capitalize">
                         {row.getValue("lastname")}
+                    </span>
+                </div>
+            );
+        },
+    },
+    {
+        accessorKey: "status",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title={i18n.t("status")} />
+        ),
+        cell: ({ row }) => {
+            return (
+                <div className="flex space-x-2">
+                    <span className="max-w-[500px] truncate font-medium capitalize">
+                        <Badge variant={row.getValue("status") === "submitted" ? "default" : "destructive"}>
+                            {row.getValue("status")}
+                        </Badge>
                     </span>
                 </div>
             );

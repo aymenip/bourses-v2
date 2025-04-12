@@ -11,10 +11,11 @@ export function useForms() {
     })
 }
 
-export function useForm(id: number) {
+export function useForm(id: number, options?: { enabled: boolean }) {
     return useQuery({
         queryKey: ["form"],
         queryFn: () => form(id),
+        enabled: options?.enabled
     })
 }
 export function useFullForm(id: number, options?: { enabled: boolean }) {

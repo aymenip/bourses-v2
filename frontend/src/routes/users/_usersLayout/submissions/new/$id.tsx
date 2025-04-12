@@ -1,5 +1,5 @@
 import { useFullForm } from "@/api/forms/queries";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useCreateSubmission } from "@/api/mutations";
 import { TopBar } from "@/components/global/topBar";
 import { Loader } from "@/components/global/loader";

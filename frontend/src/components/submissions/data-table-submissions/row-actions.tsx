@@ -1,18 +1,11 @@
-"use client";
-
+"use client";;
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useTranslation } from "react-i18next";
-import { useDeleteForm } from "@/api/mutations";
+import { Link } from "@tanstack/react-router";
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>;
@@ -23,12 +16,6 @@ export function DataTableRowActions<TData>({
 }: DataTableRowActionsProps<TData>) {
     // const task = taskSchema.parse(row.original);
     const [t, i18n] = useTranslation("translation")
-    const { mutate, isSuccess } = useDeleteForm();
-    const deleteForm = () => {
-        const id = parseInt(row.getValue("id"));
-        mutate(id);
-        
-    }
     return (
         <DropdownMenu dir={i18n.dir()}>
             <DropdownMenuTrigger asChild>
@@ -41,10 +28,10 @@ export function DataTableRowActions<TData>({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
-                <DropdownMenuItem>{t("edit")}</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={deleteForm}>
-                    {t("delete")}
+                <DropdownMenuItem>
+                    <Link to="/forms/consult/$submissionId" params={{ submissionId: row.getValue("id") as string }}>
+                        {t("consult")}
+                    </Link>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

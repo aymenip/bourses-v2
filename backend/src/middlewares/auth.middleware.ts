@@ -21,6 +21,8 @@ export const verifyToken = (
   try {
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     req.user = decoded;
+    if (req.user["role"] === 1) req.user["isAdmin"] = true;
+    else req.user["isAdmin"] = false;
     next();
   } catch (error) {
     res.status(401).json({ error: "Invalid token" });

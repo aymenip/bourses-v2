@@ -5,17 +5,16 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogT
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "@/components/ui/command"; // ShadCN Command
 import { sourceableFieldsEnum } from "@/enums";
 import { useTranslation } from "react-i18next";
-import { AddNewSourceableFieldButton } from "./forms/create-forms";
 
 interface SearchableInputProps {
     target?: sourceableFieldsEnum;
     mutipleSelect?: boolean;
-    onChange: (id: number) => void; // Callback for when an item is selected
+    onChange: (idWithTarget: string) => void; // Callback for when an item is selected
 }
 
 export function SearchableInput({ target = "article", mutipleSelect = false, onChange }: SearchableInputProps) {
     const [t, i18n] = useTranslation("translation");
-    const [selectedId, setSelectedId] = useState<number | null>(null);
+    const [selectedItem, setSelectedItem] = useState<string | null>(null);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [data, setData] = useState<any[]>([]);
 
@@ -64,9 +63,9 @@ export function SearchableInput({ target = "article", mutipleSelect = false, onC
     const openDialog = () => setDialogOpen(true);
     const closeDialog = () => setDialogOpen(false);
 
-    const handleSelect = (id: number) => {
-        setSelectedId(id);
-        onChange(id); // Pass selected id back to the form
+    const handleSelect = (id: number, title: string) => {
+        setSelectedItem(title);
+        onChange(`${id} ${target}`); // Pass selected id back to the form
         closeDialog();
     };
 
@@ -88,7 +87,7 @@ export function SearchableInput({ target = "article", mutipleSelect = false, onC
                             <CommandList>
                                 {data.length === 0 && <CommandEmpty>{t("no-results")}</CommandEmpty>}
                                 {data.map((item) => (
-                                    <CommandItem key={item.id} onSelect={() => handleSelect(item.id)}>
+                                    <CommandItem key={item.id} onSelect={() => handleSelect(item.id, item.title)}>
                                         {item.title}
                                     </CommandItem>
                                 ))}
@@ -102,7 +101,7 @@ export function SearchableInput({ target = "article", mutipleSelect = false, onC
             </Dialog>
 
             {/* Display selected document */}
-            {selectedId && <div>Selected {target} ID: {selectedId}</div>}
+            {<div>{t("selected")} {t(target)}: {selectedItem}</div>}
         </div>
     );
 }

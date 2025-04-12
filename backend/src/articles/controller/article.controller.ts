@@ -37,20 +37,39 @@ export const UpdateArticle = async (
 ): Promise<any> => {
   try {
     const updateArticleDTO: UpdateArticleDTO = req.body;
-
     const userId = req.user?.sub;
 
     if (!updateArticleDTO) return res.sendStatus(400);
 
-    const book = await getArticleById(updateArticleDTO.id);
+    const article = await getArticleById(updateArticleDTO.id);
 
-    if (!book) return res.sendStatus(400);
+    if (!article) return res.sendStatus(400);
 
-    if (book.userId !== userId) return res.sendStatus(404);
+    if (article.userId !== userId) return res.sendStatus(404);
 
     const updatedArticle = await updateArticle(updateArticleDTO);
 
     return res.status(200).json(updatedArticle);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
+export const GetArticleById = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+    const userId = req.user?.sub;
+    const { id } = req.params;
+    const article = await getArticleById(parseInt(id));
+
+    if (!article) return res.sendStatus(400);
+
+    if (article.userId !== userId && !req.user.isAdmin)
+      return res.sendStatus(404);
+
+    return res.status(200).json(article);
   } catch (error) {
     handleError(() => console.log(error));
     return res.sendStatus(400);
@@ -94,7 +113,7 @@ export const DeleteArticle = async (
   try {
     const { id } = req.params;
     const userId = req.user.sub;
-    
+
     const book = await getArticleById(Number(id));
     if (book.userId !== userId)
       return res.status(401).json({ message: "Unauthorized" });

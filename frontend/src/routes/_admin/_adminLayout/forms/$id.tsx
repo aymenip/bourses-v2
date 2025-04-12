@@ -15,7 +15,6 @@ function FormSubmissions() {
   const { data: form, isLoading, isFetching } = useForm(parseInt(id!));
   const { data: submissions } = useSubmissionsForAForm(parseInt(id!), { enabled: !!form?.id })
   if (isLoading || isFetching) return <Loader />
-  console.log('submissions', submissions)
   return <div className='content-container'>
     <TopBar page_name={form?.title!} />
     <div className='p-2'>
