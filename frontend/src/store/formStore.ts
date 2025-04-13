@@ -19,7 +19,7 @@ export const useFormStore = create<FormState>((set) => ({
   formAccess: undefined,
   setCurrentForm: (newForm) =>
     set({
-      currentForm: { ...newForm, blocks: [] },
+      currentForm: { ...newForm, blocks: newForm.blocks ?? [] },
       lastChange: new Date().toLocaleTimeString("en-GB", {
         hour: "2-digit",
         minute: "2-digit",

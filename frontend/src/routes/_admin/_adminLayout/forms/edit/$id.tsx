@@ -5,6 +5,7 @@ import { useFormStore } from '@/store/formStore';
 import { useForm } from '@/api/queries';
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect } from 'react';
+import { useFullForm } from '@/api/forms/queries';
 
 export const Route = createFileRoute('/_admin/_adminLayout/forms/edit/$id')({
   component: EditForm,
@@ -12,10 +13,10 @@ export const Route = createFileRoute('/_admin/_adminLayout/forms/edit/$id')({
 
 function EditForm() {
   const { id } = Route.useParams();
-  const { data: formData, isSuccess } = useForm(Number(id)); 
+  const { data: formData, isSuccess } = useFullForm(Number(id));
   const setCurrentForm = useFormStore((state) => state.setCurrentForm);
   const currentForm = useFormStore((state) => state.currentForm);
-
+  console.log('currentForm', currentForm)
   useEffect(() => {
     if (formData && isSuccess) {
       setCurrentForm(formData);
