@@ -30,6 +30,7 @@ import { Route as UsersUsersLayoutSubmissionsEditIdImport } from './routes/users
 import { Route as UsersUsersLayoutCertificatesEditIdImport } from './routes/users/_usersLayout/certificates/edit/$id'
 import { Route as UsersUsersLayoutBooksEditIdImport } from './routes/users/_usersLayout/books/edit/$id'
 import { Route as UsersUsersLayoutArticlesEditIdImport } from './routes/users/_usersLayout/articles/edit/$id'
+import { Route as AdminAdminLayoutFormsEditIdImport } from './routes/_admin/_adminLayout/forms/edit/$id'
 import { Route as AdminAdminLayoutFormsConsultSubmissionIdImport } from './routes/_admin/_adminLayout/forms/consult/$submissionId'
 
 // Create Virtual Routes
@@ -377,6 +378,13 @@ const UsersUsersLayoutArticlesEditIdRoute =
     getParentRoute: () => UsersUsersLayoutRoute,
   } as any)
 
+const AdminAdminLayoutFormsEditIdRoute =
+  AdminAdminLayoutFormsEditIdImport.update({
+    id: '/forms/edit/$id',
+    path: '/forms/edit/$id',
+    getParentRoute: () => AdminAdminLayoutRoute,
+  } as any)
+
 const AdminAdminLayoutFormsConsultSubmissionIdRoute =
   AdminAdminLayoutFormsConsultSubmissionIdImport.update({
     id: '/forms/consult/$submissionId',
@@ -591,6 +599,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminLayoutFormsConsultSubmissionIdImport
       parentRoute: typeof AdminAdminLayoutImport
     }
+    '/_admin/_adminLayout/forms/edit/$id': {
+      id: '/_admin/_adminLayout/forms/edit/$id'
+      path: '/forms/edit/$id'
+      fullPath: '/forms/edit/$id'
+      preLoaderRoute: typeof AdminAdminLayoutFormsEditIdImport
+      parentRoute: typeof AdminAdminLayoutImport
+    }
     '/users/_usersLayout/articles/edit/$id': {
       id: '/users/_usersLayout/articles/edit/$id'
       path: '/articles/edit/$id'
@@ -650,6 +665,7 @@ interface AdminAdminLayoutRouteChildren {
   AdminAdminLayoutStudentsIndexLazyRoute: typeof AdminAdminLayoutStudentsIndexLazyRoute
   AdminAdminLayoutTeachersIndexLazyRoute: typeof AdminAdminLayoutTeachersIndexLazyRoute
   AdminAdminLayoutFormsConsultSubmissionIdRoute: typeof AdminAdminLayoutFormsConsultSubmissionIdRoute
+  AdminAdminLayoutFormsEditIdRoute: typeof AdminAdminLayoutFormsEditIdRoute
 }
 
 const AdminAdminLayoutRouteChildren: AdminAdminLayoutRouteChildren = {
@@ -668,6 +684,7 @@ const AdminAdminLayoutRouteChildren: AdminAdminLayoutRouteChildren = {
     AdminAdminLayoutTeachersIndexLazyRoute,
   AdminAdminLayoutFormsConsultSubmissionIdRoute:
     AdminAdminLayoutFormsConsultSubmissionIdRoute,
+  AdminAdminLayoutFormsEditIdRoute: AdminAdminLayoutFormsEditIdRoute,
 }
 
 const AdminAdminLayoutRouteWithChildren =
@@ -770,6 +787,7 @@ export interface FileRoutesByFullPath {
   '/users/conferences': typeof UsersUsersLayoutConferencesIndexLazyRoute
   '/users/theses': typeof UsersUsersLayoutThesesIndexLazyRoute
   '/forms/consult/$submissionId': typeof AdminAdminLayoutFormsConsultSubmissionIdRoute
+  '/forms/edit/$id': typeof AdminAdminLayoutFormsEditIdRoute
   '/users/articles/edit/$id': typeof UsersUsersLayoutArticlesEditIdRoute
   '/users/books/edit/$id': typeof UsersUsersLayoutBooksEditIdRoute
   '/users/certificates/edit/$id': typeof UsersUsersLayoutCertificatesEditIdRoute
@@ -805,6 +823,7 @@ export interface FileRoutesByTo {
   '/users/conferences': typeof UsersUsersLayoutConferencesIndexLazyRoute
   '/users/theses': typeof UsersUsersLayoutThesesIndexLazyRoute
   '/forms/consult/$submissionId': typeof AdminAdminLayoutFormsConsultSubmissionIdRoute
+  '/forms/edit/$id': typeof AdminAdminLayoutFormsEditIdRoute
   '/users/articles/edit/$id': typeof UsersUsersLayoutArticlesEditIdRoute
   '/users/books/edit/$id': typeof UsersUsersLayoutBooksEditIdRoute
   '/users/certificates/edit/$id': typeof UsersUsersLayoutCertificatesEditIdRoute
@@ -844,6 +863,7 @@ export interface FileRoutesById {
   '/users/_usersLayout/conferences/': typeof UsersUsersLayoutConferencesIndexLazyRoute
   '/users/_usersLayout/theses/': typeof UsersUsersLayoutThesesIndexLazyRoute
   '/_admin/_adminLayout/forms/consult/$submissionId': typeof AdminAdminLayoutFormsConsultSubmissionIdRoute
+  '/_admin/_adminLayout/forms/edit/$id': typeof AdminAdminLayoutFormsEditIdRoute
   '/users/_usersLayout/articles/edit/$id': typeof UsersUsersLayoutArticlesEditIdRoute
   '/users/_usersLayout/books/edit/$id': typeof UsersUsersLayoutBooksEditIdRoute
   '/users/_usersLayout/certificates/edit/$id': typeof UsersUsersLayoutCertificatesEditIdRoute
@@ -883,6 +903,7 @@ export interface FileRouteTypes {
     | '/users/conferences'
     | '/users/theses'
     | '/forms/consult/$submissionId'
+    | '/forms/edit/$id'
     | '/users/articles/edit/$id'
     | '/users/books/edit/$id'
     | '/users/certificates/edit/$id'
@@ -917,6 +938,7 @@ export interface FileRouteTypes {
     | '/users/conferences'
     | '/users/theses'
     | '/forms/consult/$submissionId'
+    | '/forms/edit/$id'
     | '/users/articles/edit/$id'
     | '/users/books/edit/$id'
     | '/users/certificates/edit/$id'
@@ -954,6 +976,7 @@ export interface FileRouteTypes {
     | '/users/_usersLayout/conferences/'
     | '/users/_usersLayout/theses/'
     | '/_admin/_adminLayout/forms/consult/$submissionId'
+    | '/_admin/_adminLayout/forms/edit/$id'
     | '/users/_usersLayout/articles/edit/$id'
     | '/users/_usersLayout/books/edit/$id'
     | '/users/_usersLayout/certificates/edit/$id'
@@ -1003,7 +1026,8 @@ export const routeTree = rootRoute
         "/_admin/_adminLayout/forms/",
         "/_admin/_adminLayout/students/",
         "/_admin/_adminLayout/teachers/",
-        "/_admin/_adminLayout/forms/consult/$submissionId"
+        "/_admin/_adminLayout/forms/consult/$submissionId",
+        "/_admin/_adminLayout/forms/edit/$id"
       ]
     },
     "/_unauthenticated/login": {
@@ -1139,6 +1163,10 @@ export const routeTree = rootRoute
     },
     "/_admin/_adminLayout/forms/consult/$submissionId": {
       "filePath": "_admin/_adminLayout/forms/consult/$submissionId.tsx",
+      "parent": "/_admin/_adminLayout"
+    },
+    "/_admin/_adminLayout/forms/edit/$id": {
+      "filePath": "_admin/_adminLayout/forms/edit/$id.tsx",
       "parent": "/_admin/_adminLayout"
     },
     "/users/_usersLayout/articles/edit/$id": {

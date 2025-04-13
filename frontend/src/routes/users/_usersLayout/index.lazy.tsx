@@ -27,10 +27,10 @@ function Dashboard() {
   return <div className="content-container">
     <TopBar page_name="dashboard" />
 
-    <div className="p-4 grid gap-6 md:grid-cols-12 max-h-screen">
+    <div className="p-4 grid gap-6 md:grid-cols-12 max-h-[700px] overflow-hidden">
       {/* New Forms Panel */}
-      <div className="max-h-[900px] overflow-y-auto md:col-span-5 bg-card shadow-md rounded-xl border border-border">
-        <div className="px-4 py-3 border-b border-border">
+      <div className="md:col-span-5 bg-card shadow-md rounded-xl border border-border max-h-[600px] overflow-hidden pb-4">
+        <div className="px-4 py-3 border-b border-border max-h-[700px] overflow-y-auto">
           <H3>📝 {t("New Forms")}</H3>
         </div>
         <div className="p-4 space-y-3 overflow-auto">
@@ -58,11 +58,11 @@ function Dashboard() {
       </div>
 
       {/* Submissions Panel */}
-      <div className="max-h-[900px] overflow-y-auto md:col-span-7 bg-card shadow-md rounded-xl border border-border">
+      <div className=" md:col-span-7 bg-card shadow-md rounded-xl border border-border max-h-[600px] overflow-hidden pb-4">
         <div className="px-4 py-3 border-b border-border">
           <H3>📁 {t("your-submissions")}</H3>
         </div>
-        <div className="p-4 space-y-3">
+        <div className="p-4 space-y-3 max-h-[700px] overflow-y-auto">
           {submissions?.length ? (
             submissions.map((submission) => (
               <Link

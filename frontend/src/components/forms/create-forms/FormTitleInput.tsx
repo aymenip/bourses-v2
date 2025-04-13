@@ -9,7 +9,6 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner'
 interface FormTitleInputProps {
-
 }
 
 export const FormTitleInput: React.FC<FormTitleInputProps> = () => {
@@ -19,7 +18,7 @@ export const FormTitleInput: React.FC<FormTitleInputProps> = () => {
     const lastChange = useFormStore((state) => state.lastChange);
     const setCurrentForm = useFormStore((state) => state.setCurrentForm);
     const setCurrentFormTitle = useFormStore((state) => state.setCurrentFormTitle);
-    const [title, setTitle] = useState<string>();
+    const [title, setTitle] = useState<string | null>(currentForm?.title ?? null);
 
     const onSaveClick = (newTitle: string) => {
         createForm({ ...currentForm, title: newTitle })

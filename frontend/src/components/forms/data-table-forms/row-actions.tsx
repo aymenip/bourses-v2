@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useTranslation } from "react-i18next";
 import { useDeleteForm } from "@/api/mutations";
+import { Link } from "@tanstack/react-router";
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>;
@@ -27,7 +28,7 @@ export function DataTableRowActions<TData>({
     const deleteForm = () => {
         const id = parseInt(row.getValue("id"));
         mutate(id);
-        
+
     }
     return (
         <DropdownMenu dir={i18n.dir()}>
@@ -41,7 +42,12 @@ export function DataTableRowActions<TData>({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
-                <DropdownMenuItem>{t("edit")}</DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Link to="/forms/edit/$id" params={{
+                        id: row.getValue("id") as string
+                    }}></Link>
+                    {t("edit")}
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={deleteForm}>
                     {t("delete")}
