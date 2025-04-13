@@ -7,10 +7,13 @@ import {
     useCreateTypedField
 } from "./forms/mutations";
 import {
-    useCreateBook
+    useCreateBook,
+    useUpdateBook,
+    useDeleteBook,
 } from "./books/mutations";
 import {
     useCreateCertificate,
+    useUpdateCertificate,
     useDeleteCertificate
 } from "./certificates/mutations"
 import {
@@ -20,6 +23,7 @@ import {
 } from "./articles/mutations"
 import {
     useCreateConference,
+    useUpdateConference,
     useDeleteConference
 } from "./conferences/mutations"
 
@@ -36,12 +40,16 @@ export {
     useDeleteForm,
     useCreateTypedField,
     useCreateBook,
+    useUpdateBook,
+    useDeleteBook,
     useCreateCertificate,
+    useUpdateCertificate,
     useDeleteCertificate,
     useCreateArticle,
     useDeleteArticle,
     useUpdateArticle,
     useCreateConference,
+    useUpdateConference,
     useDeleteConference,
     useCreateSubmission,
     useDeleteSubmission,

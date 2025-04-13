@@ -20,5 +20,12 @@ export const CreateCertificateSchema = CertificateSchema.omit({
   userId: true,
 });
 
+export const UpdateCertificateSchema = CreateCertificateSchema.partial().extend(
+  {
+    id: z.number(),
+  }
+);
+
 export type TCertificate = z.infer<typeof CertificateSchema>;
 export type TCreateCertificate = z.infer<typeof CreateCertificateSchema>;
+export type TUpdateCertificate = z.infer<typeof UpdateCertificateSchema>;

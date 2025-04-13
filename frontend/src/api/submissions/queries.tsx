@@ -13,16 +13,16 @@ export function useSubmissions() {
 
 export function useSubmissionsForAForm(id: number, options?: { enabled: boolean }) {
     return useQuery({
-        queryKey: ["submissionsForAForm"],
+        queryKey: ["submissionsForAForm", id],
         queryFn: () => submissionsForAForm(id),
-        enabled: options?.enabled
+        enabled: options?.enabled ?? true,
     })
 }
 
 
 export function useSubmission(id: number) {
     return useQuery({
-        queryKey: ["submission"],
+        queryKey: ["submission", id],
         queryFn: () => submission(id),
     })
 }
@@ -32,6 +32,6 @@ export function useGetSubmissionsForUser(options?: { enabled: boolean }) {
     return useQuery({
         queryKey: ["getSubmissionsForUser"],
         queryFn: () => getSubmissionsForUser(),
-        enabled: options?.enabled
+        enabled: options?.enabled ?? true,
     })
 }

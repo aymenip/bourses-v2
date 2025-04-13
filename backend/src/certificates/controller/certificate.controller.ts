@@ -17,13 +17,16 @@ export const CreateCertificate = async (
 ): Promise<any> => {
   try {
     const createCertificateDTO: CreateCertificateDTO = req.body;
-    
+
     const userId = req.user?.sub;
     if (!createCertificateDTO) {
       return res.sendStatus(400);
     }
 
-    const createdCertificate = await createCertificate(createCertificateDTO, userId);
+    const createdCertificate = await createCertificate(
+      createCertificateDTO,
+      userId
+    );
 
     return res.status(200).json(createdCertificate);
   } catch (error) {
@@ -88,6 +91,25 @@ export const GetAllCertificates = async (
   }
 };
 
+export const GetCertificateById = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+    const userId = req.user?.sub;
+    const isAdmin = req.user.isAdmin;
+    const { id } = req.params;
+    const certificate = await getCertificateById(parseInt(id));
+
+    if (certificate.userId !== userId && !isAdmin) return res.status(401);
+
+    return res.status(200).json(certificate);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
+
 export const DeleteCertificate = async (
   req: express.Request,
   res: express.Response
@@ -95,7 +117,7 @@ export const DeleteCertificate = async (
   try {
     const { id } = req.params;
     const userId = req.user.sub;
-    
+
     const book = await getCertificateById(Number(id));
     if (book.userId !== userId)
       return res.status(401).json({ message: "Unauthorized" });

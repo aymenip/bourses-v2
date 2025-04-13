@@ -5,7 +5,7 @@ export const BookSchema = z.object({
   documentId: z.number({ required_error: "required-input" }),
   title: z.string({ required_error: "required-input" }).min(1),
   author: z.string({ required_error: "required-input" }).min(1),
-  year: z.date({ required_error: "required-input" }),
+  year: z.string({ required_error: "required-input" }),
   isbn: z
     .string({ required_error: "required-input" })
     .min(20, { message: "isbn-error" })
@@ -23,5 +23,10 @@ export const CreateBookSchema = BookSchema.omit({
   userId: true,
 });
 
+export const UpdateBookSchema = CreateBookSchema.partial().extend({
+  id: z.number(),
+});
+
 export type TBook = z.infer<typeof BookSchema>;
 export type TCreateBook = z.infer<typeof CreateBookSchema>;
+export type TUpdateBook = z.infer<typeof UpdateBookSchema>;

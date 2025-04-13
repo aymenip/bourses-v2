@@ -17,7 +17,7 @@ export const CreateBook = async (
 ): Promise<any> => {
   try {
     const createBookDTO: CreateBookDTO = req.body;
-    
+
     const userId = req.user?.sub;
     if (!createBookDTO) {
       return res.sendStatus(400);
@@ -68,6 +68,23 @@ export const GetAllBooksForUser = async (
     const books = await getAllBooksForUser(userId);
 
     return res.status(200).json(books);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
+
+export const GetBookById = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+    const userId = req.user?.sub;
+    const { id } = req.params;
+    const isAdmin = req.user.isAdmin;
+    const book = await getBookById(parseInt(id));
+    if (book.userId !== userId && !isAdmin) return res.status(401);
+    return res.status(200).json(book);
   } catch (error) {
     handleError(() => console.log(error));
     return res.sendStatus(400);

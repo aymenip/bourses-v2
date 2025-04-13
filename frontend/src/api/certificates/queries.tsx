@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { certificates } from "./services";
+import { certificate, certificates } from "./services";
 
 
 
@@ -8,5 +8,13 @@ export function useCertificatesForUser(options?: { enabled: boolean }) {
         queryKey: ["certificatesForUser"],
         queryFn: certificates,
         enabled: options?.enabled
+    })
+}
+
+export function useCertificate(id: number, options?: { enabled: boolean }) {
+    return useQuery({
+        queryKey: ["certificate", id],
+        queryFn: () => certificate(id),
+        enabled: options?.enabled ?? true,
     })
 }

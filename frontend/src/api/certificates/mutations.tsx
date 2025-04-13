@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { createCertificate, deleteCertificate } from "./services";
-import { TCreateCertificate } from "@/types/certificates";
+import { createCertificate, deleteCertificate, updateCertificate } from "./services";
+import { TCreateCertificate, TUpdateCertificate } from "@/types/certificates";
 
 export function useCreateCertificate() {
     return useMutation({
@@ -8,7 +8,12 @@ export function useCreateCertificate() {
         mutationFn: async (certificate: TCreateCertificate) => await createCertificate(certificate)
     })
 }
-
+export function useUpdateCertificate() {
+    return useMutation({
+        mutationKey: ['updateCertificate'],
+        mutationFn: async (book: TUpdateCertificate) => await updateCertificate(book),
+    });
+}
 export function useDeleteCertificate() {
     return useMutation({
         mutationKey: ["deleteCertificate"],

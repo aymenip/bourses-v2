@@ -1,11 +1,17 @@
 import { useMutation } from "@tanstack/react-query";
-import { createConference, deleteConference } from "./services";
-import { TCreateConference } from "@/types/conferences";
+import { createConference, deleteConference, updateConference } from "./services";
+import { TCreateConference, TUpdateConference } from "@/types/conferences";
 
 export function useCreateConference() {
     return useMutation({
         mutationKey: ["createConference"],
         mutationFn: async (conference: TCreateConference) => await createConference(conference)
+    })
+}
+export function useUpdateConference() {
+    return useMutation({
+        mutationKey: ["updateConference"],
+        mutationFn: async (conference: TUpdateConference) => await updateConference(conference)
     })
 }
 

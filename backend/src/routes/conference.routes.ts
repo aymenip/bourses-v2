@@ -7,6 +7,7 @@ import {
   UpdateConference,
 } from "../conference/controller/conference.controller";
 import { isAdmin, verifyToken } from "../middlewares/auth.middleware";
+import { GetConferenceById } from "../conference/controller/conference.controller";
 
 export default (router: express.Router) => {
   router.post("/conference/create", verifyToken, CreateConference);
@@ -14,4 +15,5 @@ export default (router: express.Router) => {
   router.get("/conference/user", verifyToken, GetAllConferencesForUser);
   router.delete("/conference/:id", verifyToken, DeleteConference);
   router.get("/conference/all", verifyToken, isAdmin, GetAllConferences);
+  router.get("/conference/:id", verifyToken, GetConferenceById);
 };

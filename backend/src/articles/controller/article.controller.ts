@@ -62,6 +62,7 @@ export const GetArticleById = async (
   try {
     const userId = req.user?.sub;
     const { id } = req.params;
+
     const article = await getArticleById(parseInt(id));
 
     if (!article) return res.sendStatus(400);

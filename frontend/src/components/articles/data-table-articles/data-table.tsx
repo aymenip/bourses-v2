@@ -103,10 +103,8 @@ export function DataTable<TData, TValue>({
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell className="px-4 py-2" key={cell.id}>
-                                            <Link to="/users/articles/$article" params={{
-                                                article: (row.getValue("id") as string)
-                                            }} search={{
-                                                article: data
+                                            <Link to="/users/articles/$id" params={{
+                                                id: (row.getValue("id") as string)
                                             }}>
                                                 {flexRender(
                                                     cell.column.columnDef.cell,

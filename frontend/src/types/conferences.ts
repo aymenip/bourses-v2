@@ -20,5 +20,10 @@ export const CreateConferenceSchema = ConferenceSchema.omit({
   userId: true,
 });
 
+export const UpdateConferenceSchema = CreateConferenceSchema.partial().extend({
+  id: z.number(),
+});
+
 export type TConference = z.infer<typeof ConferenceSchema>;
 export type TCreateConference = z.infer<typeof CreateConferenceSchema>;
+export type TUpdateConference = z.infer<typeof UpdateConferenceSchema>;

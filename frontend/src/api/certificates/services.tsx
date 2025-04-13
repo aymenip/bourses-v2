@@ -1,4 +1,4 @@
-import { TCertificate, TCreateCertificate } from "@/types/certificates";
+import { TCertificate, TCreateCertificate, TUpdateCertificate } from "@/types/certificates";
 import { axiosInstance } from ".."
 import { authenticationContext } from "../auth/services";
 
@@ -14,6 +14,33 @@ export async function certificates(): Promise<TCertificate[]> {
         },
     });
     return response.data || [];
+}
+
+export async function certificate(id: number): Promise<TCertificate> {
+    const token = authenticationContext().token;
+
+    if (!token) {
+        throw new Error();
+    }
+    const response = await axiosInstance.get<TCertificate>(`/certificate/${id}`, {
+        headers: {
+            Authorization: token,
+        },
+    });
+    return response.data || null;
+}
+
+export async function updateCertificate(book: TUpdateCertificate): Promise<TCertificate> {
+    const token = authenticationContext().token;
+    if (!token) {
+        throw new Error();
+    }
+    const response = await axiosInstance.put<TCertificate>("/certificate/update", book, {
+        headers: {
+            Authorization: token,
+        },
+    });
+    return response.data || null;
 }
 
 export async function createCertificate(certificate: TCreateCertificate): Promise<TCertificate> {

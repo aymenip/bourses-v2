@@ -4,6 +4,7 @@ import {
   DeleteBook,
   GetAllBooks,
   GetAllBooksForUser,
+  GetBookById,
   UpdateBook,
 } from "../books/controller/book.controller";
 import { isAdmin, verifyToken } from "../middlewares/auth.middleware";
@@ -14,4 +15,5 @@ export default (router: express.Router) => {
   router.get("/book/user", verifyToken, GetAllBooksForUser);
   router.delete("/book/:id", verifyToken, DeleteBook);
   router.get("/book/all", verifyToken, isAdmin, GetAllBooks);
+  router.get("/book/:id", verifyToken, GetBookById);
 };

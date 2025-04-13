@@ -23,7 +23,6 @@ function CreateBook() {
   const form = useForm<TCreateBook>({
     resolver: zodResolver(CreateBookSchema),
     defaultValues: {
-      year: new Date(),
       documentId: 0, // Ensure it's null initially
       title: '',
       author: '',
@@ -185,9 +184,8 @@ function CreateBook() {
                     render={({ field }) => (
                       <Input
                         type="date"
-                        value={format(new Date(field.value), 'yyyy-MM-dd')}
                         onChange={(e) =>
-                          field.onChange(new Date(e.target.value))
+                          field.onChange(format(new Date(e.target.value), 'yyyy-MM-dd'))
                         }
                         className="w-fit"
                       />
@@ -197,7 +195,7 @@ function CreateBook() {
                     <div className="form-error">
                       <CrossCircledIcon />
                       <span className="flex items-center gap-x-1">
-                        {t(form.formState.errors.title?.message || '')}
+                        {t(form.formState.errors.year?.message || '')}
                       </span>
                     </div>
                   )}

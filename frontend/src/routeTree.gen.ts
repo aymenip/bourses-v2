@@ -17,7 +17,9 @@ import { Route as UsersUsersLayoutImport } from './routes/users/_usersLayout'
 import { Route as UnauthenticatedLoginImport } from './routes/_unauthenticated/login'
 import { Route as AdminAdminLayoutImport } from './routes/_admin/_adminLayout'
 import { Route as AdminAdminLayoutIndexImport } from './routes/_admin/_adminLayout/index'
-import { Route as UsersUsersLayoutArticlesArticleImport } from './routes/users/_usersLayout/articles/$article'
+import { Route as UsersUsersLayoutCertificatesIdImport } from './routes/users/_usersLayout/certificates/$id'
+import { Route as UsersUsersLayoutBooksIdImport } from './routes/users/_usersLayout/books/$id'
+import { Route as UsersUsersLayoutArticlesIdImport } from './routes/users/_usersLayout/articles/$id'
 import { Route as AdminAdminLayoutTeachersIdImport } from './routes/_admin/_adminLayout/teachers/$id'
 import { Route as AdminAdminLayoutStudentsIdImport } from './routes/_admin/_adminLayout/students/$id'
 import { Route as AdminAdminLayoutFormsIdImport } from './routes/_admin/_adminLayout/forms/$id'
@@ -25,6 +27,8 @@ import { Route as AdminAdminLayoutEmployeesIdImport } from './routes/_admin/_adm
 import { Route as UsersUsersLayoutSubmissionsReceiptIdImport } from './routes/users/_usersLayout/submissions/receipt/$id'
 import { Route as UsersUsersLayoutSubmissionsNewIdImport } from './routes/users/_usersLayout/submissions/new/$id'
 import { Route as UsersUsersLayoutSubmissionsEditIdImport } from './routes/users/_usersLayout/submissions/edit/$id'
+import { Route as UsersUsersLayoutCertificatesEditIdImport } from './routes/users/_usersLayout/certificates/edit/$id'
+import { Route as UsersUsersLayoutBooksEditIdImport } from './routes/users/_usersLayout/books/edit/$id'
 import { Route as UsersUsersLayoutArticlesEditIdImport } from './routes/users/_usersLayout/articles/edit/$id'
 import { Route as AdminAdminLayoutFormsConsultSubmissionIdImport } from './routes/_admin/_adminLayout/forms/consult/$submissionId'
 
@@ -281,12 +285,26 @@ const AdminAdminLayoutFormsCreateLazyRoute =
     ),
   )
 
-const UsersUsersLayoutArticlesArticleRoute =
-  UsersUsersLayoutArticlesArticleImport.update({
-    id: '/articles/$article',
-    path: '/articles/$article',
+const UsersUsersLayoutCertificatesIdRoute =
+  UsersUsersLayoutCertificatesIdImport.update({
+    id: '/certificates/$id',
+    path: '/certificates/$id',
     getParentRoute: () => UsersUsersLayoutRoute,
   } as any)
+
+const UsersUsersLayoutBooksIdRoute = UsersUsersLayoutBooksIdImport.update({
+  id: '/books/$id',
+  path: '/books/$id',
+  getParentRoute: () => UsersUsersLayoutRoute,
+} as any)
+
+const UsersUsersLayoutArticlesIdRoute = UsersUsersLayoutArticlesIdImport.update(
+  {
+    id: '/articles/$id',
+    path: '/articles/$id',
+    getParentRoute: () => UsersUsersLayoutRoute,
+  } as any,
+)
 
 const AdminAdminLayoutTeachersIdRoute = AdminAdminLayoutTeachersIdImport.update(
   {
@@ -335,6 +353,20 @@ const UsersUsersLayoutSubmissionsEditIdRoute =
   UsersUsersLayoutSubmissionsEditIdImport.update({
     id: '/submissions/edit/$id',
     path: '/submissions/edit/$id',
+    getParentRoute: () => UsersUsersLayoutRoute,
+  } as any)
+
+const UsersUsersLayoutCertificatesEditIdRoute =
+  UsersUsersLayoutCertificatesEditIdImport.update({
+    id: '/certificates/edit/$id',
+    path: '/certificates/edit/$id',
+    getParentRoute: () => UsersUsersLayoutRoute,
+  } as any)
+
+const UsersUsersLayoutBooksEditIdRoute =
+  UsersUsersLayoutBooksEditIdImport.update({
+    id: '/books/edit/$id',
+    path: '/books/edit/$id',
     getParentRoute: () => UsersUsersLayoutRoute,
   } as any)
 
@@ -426,11 +458,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminLayoutTeachersIdImport
       parentRoute: typeof AdminAdminLayoutImport
     }
-    '/users/_usersLayout/articles/$article': {
-      id: '/users/_usersLayout/articles/$article'
-      path: '/articles/$article'
-      fullPath: '/users/articles/$article'
-      preLoaderRoute: typeof UsersUsersLayoutArticlesArticleImport
+    '/users/_usersLayout/articles/$id': {
+      id: '/users/_usersLayout/articles/$id'
+      path: '/articles/$id'
+      fullPath: '/users/articles/$id'
+      preLoaderRoute: typeof UsersUsersLayoutArticlesIdImport
+      parentRoute: typeof UsersUsersLayoutImport
+    }
+    '/users/_usersLayout/books/$id': {
+      id: '/users/_usersLayout/books/$id'
+      path: '/books/$id'
+      fullPath: '/users/books/$id'
+      preLoaderRoute: typeof UsersUsersLayoutBooksIdImport
+      parentRoute: typeof UsersUsersLayoutImport
+    }
+    '/users/_usersLayout/certificates/$id': {
+      id: '/users/_usersLayout/certificates/$id'
+      path: '/certificates/$id'
+      fullPath: '/users/certificates/$id'
+      preLoaderRoute: typeof UsersUsersLayoutCertificatesIdImport
       parentRoute: typeof UsersUsersLayoutImport
     }
     '/_admin/_adminLayout/forms/create': {
@@ -552,6 +598,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersUsersLayoutArticlesEditIdImport
       parentRoute: typeof UsersUsersLayoutImport
     }
+    '/users/_usersLayout/books/edit/$id': {
+      id: '/users/_usersLayout/books/edit/$id'
+      path: '/books/edit/$id'
+      fullPath: '/users/books/edit/$id'
+      preLoaderRoute: typeof UsersUsersLayoutBooksEditIdImport
+      parentRoute: typeof UsersUsersLayoutImport
+    }
+    '/users/_usersLayout/certificates/edit/$id': {
+      id: '/users/_usersLayout/certificates/edit/$id'
+      path: '/certificates/edit/$id'
+      fullPath: '/users/certificates/edit/$id'
+      preLoaderRoute: typeof UsersUsersLayoutCertificatesEditIdImport
+      parentRoute: typeof UsersUsersLayoutImport
+    }
     '/users/_usersLayout/submissions/edit/$id': {
       id: '/users/_usersLayout/submissions/edit/$id'
       path: '/submissions/edit/$id'
@@ -615,7 +675,9 @@ const AdminAdminLayoutRouteWithChildren =
 
 interface UsersUsersLayoutRouteChildren {
   UsersUsersLayoutIndexLazyRoute: typeof UsersUsersLayoutIndexLazyRoute
-  UsersUsersLayoutArticlesArticleRoute: typeof UsersUsersLayoutArticlesArticleRoute
+  UsersUsersLayoutArticlesIdRoute: typeof UsersUsersLayoutArticlesIdRoute
+  UsersUsersLayoutBooksIdRoute: typeof UsersUsersLayoutBooksIdRoute
+  UsersUsersLayoutCertificatesIdRoute: typeof UsersUsersLayoutCertificatesIdRoute
   UsersUsersLayoutArticlesCreateLazyRoute: typeof UsersUsersLayoutArticlesCreateLazyRoute
   UsersUsersLayoutBooksCreateLazyRoute: typeof UsersUsersLayoutBooksCreateLazyRoute
   UsersUsersLayoutCertificatesCreateLazyRoute: typeof UsersUsersLayoutCertificatesCreateLazyRoute
@@ -627,6 +689,8 @@ interface UsersUsersLayoutRouteChildren {
   UsersUsersLayoutConferencesIndexLazyRoute: typeof UsersUsersLayoutConferencesIndexLazyRoute
   UsersUsersLayoutThesesIndexLazyRoute: typeof UsersUsersLayoutThesesIndexLazyRoute
   UsersUsersLayoutArticlesEditIdRoute: typeof UsersUsersLayoutArticlesEditIdRoute
+  UsersUsersLayoutBooksEditIdRoute: typeof UsersUsersLayoutBooksEditIdRoute
+  UsersUsersLayoutCertificatesEditIdRoute: typeof UsersUsersLayoutCertificatesEditIdRoute
   UsersUsersLayoutSubmissionsEditIdRoute: typeof UsersUsersLayoutSubmissionsEditIdRoute
   UsersUsersLayoutSubmissionsNewIdRoute: typeof UsersUsersLayoutSubmissionsNewIdRoute
   UsersUsersLayoutSubmissionsReceiptIdRoute: typeof UsersUsersLayoutSubmissionsReceiptIdRoute
@@ -634,7 +698,9 @@ interface UsersUsersLayoutRouteChildren {
 
 const UsersUsersLayoutRouteChildren: UsersUsersLayoutRouteChildren = {
   UsersUsersLayoutIndexLazyRoute: UsersUsersLayoutIndexLazyRoute,
-  UsersUsersLayoutArticlesArticleRoute: UsersUsersLayoutArticlesArticleRoute,
+  UsersUsersLayoutArticlesIdRoute: UsersUsersLayoutArticlesIdRoute,
+  UsersUsersLayoutBooksIdRoute: UsersUsersLayoutBooksIdRoute,
+  UsersUsersLayoutCertificatesIdRoute: UsersUsersLayoutCertificatesIdRoute,
   UsersUsersLayoutArticlesCreateLazyRoute:
     UsersUsersLayoutArticlesCreateLazyRoute,
   UsersUsersLayoutBooksCreateLazyRoute: UsersUsersLayoutBooksCreateLazyRoute,
@@ -652,6 +718,9 @@ const UsersUsersLayoutRouteChildren: UsersUsersLayoutRouteChildren = {
     UsersUsersLayoutConferencesIndexLazyRoute,
   UsersUsersLayoutThesesIndexLazyRoute: UsersUsersLayoutThesesIndexLazyRoute,
   UsersUsersLayoutArticlesEditIdRoute: UsersUsersLayoutArticlesEditIdRoute,
+  UsersUsersLayoutBooksEditIdRoute: UsersUsersLayoutBooksEditIdRoute,
+  UsersUsersLayoutCertificatesEditIdRoute:
+    UsersUsersLayoutCertificatesEditIdRoute,
   UsersUsersLayoutSubmissionsEditIdRoute:
     UsersUsersLayoutSubmissionsEditIdRoute,
   UsersUsersLayoutSubmissionsNewIdRoute: UsersUsersLayoutSubmissionsNewIdRoute,
@@ -682,7 +751,9 @@ export interface FileRoutesByFullPath {
   '/forms/$id': typeof AdminAdminLayoutFormsIdRoute
   '/students/$id': typeof AdminAdminLayoutStudentsIdRoute
   '/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
-  '/users/articles/$article': typeof UsersUsersLayoutArticlesArticleRoute
+  '/users/articles/$id': typeof UsersUsersLayoutArticlesIdRoute
+  '/users/books/$id': typeof UsersUsersLayoutBooksIdRoute
+  '/users/certificates/$id': typeof UsersUsersLayoutCertificatesIdRoute
   '/forms/create': typeof AdminAdminLayoutFormsCreateLazyRoute
   '/users/articles/create': typeof UsersUsersLayoutArticlesCreateLazyRoute
   '/users/books/create': typeof UsersUsersLayoutBooksCreateLazyRoute
@@ -700,6 +771,8 @@ export interface FileRoutesByFullPath {
   '/users/theses': typeof UsersUsersLayoutThesesIndexLazyRoute
   '/forms/consult/$submissionId': typeof AdminAdminLayoutFormsConsultSubmissionIdRoute
   '/users/articles/edit/$id': typeof UsersUsersLayoutArticlesEditIdRoute
+  '/users/books/edit/$id': typeof UsersUsersLayoutBooksEditIdRoute
+  '/users/certificates/edit/$id': typeof UsersUsersLayoutCertificatesEditIdRoute
   '/users/submissions/edit/$id': typeof UsersUsersLayoutSubmissionsEditIdRoute
   '/users/submissions/new/$id': typeof UsersUsersLayoutSubmissionsNewIdRoute
   '/users/submissions/receipt/$id': typeof UsersUsersLayoutSubmissionsReceiptIdRoute
@@ -713,7 +786,9 @@ export interface FileRoutesByTo {
   '/forms/$id': typeof AdminAdminLayoutFormsIdRoute
   '/students/$id': typeof AdminAdminLayoutStudentsIdRoute
   '/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
-  '/users/articles/$article': typeof UsersUsersLayoutArticlesArticleRoute
+  '/users/articles/$id': typeof UsersUsersLayoutArticlesIdRoute
+  '/users/books/$id': typeof UsersUsersLayoutBooksIdRoute
+  '/users/certificates/$id': typeof UsersUsersLayoutCertificatesIdRoute
   '/forms/create': typeof AdminAdminLayoutFormsCreateLazyRoute
   '/users/articles/create': typeof UsersUsersLayoutArticlesCreateLazyRoute
   '/users/books/create': typeof UsersUsersLayoutBooksCreateLazyRoute
@@ -731,6 +806,8 @@ export interface FileRoutesByTo {
   '/users/theses': typeof UsersUsersLayoutThesesIndexLazyRoute
   '/forms/consult/$submissionId': typeof AdminAdminLayoutFormsConsultSubmissionIdRoute
   '/users/articles/edit/$id': typeof UsersUsersLayoutArticlesEditIdRoute
+  '/users/books/edit/$id': typeof UsersUsersLayoutBooksEditIdRoute
+  '/users/certificates/edit/$id': typeof UsersUsersLayoutCertificatesEditIdRoute
   '/users/submissions/edit/$id': typeof UsersUsersLayoutSubmissionsEditIdRoute
   '/users/submissions/new/$id': typeof UsersUsersLayoutSubmissionsNewIdRoute
   '/users/submissions/receipt/$id': typeof UsersUsersLayoutSubmissionsReceiptIdRoute
@@ -748,7 +825,9 @@ export interface FileRoutesById {
   '/_admin/_adminLayout/forms/$id': typeof AdminAdminLayoutFormsIdRoute
   '/_admin/_adminLayout/students/$id': typeof AdminAdminLayoutStudentsIdRoute
   '/_admin/_adminLayout/teachers/$id': typeof AdminAdminLayoutTeachersIdRoute
-  '/users/_usersLayout/articles/$article': typeof UsersUsersLayoutArticlesArticleRoute
+  '/users/_usersLayout/articles/$id': typeof UsersUsersLayoutArticlesIdRoute
+  '/users/_usersLayout/books/$id': typeof UsersUsersLayoutBooksIdRoute
+  '/users/_usersLayout/certificates/$id': typeof UsersUsersLayoutCertificatesIdRoute
   '/_admin/_adminLayout/forms/create': typeof AdminAdminLayoutFormsCreateLazyRoute
   '/users/_usersLayout/articles/create': typeof UsersUsersLayoutArticlesCreateLazyRoute
   '/users/_usersLayout/books/create': typeof UsersUsersLayoutBooksCreateLazyRoute
@@ -766,6 +845,8 @@ export interface FileRoutesById {
   '/users/_usersLayout/theses/': typeof UsersUsersLayoutThesesIndexLazyRoute
   '/_admin/_adminLayout/forms/consult/$submissionId': typeof AdminAdminLayoutFormsConsultSubmissionIdRoute
   '/users/_usersLayout/articles/edit/$id': typeof UsersUsersLayoutArticlesEditIdRoute
+  '/users/_usersLayout/books/edit/$id': typeof UsersUsersLayoutBooksEditIdRoute
+  '/users/_usersLayout/certificates/edit/$id': typeof UsersUsersLayoutCertificatesEditIdRoute
   '/users/_usersLayout/submissions/edit/$id': typeof UsersUsersLayoutSubmissionsEditIdRoute
   '/users/_usersLayout/submissions/new/$id': typeof UsersUsersLayoutSubmissionsNewIdRoute
   '/users/_usersLayout/submissions/receipt/$id': typeof UsersUsersLayoutSubmissionsReceiptIdRoute
@@ -783,7 +864,9 @@ export interface FileRouteTypes {
     | '/forms/$id'
     | '/students/$id'
     | '/teachers/$id'
-    | '/users/articles/$article'
+    | '/users/articles/$id'
+    | '/users/books/$id'
+    | '/users/certificates/$id'
     | '/forms/create'
     | '/users/articles/create'
     | '/users/books/create'
@@ -801,6 +884,8 @@ export interface FileRouteTypes {
     | '/users/theses'
     | '/forms/consult/$submissionId'
     | '/users/articles/edit/$id'
+    | '/users/books/edit/$id'
+    | '/users/certificates/edit/$id'
     | '/users/submissions/edit/$id'
     | '/users/submissions/new/$id'
     | '/users/submissions/receipt/$id'
@@ -813,7 +898,9 @@ export interface FileRouteTypes {
     | '/forms/$id'
     | '/students/$id'
     | '/teachers/$id'
-    | '/users/articles/$article'
+    | '/users/articles/$id'
+    | '/users/books/$id'
+    | '/users/certificates/$id'
     | '/forms/create'
     | '/users/articles/create'
     | '/users/books/create'
@@ -831,6 +918,8 @@ export interface FileRouteTypes {
     | '/users/theses'
     | '/forms/consult/$submissionId'
     | '/users/articles/edit/$id'
+    | '/users/books/edit/$id'
+    | '/users/certificates/edit/$id'
     | '/users/submissions/edit/$id'
     | '/users/submissions/new/$id'
     | '/users/submissions/receipt/$id'
@@ -846,7 +935,9 @@ export interface FileRouteTypes {
     | '/_admin/_adminLayout/forms/$id'
     | '/_admin/_adminLayout/students/$id'
     | '/_admin/_adminLayout/teachers/$id'
-    | '/users/_usersLayout/articles/$article'
+    | '/users/_usersLayout/articles/$id'
+    | '/users/_usersLayout/books/$id'
+    | '/users/_usersLayout/certificates/$id'
     | '/_admin/_adminLayout/forms/create'
     | '/users/_usersLayout/articles/create'
     | '/users/_usersLayout/books/create'
@@ -864,6 +955,8 @@ export interface FileRouteTypes {
     | '/users/_usersLayout/theses/'
     | '/_admin/_adminLayout/forms/consult/$submissionId'
     | '/users/_usersLayout/articles/edit/$id'
+    | '/users/_usersLayout/books/edit/$id'
+    | '/users/_usersLayout/certificates/edit/$id'
     | '/users/_usersLayout/submissions/edit/$id'
     | '/users/_usersLayout/submissions/new/$id'
     | '/users/_usersLayout/submissions/receipt/$id'
@@ -927,7 +1020,9 @@ export const routeTree = rootRoute
       "parent": "/users",
       "children": [
         "/users/_usersLayout/",
-        "/users/_usersLayout/articles/$article",
+        "/users/_usersLayout/articles/$id",
+        "/users/_usersLayout/books/$id",
+        "/users/_usersLayout/certificates/$id",
         "/users/_usersLayout/articles/create",
         "/users/_usersLayout/books/create",
         "/users/_usersLayout/certificates/create",
@@ -939,6 +1034,8 @@ export const routeTree = rootRoute
         "/users/_usersLayout/conferences/",
         "/users/_usersLayout/theses/",
         "/users/_usersLayout/articles/edit/$id",
+        "/users/_usersLayout/books/edit/$id",
+        "/users/_usersLayout/certificates/edit/$id",
         "/users/_usersLayout/submissions/edit/$id",
         "/users/_usersLayout/submissions/new/$id",
         "/users/_usersLayout/submissions/receipt/$id"
@@ -968,8 +1065,16 @@ export const routeTree = rootRoute
       "filePath": "_admin/_adminLayout/teachers/$id.tsx",
       "parent": "/_admin/_adminLayout"
     },
-    "/users/_usersLayout/articles/$article": {
-      "filePath": "users/_usersLayout/articles/$article.tsx",
+    "/users/_usersLayout/articles/$id": {
+      "filePath": "users/_usersLayout/articles/$id.tsx",
+      "parent": "/users/_usersLayout"
+    },
+    "/users/_usersLayout/books/$id": {
+      "filePath": "users/_usersLayout/books/$id.tsx",
+      "parent": "/users/_usersLayout"
+    },
+    "/users/_usersLayout/certificates/$id": {
+      "filePath": "users/_usersLayout/certificates/$id.tsx",
       "parent": "/users/_usersLayout"
     },
     "/_admin/_adminLayout/forms/create": {
@@ -1038,6 +1143,14 @@ export const routeTree = rootRoute
     },
     "/users/_usersLayout/articles/edit/$id": {
       "filePath": "users/_usersLayout/articles/edit/$id.tsx",
+      "parent": "/users/_usersLayout"
+    },
+    "/users/_usersLayout/books/edit/$id": {
+      "filePath": "users/_usersLayout/books/edit/$id.tsx",
+      "parent": "/users/_usersLayout"
+    },
+    "/users/_usersLayout/certificates/edit/$id": {
+      "filePath": "users/_usersLayout/certificates/edit/$id.tsx",
       "parent": "/users/_usersLayout"
     },
     "/users/_usersLayout/submissions/edit/$id": {

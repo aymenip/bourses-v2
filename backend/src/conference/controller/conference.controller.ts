@@ -17,13 +17,16 @@ export const CreateConference = async (
 ): Promise<any> => {
   try {
     const createConferenceDTO: CreateConferenceDTO = req.body;
-    
+
     const userId = req.user?.sub;
     if (!createConferenceDTO) {
       return res.sendStatus(400);
     }
 
-    const createdConference = await createConference(createConferenceDTO, userId);
+    const createdConference = await createConference(
+      createConferenceDTO,
+      userId
+    );
 
     return res.status(200).json(createdConference);
   } catch (error) {
@@ -88,6 +91,23 @@ export const GetAllConferences = async (
   }
 };
 
+export const GetConferenceById = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+    const userId = req.user?.sub;
+    const isAdmin = req.user.isAdmin;
+    const { id } = req.params;
+    const conference = await getConferenceById(parseInt(id));
+    if (conference.userId !== userId && !isAdmin) return res.status(401);
+    return res.status(200).json(conference);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
+
 export const DeleteConference = async (
   req: express.Request,
   res: express.Response
@@ -95,7 +115,7 @@ export const DeleteConference = async (
   try {
     const { id } = req.params;
     const userId = req.user.sub;
-    
+
     const book = await getConferenceById(Number(id));
     if (book.userId !== userId)
       return res.status(401).json({ message: "Unauthorized" });

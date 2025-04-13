@@ -164,7 +164,6 @@ function CreateCertificate() {
                 <Label>{t('title')}</Label>
                 <Input
                   required
-                  
                   {...form.register('title')}
                   placeholder={t('title')}
                   type="text"

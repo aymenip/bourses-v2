@@ -26,6 +26,7 @@ import {
 import { DataTablePagination } from "./pagination";
 import { DataTableToolbar } from "./toolbar";
 import { useTranslation } from "react-i18next";
+import { Link } from "@tanstack/react-router";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -102,10 +103,14 @@ export function DataTable<TData, TValue>({
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell className="px-4 py-2" key={cell.id}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext(),
-                                            )}
+                                            <Link to="/users/books/$id" params={{
+                                                id: (row.getValue("id") as string)
+                                            }}>
+                                                {flexRender(
+                                                    cell.column.columnDef.cell,
+                                                    cell.getContext(),
+                                                )}
+                                            </Link>
                                         </TableCell>
                                     ))}
                                 </TableRow>

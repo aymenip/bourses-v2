@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { conferences } from "./services";
+import { conference, conferences } from "./services";
 
 
 
@@ -7,6 +7,13 @@ export function useConferencesForUser(options?: { enabled: boolean }) {
     return useQuery({
         queryKey: ["conferencesForUser"],
         queryFn: conferences,
-        enabled: options?.enabled
+        enabled: options?.enabled ?? true,
+    })
+}
+export function useConference(id: number, options?: { enabled: boolean }) {
+    return useQuery({
+        queryKey: ["conference", id],
+        queryFn: () => conference(id),
+        enabled: options?.enabled ?? true,
     })
 }

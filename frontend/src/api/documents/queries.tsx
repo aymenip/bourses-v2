@@ -5,6 +5,6 @@ export function useDocument(id: number, options?: { enabled: boolean }) {
     return useQuery({
         queryKey: ["form"],
         queryFn: () => document(id),
-        enabled: options?.enabled
+        enabled: options?.enabled ?? true,
     })
 }

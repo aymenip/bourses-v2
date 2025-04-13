@@ -70,14 +70,35 @@ function EditArticle() {
   }
 
   const onSubmit = (values: TCreateArticle) => {
-    updateArticle({ id: Number(id), ...values, publicationDate: values.publicationDate ? values.publicationDate : "" })
+    updateArticle({
+      id: Number(id),
+      ...values,
+      publicationDate: values.publicationDate?.trim() === '' ? undefined : values.publicationDate,
+    });
   }
 
   useEffect(() => {
-    if (isPending) toast.loading(t('updating'))
-    if (isSuccess) toast.success(t('article-updated'))
-    if (isError) toast.error(t('update-failed'))
-  }, [isPending, isSuccess, isError])
+    let toastId: string | number | null = null
+
+    if (isPending) {
+      toastId = toast.loading(t('update-pending')) // Save toast ID
+    }
+
+    if (isSuccess) {
+      if (toastId) toast.dismiss(toastId) // Dismiss loading toast
+      toast.success(t('update-success'))
+      uploadedDocument && form.setValue('documentId', uploadedDocument.id)
+    }
+
+    if (isError) {
+      if (toastId) toast.dismiss(toastId)
+      toast.error(t('update-error'))
+    }
+
+    return () => {
+      if (toastId) toast.dismiss(toastId) // Cleanup on unmount
+    }
+  }, [isSuccess, isPending, isError, uploadedDocument])
 
   if (isLoading) return <Loader />
 

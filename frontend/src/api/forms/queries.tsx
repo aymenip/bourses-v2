@@ -13,16 +13,16 @@ export function useForms() {
 
 export function useForm(id: number, options?: { enabled: boolean }) {
     return useQuery({
-        queryKey: ["form"],
+        queryKey: ["form", id],
         queryFn: () => form(id),
-        enabled: options?.enabled
+        enabled: options?.enabled ?? true,
     })
 }
 export function useFullForm(id: number, options?: { enabled: boolean }) {
     return useQuery({
-        queryKey: ["fullForm"],
+        queryKey: ["fullForm", id],
         queryFn: () => getFullForm(id),
-        enabled: options?.enabled
+        enabled: options?.enabled ?? true,
     })
 }
 
@@ -30,6 +30,6 @@ export function useGetFormsForUser(positionId: number, options?: { enabled: bool
     return useQuery({
         queryKey: ["getFormsForUser", positionId],
         queryFn: () => getFormsForUser(positionId),
-        enabled: options?.enabled
+        enabled: options?.enabled ?? true,
     })
 }
