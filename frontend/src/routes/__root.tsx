@@ -8,9 +8,11 @@ export const Route = createRootRoute({
 function Root() {
     const [_, i18n] = useTranslation("translation")
     return (
-        <div dir={i18n.dir()} className='flex overflow-x-hidden'>
+        <div dir={i18n.dir()} className='flex overflow-hidden '>
             <Toaster richColors position="bottom-right" expand={true} />
-            <Outlet />
+            <div className='flex-1 h-screen'>
+                <Outlet />
+            </div>
         </div>
     )
 }

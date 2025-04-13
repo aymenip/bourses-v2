@@ -1,4 +1,4 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -109,5 +109,134 @@
   }
   .border-b {
     @apply border-b-zinc-200  dark:border-b-neutral-700;
+  }
+} */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.cairo-play-logo {
+  font-family: "Cairo Play", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+  font-variation-settings: "slnt" 0;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+    --primary: 243 75% 59%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 38% 96%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 34% 96%;
+    --muted-foreground: 215 20% 45%;
+    --accent: 262 83% 61%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 215 30% 89%;
+    --input: 215 30% 89%;
+    --ring: 243 75% 59%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 234 10% 10%;
+    --foreground: 0 0% 100%;
+    --card: 234 12% 12%;
+    --card-foreground: 0 0% 100%;
+    --popover: 234 12% 12%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 243 100% 70%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 234 15% 20%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 234 14% 25%;
+    --muted-foreground: 215 15% 70%;
+    --accent: 265 90% 70%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 234 14% 25%;
+    --input: 234 14% 25%;
+    --ring: 243 100% 70%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-readex bg-background text-foreground min-h-screen w-full antialiased transition-colors duration-300 ease-in-out;
+  }
+}
+@layer components {
+  .header-background {
+    @apply sticky top-0 h-screen py-6 px-4 overflow-y-auto flex flex-col items-start gap-6 
+    bg-gradient-to-br from-zinc-50 to-zinc-200 dark:from-neutral-900 dark:to-neutral-800 
+    border-r border-zinc-200 dark:border-neutral-700 shadow-xl;
+  }
+
+  .header-item {
+    @apply w-full px-4 py-3 transition-all duration-150 text-sm font-medium 
+    rounded-lg hover:bg-zinc-100 dark:hover:bg-neutral-700 
+    hover:text-primary flex items-center gap-2 text-muted-foreground;
+  }
+
+  .header-item-active {
+    @apply font-semibold text-primary bg-primary/10 dark:bg-primary/20 
+    border border-primary/30 shadow-inner;
+  }
+
+  .neon-shadow {
+    @apply shadow-[0_0_4px_#fff,inset_0_0_4px_#fff,0_0_8px_#7c3aed,0_0_20px_#7c3aed];
+  }
+
+  .form {
+    @apply grid gap-8 sm:gap-10 md:gap-12;
+  }
+
+  .form-group {
+    @apply grid gap-1;
+  }
+
+  .form-error {
+    @apply text-red-500 text-sm flex items-center gap-1;
+  }
+}
+@layer utilities {
+  .header-collapsed {
+    @apply items-end ltr:pr-4 rtl:pl-4;
+  }
+
+  .content-container {
+    @apply flex-1 px-4 py-6 sm:px-6 md:px-8;
+  }
+
+  .border-r {
+    @apply border-zinc-200 dark:border-neutral-700;
+  }
+
+  .border-b {
+    @apply border-b-zinc-200  dark:border-b-neutral-700;
+  }
+
+  .glass {
+    @apply backdrop-blur-md bg-white/30 dark:bg-neutral-800/30 border border-white/10 shadow-inner;
+  }
+
+  .card-glow {
+    @apply shadow-[0_2px_30px_rgba(0,0,0,0.06)] dark:shadow-[0_2px_30px_rgba(0,0,0,0.4)];
+  }
+
+  .fancy-underline {
+    @apply underline decoration-wavy decoration-2 underline-offset-2 decoration-primary;
   }
 }

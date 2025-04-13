@@ -96,7 +96,7 @@ function EditArticle() {
               onValueChange={setFiles}
               dropzoneOptions={{ maxFiles: 1, maxSize: 1024 * 1024 * 10 }}
             />
-            <Button type="button" variant="secondary" onClick={handleUpload} className="mt-2">
+            <Button type="button" variant="secondary" onClick={handleUpload} className="mt-2 w-full">
               {t('upload')}
             </Button>
           </div>

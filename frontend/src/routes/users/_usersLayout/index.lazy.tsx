@@ -24,61 +24,85 @@ function Dashboard() {
   });
   const { data: submissions } = useGetSubmissionsForUser();
   if (isLoading || isFetching) return <Loader />
-  return <div className='content-container'>
-    <TopBar page_name='dashboard' />
-    <div className='p-2 grid md:grid-cols-5 gap-6'>
+  return <div className="content-container">
+    <TopBar page_name="dashboard" />
 
-      <div className='flex border dark:border-zinc-800 p-2 shadow-sm md:col-span-2 flex-col'>
-        <div className='border-b-2 dark:border-b-zinc-800 py-2'>
-          <H3>New forms</H3>
+    <div className="p-4 grid gap-6 md:grid-cols-12">
+      {/* New Forms Panel */}
+      <div className="md:col-span-5 bg-card shadow-md rounded-xl border border-border">
+        <div className="px-4 py-3 border-b border-border">
+          <H3>📝 {t("New Forms")}</H3>
         </div>
-        <div className='py-2 mb-5 mt-2 flex flex-col gap-y-2'>
-          {
-            forms?.map((form) => <Link key={form.id} to="/users/submissions/new/$id" params={{ id: form.id.toString() }}>
-              <div className='flex justify-between bg-slate-100 dark:bg-zinc-800 p-2 rounded-sm border dark:border-zinc-800 cursor-pointer hover:bg-slate-200/50 dark:hover:bg-zinc-800/70 hover:ring-2 ring-slate-200 dark:ring-zinc-700 transition-all'>
-                <div className='truncate ltr:pr-2 rtl:pl-2'>
-                  <H4>{form.title}</H4>
-                  <Muted>{format(new Date(form.createdAt), 'yyyy-MM-dd hh:mm b')}</Muted>
+        <div className="p-4 space-y-3">
+          {forms?.length ? (
+            forms.map((form) => (
+              <Link
+                key={form.id}
+                to="/users/submissions/new/$id"
+                params={{ id: form.id.toString() }}
+                className="group block rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-transparent hover:border-primary"
+              >
+                <div className="p-3 flex items-center justify-between gap-2">
+                  <div className="truncate">
+                    <H4 className="truncate group-hover:text-primary">{form.title}</H4>
+                    <Muted>{format(new Date(form.createdAt), "yyyy-MM-dd hh:mm b")}</Muted>
+                  </div>
+                  <ExternalLink className="text-muted-foreground group-hover:text-primary h-5 w-5" />
                 </div>
-                <ExternalLink className='text-slate-400 dark:text-zinc-400 w-5 h-5' />
-              </div>
-            </Link>)
-          }
+              </Link>
+            ))
+          ) : (
+            <Muted>{t("No new forms available.")}</Muted>
+          )}
         </div>
       </div>
 
-      <div className='flex border dark:border-zinc-800 p-2 shadow-sm md:col-start-3 md:col-span-3 flex-col '>
-        <div className='border-b-2 dark:border-b-zinc-800 py-2'>
-          <H3>Your submissions</H3>
+      {/* Submissions Panel */}
+      <div className="md:col-span-7 bg-card shadow-md rounded-xl border border-border">
+        <div className="px-4 py-3 border-b border-border">
+          <H3>📁 {t("your-Submissions")}</H3>
         </div>
-        <div className='py-2 mb-5 mt-2 flex flex-col gap-y-2'>
-          {
-            submissions?.map((submission) => <Link key={submission.id} to="/users/submissions/edit/$id" params={{ id: submission.id.toString() }}><div key={submission.id} className='flex justify-between bg-slate-100 dark:bg-zinc-800 p-2 rounded-sm border dark:border-zinc-800 cursor-pointer hover:bg-slate-200/50 dark:hover:bg-zinc-800/70 hover:ring-2 ring-slate-200 dark:ring-zinc-700 transition-all'>
-              <div className='truncate ltr:pr-2 rtl:pl-2'>
-                <H4>{submission.formTitle}</H4>
-                <Muted>{format(new Date(submission.createdAt), 'yyyy-MM-dd hh:mm b')}</Muted>
-              </div>
-              <div className='flex flex-col gap-1'>
-                <Badge variant={submission.status === "draft" ? "destructive" : "default"}>{t(submission.status)}</Badge>
-
-                {
-                  submission.status === "submitted" &&
-                  <Button size={"sm"} variant={"outline"}>
-                    <Link to='/users/submissions/receipt/$id' params={{ id: submission.id.toString() }} search={{
-                      formTitle: submission.formTitle
-                    }}>
-                      <ReceiptText className='w-5 h-5 gap-x-2' />
-                    </Link>
-                  </Button>
-                }
-              </div>
-            </div>
-            </Link>)
-          }
+        <div className="p-4 space-y-3">
+          {submissions?.length ? (
+            submissions.map((submission) => (
+              <Link
+                key={submission.id}
+                to="/users/submissions/edit/$id"
+                params={{ id: submission.id.toString() }}
+                className="group block rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-transparent hover:border-primary"
+              >
+                <div className="p-3 flex items-center justify-between gap-2">
+                  <div className="truncate">
+                    <H4 className="truncate group-hover:text-primary">{submission.formTitle}</H4>
+                    <Muted>{format(new Date(submission.createdAt), "yyyy-MM-dd hh:mm b")}</Muted>
+                  </div>
+                  <div className="flex flex-col items-end gap-1">
+                    <Badge variant={submission.status === "draft" ? "destructive" : "default"}>
+                      {t(submission.status)}
+                    </Badge>
+                    {submission.status === "submitted" && (
+                      <Button size="sm" variant="outline" className="gap-1">
+                        <Link
+                          to="/users/submissions/receipt/$id"
+                          params={{ id: submission.id.toString() }}
+                          search={{ formTitle: submission.formTitle }}
+                          className="flex items-center gap-1"
+                        >
+                          <ReceiptText className="h-4 w-4" />
+                          <span className="text-xs">{t("Receipt")}</span>
+                        </Link>
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            ))
+          ) : (
+            <Muted>{t("no-submissions")}</Muted>
+          )}
         </div>
       </div>
-
-
     </div>
   </div>
+
 }

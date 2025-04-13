@@ -8,15 +8,22 @@ type TopBarProps = {
 
 
 export const TopBar = (props: TopBarProps) => {
-    const [t, _] = useTranslation("translation")
+    const [t] = useTranslation("translation")
 
-    return <div className='flex flex-col gap-y-6 pb-2'>
-        <div className='h-20 shadow-md px-2 grid content-center grid-cols-2'>
-            <div className='col-span-1 h-20' />
-            <Profile />
+    return (
+        <div className="flex flex-col gap-y-6 pb-4">
+            {/* Top Section */}
+            <div className="h-20 px-4 shadow-sm dark:shadow-none backdrop-blur-md bg-background/70 dark:bg-background/80 border-b border-border flex items-center justify-between rounded-b-xl">
+                <div className="text-xl font-semibold tracking-tight text-muted-foreground/80">
+                    {/* Optional logo or left section */}
+                </div>
+                <Profile />
+            </div>
+
+            {/* Page Title */}
+            <div className="px-4">
+                <H2 className="text-foreground/90 tracking-tight">{t(props.page_name)}</H2>
+            </div>
         </div>
-        <div className='p-2'>
-            <H2>{t(props.page_name)}</H2>
-        </div>
-    </div>
+    )
 }

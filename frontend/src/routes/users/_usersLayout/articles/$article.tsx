@@ -10,6 +10,7 @@ import { Edit, Eye } from 'lucide-react';
 import { TopBar } from '@/components/global/topBar';
 import { useTranslation } from 'react-i18next';
 import { H1, H2 } from '@/components/ui/typography';
+import { Separator } from '@/components/ui/separator';
 
 export const Route = createFileRoute('/users/_usersLayout/articles/$article')({
   component: Article,
@@ -37,29 +38,34 @@ function Article() {
   return (
     <div className="content-container">
       <TopBar page_name={data.title} />
-      <div className='p-2'>
-        <div className="w-full md:w-fit md:min-w-[900px] max-h-screen overflow-y-auto bg-white dark:bg-zinc-900 shadow-lg rounded-sm p-8 border border-zinc-200 dark:border-zinc-800">
-          <div className='flex justify-between'>
-            <H2 className="font-bold text-zinc-800 dark:text-zinc-100 mb-4">
+
+      <div className="p-4 md:p-6">
+        <div className="w-full max-w-6xl mx-auto bg-background border border-border dark:border-zinc-800 rounded-2xl shadow-xl p-6 md:p-10 space-y-6">
+
+          {/* Header Section */}
+          <div className="flex flex-col md:flex-row justify-between gap-4 items-start md:items-center">
+            <H2 className="text-xl md:text-2xl font-semibold text-foreground">
               {data.title}
             </H2>
-            <Link to='/users/articles/edit/$id' params={{
-              id: data.id.toString()
-            }}>
-              <Button variant={"outline"} className='gap-x-2'>
-                <Edit className='w-5 h-5' />
+            <Link
+              to="/users/articles/edit/$id"
+              params={{ id: data.id.toString() }}
+            >
+              <Button variant="outline" className="gap-2">
+                <Edit className="w-5 h-5" />
                 {t("edit")}
               </Button>
             </Link>
           </div>
 
-          <div className="text-zinc-500 dark:text-zinc-400 text-sm mb-6 flex flex-wrap gap-4">
+          {/* Metadata Badges */}
+          <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
             <div>
               <span className="font-medium">{t("article-id")}:</span> {data.id}
             </div>
-            <div>
-              <span className="font-medium">{t("classification")}:</span>{" "}
-              <Badge variant="outline" className="ml-1">{data.classification}</Badge>
+            <div className="flex items-center gap-1">
+              <span className="font-medium">{t("classification")}:</span>
+              <Badge variant="outline">{data.classification}</Badge>
             </div>
             <div>
               <span className="font-medium">{t("createdAt")}:</span>{" "}
@@ -71,32 +77,34 @@ function Article() {
             </div>
           </div>
 
-          <hr className="border-zinc-300 dark:border-zinc-700 my-6" />
+          <Separator className="my-2" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Details Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-4">
               <Detail label={t("authors")} value={data.authors} />
-              <Detail label={t("journal")} value={data.journal || "N/A"} />
-              <Detail label={t("doi")} value={data.doi || "N/A"} />
-              <Detail label={t("pages")} value={data.pages || "N/A"} />
+              <Detail label={t("journal")} value={data.journal || "—"} />
+              <Detail label={t("doi")} value={data.doi || "—"} />
+              <Detail label={t("pages")} value={data.pages || "—"} />
             </div>
 
             <div className="space-y-4">
-              <Detail label={t("volume")} value={data.volume || "N/A"} />
-              <Detail label={t("issue")} value={data.issue || "N/A"} />
+              <Detail label={t("volume")} value={data.volume || "—"} />
+              <Detail label={t("issue")} value={data.issue || "—"} />
               <Detail
                 label={t("publicationDate")}
                 value={
                   data.publicationDate
                     ? format(new Date(data.publicationDate), "PPP")
-                    : "N/A"
+                    : "—"
                 }
               />
               <div>
-                <Detail label={t("document")} value={""} />
-                <Link to={document?.path} target='_blank'>
-                  <Button variant={"outline"}>
-                    <Eye />
+                <Detail label={t("document")} value="" />
+                <Link to={document?.path} target="_blank">
+                  <Button size="sm" variant="secondary" className="mt-2">
+                    <Eye className="w-4 h-4 mr-2" />
+                    {t("view-document")}
                   </Button>
                 </Link>
               </div>
@@ -109,10 +117,17 @@ function Article() {
 }
 
 function Detail({ label, value }: { label: string; value: string | number }) {
+  const isEmpty = value === "—" || value === "N/A" || value === "" || value === null;
+
   return (
-    <div>
-      <p className="text-sm text-zinc-500 dark:text-zinc-400">{label}</p>
-      <p className="text-base font-medium text-zinc-800 dark:text-zinc-100">{value}</p>
+    <div className="space-y-1">
+      <p className="text-sm text-muted-foreground">{label}</p>
+      <p
+        className={`text-base font-medium ${isEmpty ? "text-zinc-400 italic" : "text-foreground"
+          } break-words`}
+      >
+        {value || "—"}
+      </p>
     </div>
   );
 }

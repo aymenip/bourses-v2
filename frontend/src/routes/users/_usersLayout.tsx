@@ -23,7 +23,7 @@ function UsersLayout() {
     return (
         <div className='flex w-screen h-screen'>
             <Sidebar role={role!} />
-            <div className='flex-1 h-screen overflow-y-auto overflow-x-hidden'>
+            <div className='flex-1 h-screen overflow-x-hidden'>
                 <Outlet />
             </div>
         </div>
