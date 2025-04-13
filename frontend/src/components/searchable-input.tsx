@@ -84,10 +84,10 @@ export function SearchableInput({ target = "article", mutipleSelect = false, onC
                     <div className="p-5">
                         <Command>
                             <CommandInput placeholder={`Search ${target}s...`} />
-                            <CommandList>
+                            <CommandList className="p-2 max-h-[500px] overflow-y-auto">
                                 {data.length === 0 && <CommandEmpty>{t("no-results")}</CommandEmpty>}
                                 {data.map((item) => (
-                                    <CommandItem key={item.id} onSelect={() => handleSelect(item.id, item.title)}>
+                                    <CommandItem className="transition-all cursor-pointer bg-slate-100 dark:bg-zinc-900  dark:hover:outline-zinc-800 hover:outline-300 min-h-[60px] my-3 truncate" key={item.id} onSelect={() => handleSelect(item.id, item.title)}>
                                         {item.title}
                                     </CommandItem>
                                 ))}
