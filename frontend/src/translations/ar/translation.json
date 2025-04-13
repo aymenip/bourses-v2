@@ -149,5 +149,15 @@
   "registration-receipt": "إيصال التسجيل",
   "download-receipt": "تحميل الإيصال",
   "new-forms": "نماذج جديدة",
-  "your-sebmissions": "إرسالاتك"
+  "your-sebmissions": "إرسالاتك",
+  "field-required": "حقل مطلوب",
+  "field-required-description": "هذا الحقل مطلوب، يرجى ملؤه.",
+  "field-required-unchecked": "هذا الحقل مطلوب، يرجى إلغاء تحديده.",
+  "filter-firstname": "فلترة الإسم الأول...",
+  "filter-lastname": "فلترة الإسم الأخير...",
+  "position": "المنصب",
+  "status": "الحالة",
+  "firstname": "الإسم الأول",
+  "lastname": "الإسم الأخير",
+  "clear-filters": "إزالة الفلاتر"
 }

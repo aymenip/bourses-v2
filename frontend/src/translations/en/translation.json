@@ -149,5 +149,15 @@
   "registration-receipt": "Registration receipt",
   "download-receipt": "Download receipt",
   "new-forms": "New forms",
-  "your-sebmissions": "Your submissions"
+  "your-sebmissions": "Your submissions",
+  "field-required": "Field required",
+  "field-required-description": "This field is required, please fill it.",
+  "field-required-unchecked": "This field is not required, you can leave it empty.",
+  "filter-firstname": "Filter first name...",
+  "filter-lastname": "Filter last name...",
+  "position": "Position",
+  "status": "Status",
+  "firstname": "First name",
+  "lastname": "Last name",
+  "clear-filters": "Clear filters"
 }
