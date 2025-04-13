@@ -6,7 +6,7 @@ import {
     FileInput,
 } from "./ui/file-upload";
 import { Paperclip } from "lucide-react";
-
+ 
 const FileSvgDraw = () => {
     const [t] = useTranslation("translation");
     return (

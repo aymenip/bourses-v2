@@ -30,7 +30,7 @@ function Dashboard() {
 
       <div className='flex border dark:border-zinc-800 p-2 shadow-sm md:col-span-2 flex-col'>
         <div className='border-b-2 dark:border-b-zinc-800 py-2'>
-          <H3>New forms</H3>
+          <H3>{t("new-forms")}</H3>
         </div>
         <div className='py-2 mb-5 mt-2 flex flex-col gap-y-2'>
           {
@@ -49,7 +49,7 @@ function Dashboard() {
 
       <div className='flex border dark:border-zinc-800 p-2 shadow-sm md:col-start-3 md:col-span-3 flex-col '>
         <div className='border-b-2 dark:border-b-zinc-800 py-2'>
-          <H3>Your submissions</H3>
+          <H3>{t("your-sebmissions")}</H3>
         </div>
         <div className='py-2 mb-5 mt-2 flex flex-col gap-y-2'>
           {
