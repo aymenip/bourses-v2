@@ -5,13 +5,17 @@ export class TypedFieldDTO {
   points: number;
   required: boolean;
   blockId: number;
+  choices?: any[];
+  description?: string;
   constructor(
     id: number,
     type: string,
     label: string,
     points: number,
     required: boolean,
-    blockId: number
+    blockId: number,
+    choices?: any[],
+    description?: string
   ) {
     this.id = id;
     this.type = type;
@@ -19,5 +23,7 @@ export class TypedFieldDTO {
     this.points = points;
     this.required = required;
     this.blockId = blockId;
+    this.choices = choices;
+    this.description = description;
   }
 }

@@ -26,12 +26,26 @@ export const CreateFormBlockSchema = z.object({
 
 export const TypedFieldSchema = z.object({
   id: z.number(),
-  type: z.enum(["text", "date", "number", "url", "email"], {
-    required_error: "required-input",
-  }),
+  type: z.enum(
+    [
+      "text",
+      "date",
+      "number",
+      "url",
+      "email",
+      "yes/no",
+      "select",
+      "multiselect",
+    ],
+    {
+      required_error: "required-input",
+    }
+  ),
   points: z.number({ required_error: "required-input" }).min(0).default(0),
   label: z.string({ required_error: "required-input" }).min(1),
   required: z.boolean().default(true),
+  choices: z.array(z.any()).optional(),
+  description: z.string().optional(),
   blockId: z.number(),
 });
 
@@ -43,6 +57,7 @@ export const SourceableFieldSchema = z.object({
   points: z.number({ required_error: "required-input" }).min(0).default(0),
   label: z.string({ required_error: "required-input" }).min(1),
   required: z.boolean().default(true),
+  description: z.string().optional(),
   blockId: z.number(),
 });
 

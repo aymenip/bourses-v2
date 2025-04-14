@@ -32,8 +32,6 @@ export const CreateSubmission = async (
 
     const createdSubmission = await createSubmission(createSubmissionDTO);
 
-    console.log("req.user", req.user);
-
     return res.status(200).json(createdSubmission);
   } catch (error) {
     handleError(() => console.log(error));
@@ -98,7 +96,7 @@ export const GetSubmissionById = async (
     }
 
     const submission = await getSubmissionById(id);
-    if ((submission.userId !== userId) && (!req.user.isAdmin)) {
+    if (submission.userId !== userId && !req.user.isAdmin) {
       return res.sendStatus(401);
     }
 

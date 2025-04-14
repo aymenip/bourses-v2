@@ -1,0 +1,1 @@
+ALTER TABLE `typedFields` MODIFY COLUMN `type` enum('text','date','number','url','email','select','multiselect','yes/no');

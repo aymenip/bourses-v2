@@ -9,6 +9,8 @@ import { TopBar } from "@/components/global/topBar";
 import { H2 } from "@/components/ui/typography";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import { Switch } from "@/components/ui/switch";
 
 export const Route = createFileRoute('/users/_usersLayout/submissions/edit/$id')({
   component: EditSubmissionPage,
@@ -21,13 +23,21 @@ function EditSubmissionPage() {
   const { data: form, isLoading: isFormLoading } = useFullForm(formId!, {
     enabled: !!formId,
   });
-
-  const { mutate: updateSubmission, data: sbmission } = useUpdateSubmission();
+  const [status, setStatus] = useState<"draft" | "submitted">("draft");
+  const { mutate: updateSubmission } = useUpdateSubmission();
   const [t] = useTranslation("translation");
 
-  if (isSubmissionLoading || isFormLoading || !form || !submission) return <Loader />;
 
 
+  // ✅ Sync status when submission loads
+  if (submission && status !== submission.status) {
+    setStatus(submission.status);
+  }
+
+  const loading = isSubmissionLoading || isFormLoading || !form || !submission;
+  if (loading) return <Loader />;
+
+  // ✅ Safe now to read submission/form
   const rawData = typeof submission.data === 'string'
     ? JSON.parse(submission.data)
     : submission.data;
@@ -52,7 +62,7 @@ function EditSubmissionPage() {
       id: submission.id,
       formId: form.id,
       data: updatedData,
-      status: submission.status,
+      status: status,
     });
     toast.success(t("submission-update-success"));
   };
@@ -61,12 +71,19 @@ function EditSubmissionPage() {
     <div className="content-container">
       <TopBar page_name="editSubmission" />
       <div className="p-2">
-        <H2>{form.title}</H2>
+        <div className="flex justify-between mb-4">
+          <H2>{form.title}</H2>
+          <div className="flex items-center justify-center space-x-2 border px-2 rounded-sm shadow-sm">
+            <span className='w-[140px]'>{`${t("mode")}: ${t(status)}`}</span>
+            <Switch dir="ltr" onCheckedChange={() => setStatus(status === "draft" ? "submitted" : "draft")} id="status" />
+          </div>
+        </div>
         <FormRenderer
           form={form}
           onSubmit={handleSubmit}
           defaultValues={defaultValues}
           submitLabel="update"
+          isDraft={status === "draft"}
         />
       </div>
     </div>

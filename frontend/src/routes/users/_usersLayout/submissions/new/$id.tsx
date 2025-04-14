@@ -46,7 +46,7 @@ function NewSubmissionPage() {
             <Switch dir="ltr" onCheckedChange={() => setStatus(status === "draft" ? "submitted" : "draft")} id="status" />
           </div>
         </div>
-        <FormRenderer form={form} onSubmit={handleSubmit} />
+        <FormRenderer form={form} onSubmit={handleSubmit} isDraft={status === "draft"}/>
       </div>
     </div>
   );

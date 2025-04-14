@@ -157,7 +157,6 @@ export const GetFullFormById = async (
     const formId = parseInt(req.params.id);
 
     const fullForm = await getFullFormById(formId);
-
     return res.status(200).json(fullForm);
   } catch (error) {
     handleError(() => console.log(error));

@@ -58,6 +58,8 @@ export const allAdmins = async (): Promise<(AdminDTO & UserDTO)[]> => {
       userData.matrialStatus as MatrialStatus,
       userData.email,
       null, // Ensure password is not returned
+      userData.is_active,
+      userData.password_changed,
       userData.createdAt,
       userData.updatedAt,
       userData.roleId,
@@ -93,7 +95,9 @@ export const admin = async (id: number): Promise<AdminDTO & UserDTO> => {
     userData.dob,
     userData.matrialStatus as MatrialStatus,
     userData.email,
-    (userData.password = null),
+    null, // Ensure password is not returned
+    userData.is_active,
+    userData.password_changed,
     userData.createdAt,
     userData.updatedAt,
     userData.roleId,

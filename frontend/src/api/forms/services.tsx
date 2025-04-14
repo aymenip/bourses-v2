@@ -78,7 +78,7 @@ export async function createTypedField(typedField: TTypedField): Promise<TTypedF
     if (!token) {
         throw new Error();
     }
-    const response = await axiosInstance.post<TTypedField>(`field/typed/create`, { ...typedField, blockId: typedField.blockId }, {
+    const response = await axiosInstance.post<TTypedField>(`field/typed/create`, typedField, {
         headers: {
             Authorization: token,
         },
@@ -115,7 +115,7 @@ export async function changeFormAccess(createFormAccess: TCreateFormAccess): Pro
 
 export async function getFormsForUser(positionId: number): Promise<TForm[]> {
     const token = authenticationContext().token;
-    
+
     if (!token) {
         throw new Error();
     }

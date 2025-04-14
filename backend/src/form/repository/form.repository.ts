@@ -210,7 +210,9 @@ export const getFullFormById = async (
             tf.label,
             tf.points,
             tf.required,
-            tf.blockId
+            tf.blockId,
+            tf.choices?.split("[SEP]") || [],
+            tf.description
           )
         );
       }
@@ -223,7 +225,8 @@ export const getFullFormById = async (
             sf.points,
             sf.label,
             sf.required,
-            sf.blockId
+            sf.blockId,
+            sf.description
           )
         );
       }

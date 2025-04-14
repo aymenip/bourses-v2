@@ -83,7 +83,12 @@ export const Login = async (
       token,
       user.id,
       user.roleId,
-      user.positionId
+      user.positionId,
+      user.position,
+      user.is_active,
+      user.password_changed,
+      user.google_scholar,
+      user.research_gate
     ); // Create the response object
 
     return res.status(200).json(response); // Send response as JSON

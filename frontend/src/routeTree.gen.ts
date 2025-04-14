@@ -36,6 +36,7 @@ import { Route as AdminAdminLayoutFormsConsultSubmissionIdImport } from './route
 // Create Virtual Routes
 
 const UsersImport = createFileRoute('/users')()
+const UsersSettingsIndexLazyImport = createFileRoute('/users/settings/')()
 const UsersUsersLayoutIndexLazyImport = createFileRoute(
   '/users/_usersLayout/',
 )()
@@ -108,6 +109,14 @@ const AdminAdminLayoutRoute = AdminAdminLayoutImport.update({
   id: '/_admin/_adminLayout',
   getParentRoute: () => rootRoute,
 } as any)
+
+const UsersSettingsIndexLazyRoute = UsersSettingsIndexLazyImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => UsersRoute,
+} as any).lazy(() =>
+  import('./routes/users/settings/index.lazy').then((d) => d.Route),
+)
 
 const UsersUsersLayoutIndexLazyRoute = UsersUsersLayoutIndexLazyImport.update({
   id: '/',
@@ -438,6 +447,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersUsersLayoutIndexLazyImport
       parentRoute: typeof UsersUsersLayoutImport
     }
+    '/users/settings/': {
+      id: '/users/settings/'
+      path: '/settings'
+      fullPath: '/users/settings'
+      preLoaderRoute: typeof UsersSettingsIndexLazyImport
+      parentRoute: typeof UsersImport
+    }
     '/_admin/_adminLayout/employees/$id': {
       id: '/_admin/_adminLayout/employees/$id'
       path: '/employees/$id'
@@ -750,10 +766,12 @@ const UsersUsersLayoutRouteWithChildren =
 
 interface UsersRouteChildren {
   UsersUsersLayoutRoute: typeof UsersUsersLayoutRouteWithChildren
+  UsersSettingsIndexLazyRoute: typeof UsersSettingsIndexLazyRoute
 }
 
 const UsersRouteChildren: UsersRouteChildren = {
   UsersUsersLayoutRoute: UsersUsersLayoutRouteWithChildren,
+  UsersSettingsIndexLazyRoute: UsersSettingsIndexLazyRoute,
 }
 
 const UsersRouteWithChildren = UsersRoute._addFileChildren(UsersRouteChildren)
@@ -764,6 +782,7 @@ export interface FileRoutesByFullPath {
   '/users': typeof UsersUsersLayoutRouteWithChildren
   '/': typeof AdminAdminLayoutIndexRoute
   '/users/': typeof UsersUsersLayoutIndexLazyRoute
+  '/users/settings': typeof UsersSettingsIndexLazyRoute
   '/employees/$id': typeof AdminAdminLayoutEmployeesIdRoute
   '/forms/$id': typeof AdminAdminLayoutFormsIdRoute
   '/students/$id': typeof AdminAdminLayoutStudentsIdRoute
@@ -800,6 +819,7 @@ export interface FileRoutesByTo {
   '/login': typeof UnauthenticatedLoginRoute
   '/users': typeof UsersUsersLayoutIndexLazyRoute
   '/': typeof AdminAdminLayoutIndexRoute
+  '/users/settings': typeof UsersSettingsIndexLazyRoute
   '/employees/$id': typeof AdminAdminLayoutEmployeesIdRoute
   '/forms/$id': typeof AdminAdminLayoutFormsIdRoute
   '/students/$id': typeof AdminAdminLayoutStudentsIdRoute
@@ -840,6 +860,7 @@ export interface FileRoutesById {
   '/users/_usersLayout': typeof UsersUsersLayoutRouteWithChildren
   '/_admin/_adminLayout/': typeof AdminAdminLayoutIndexRoute
   '/users/_usersLayout/': typeof UsersUsersLayoutIndexLazyRoute
+  '/users/settings/': typeof UsersSettingsIndexLazyRoute
   '/_admin/_adminLayout/employees/$id': typeof AdminAdminLayoutEmployeesIdRoute
   '/_admin/_adminLayout/forms/$id': typeof AdminAdminLayoutFormsIdRoute
   '/_admin/_adminLayout/students/$id': typeof AdminAdminLayoutStudentsIdRoute
@@ -880,6 +901,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/'
     | '/users/'
+    | '/users/settings'
     | '/employees/$id'
     | '/forms/$id'
     | '/students/$id'
@@ -915,6 +937,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/users'
     | '/'
+    | '/users/settings'
     | '/employees/$id'
     | '/forms/$id'
     | '/students/$id'
@@ -953,6 +976,7 @@ export interface FileRouteTypes {
     | '/users/_usersLayout'
     | '/_admin/_adminLayout/'
     | '/users/_usersLayout/'
+    | '/users/settings/'
     | '/_admin/_adminLayout/employees/$id'
     | '/_admin/_adminLayout/forms/$id'
     | '/_admin/_adminLayout/students/$id'
@@ -1036,7 +1060,8 @@ export const routeTree = rootRoute
     "/users": {
       "filePath": "users",
       "children": [
-        "/users/_usersLayout"
+        "/users/_usersLayout",
+        "/users/settings/"
       ]
     },
     "/users/_usersLayout": {
@@ -1072,6 +1097,10 @@ export const routeTree = rootRoute
     "/users/_usersLayout/": {
       "filePath": "users/_usersLayout/index.lazy.tsx",
       "parent": "/users/_usersLayout"
+    },
+    "/users/settings/": {
+      "filePath": "users/settings/index.lazy.tsx",
+      "parent": "/users"
     },
     "/_admin/_adminLayout/employees/$id": {
       "filePath": "_admin/_adminLayout/employees/$id.tsx",

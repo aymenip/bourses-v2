@@ -34,9 +34,10 @@ const containerVariants = {
 
 type SidebarProps = {
     role: string;
+    is_active?: boolean
 }
 
-function Sidebar({ role }: SidebarProps) {
+function Sidebar({ role, is_active = true }: SidebarProps) {
     const [t, _] = useTranslation("translation")
     const [isOpen, setIsOpen] = useState(false);
     const containerControls = useAnimationControls();
@@ -80,7 +81,7 @@ function Sidebar({ role }: SidebarProps) {
                     routes.map((route: Route) => {
 
                         const exactMatch = getExactMatch(route.path);
-                        if (route.roles.includes(role)) return <Link key={route.name} to={route.path} className={cn("header-item", { "header-item-active": exactMatch })}>
+                        if (route.roles.includes(role) && is_active) return <Link key={route.name} to={route.path} className={cn("header-item", { "header-item-active": exactMatch })}>
                             {
                                 () => <div className={cn("flex gap-2 items-center", { "justify-center": !isOpen })}>
                                     {

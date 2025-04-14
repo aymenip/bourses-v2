@@ -5,13 +5,15 @@ export class SourceabledFieldDTO {
   label: string;
   required: boolean;
   blockId: number;
+  description?: string;
   constructor(
     id: number,
     type: string,
     points: number,
     label: string,
     required: boolean,
-    blockId: number
+    blockId: number,
+    description?: string
   ) {
     this.id = id;
     this.type = type;
@@ -19,5 +21,6 @@ export class SourceabledFieldDTO {
     this.label = label;
     this.required = required;
     this.blockId = blockId;
+    this.description = description;
   }
 }

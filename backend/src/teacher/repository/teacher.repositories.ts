@@ -16,7 +16,7 @@ export const createTeacher = async (
 ): Promise<TeacherDTO & UserDTO> => {
   try {
     const dbInstance = await db;
-    
+
     const teacherId = await dbInstance.transaction(
       async (tx: MySqlTransaction<any, any>) => {
         const userId = await createUser(createUserDTO, tx);
@@ -53,7 +53,7 @@ export const allTeachers = async (): Promise<(TeacherDTO & UserDTO)[]> => {
       teacherData.id,
       teacherData.highPosition,
       teacherData.createdAt,
-      teacherData.updatedAt,
+      teacherData.updatedAt
     );
 
     const userDTO = new UserDTO(
@@ -64,10 +64,14 @@ export const allTeachers = async (): Promise<(TeacherDTO & UserDTO)[]> => {
       userData.matrialStatus as MatrialStatus,
       userData.email,
       null, // Ensure password is not returned
+      userData.is_active,
+      userData.password_changed,
       userData.createdAt,
       userData.updatedAt,
       userData.roleId,
-      userData.positionId
+      userData.positionId,
+      userData.google_scholar,
+      userData.research_gate
     );
 
     return { ...teacherDTO, ...userDTO };
@@ -95,7 +99,7 @@ export const teacher = async (id: number): Promise<TeacherDTO & UserDTO> => {
     teacherData.id,
     teacherData.highPosition,
     teacherData.createdAt,
-    teacherData.updatedAt,
+    teacherData.updatedAt
   );
   const userDTO = new UserDTO(
     userData.id,
@@ -104,11 +108,15 @@ export const teacher = async (id: number): Promise<TeacherDTO & UserDTO> => {
     userData.dob,
     userData.matrialStatus as MatrialStatus,
     userData.email,
-    (userData.password = null),
+    null, // Ensure password is not returned
+    userData.is_active,
+    userData.password_changed,
     userData.createdAt,
     userData.updatedAt,
     userData.roleId,
-    userData.positionId
+    userData.positionId,
+    userData.google_scholar,
+    userData.research_gate
   );
 
   return { ...teacherDTO, ...userDTO };
@@ -126,7 +134,7 @@ export const updateTeacher = async (
       .set(updateUserDto)
       .where(eq(users.id, updateUserDto.id))
       .execute();
-      
+
     const updatedTeacher = await dbInstance
       .update(teachers)
       .set(updateTeacherDTO)

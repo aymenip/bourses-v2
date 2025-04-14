@@ -9,7 +9,6 @@ import {
   mysqlEnum,
   date,
   boolean,
-  year,
 } from "drizzle-orm/mysql-core";
 
 /// USER SCHEMA
@@ -22,6 +21,10 @@ export const users = mysqlTable("users", {
   dob: date("dob", { mode: "date" }),
   matrialStatus: mysqlEnum("matrialStatus", ["متزوج", "أعزب"]),
   email: varchar("email", { length: 256 }).notNull().unique(),
+  is_active: boolean("is_active").default(false),
+  password_changed: boolean("password_changed").default(false),
+  google_scholar: varchar("google_scholar", { length: 4045 }),
+  research_gate: varchar("research_gate", { length: 4045 }),
   password: varchar("password", { length: 256 }).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
@@ -129,16 +132,6 @@ export const teachersRelations = relations(teachers, ({ one }) => ({
   user: one(users, { fields: [teachers.userId], references: [users.id] }),
 }));
 
-/// POSTION SCHEMA
-export const positions = mysqlTable("positions", {
-  id: bigint("id", { mode: "number", unsigned: true })
-    .autoincrement()
-    .primaryKey(),
-  name: varchar("name", { length: 256 }).notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-});
-
 /// EMPLOYEE SCHEMA
 export const employees = mysqlTable("employees", {
   id: bigint("id", { mode: "number", unsigned: true })
@@ -175,6 +168,16 @@ export const students = mysqlTable("students", {
 export const studentsRelations = relations(students, ({ one }) => ({
   user: one(users, { fields: [students.userId], references: [users.id] }),
 }));
+
+/// POSTION SCHEMA
+export const positions = mysqlTable("positions", {
+  id: bigint("id", { mode: "number", unsigned: true })
+    .autoincrement()
+    .primaryKey(),
+  name: varchar("name", { length: 256 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
 
 // FORM SCHEMA
 export const forms = mysqlTable("forms", {
@@ -238,10 +241,21 @@ export const typedFields = mysqlTable("typedFields", {
   id: bigint("id", { mode: "number", unsigned: true })
     .autoincrement()
     .primaryKey(),
-  type: mysqlEnum("type", ["text", "date", "number", "url", "email"]),
+  type: mysqlEnum("type", [
+    "text",
+    "date",
+    "number",
+    "url",
+    "email",
+    "select",
+    "multiselect",
+    "yes/no",
+  ]),
   points: int("points", { unsigned: true }),
   label: varchar("label", { length: 256 }),
   required: boolean("required").default(false).notNull(),
+  choices: text("choices"),
+  description: text("description"),
   blockId: bigint("blockId", { mode: "number", unsigned: true })
     .references(() => fields.id, { onDelete: "cascade" })
     .notNull(),
@@ -270,6 +284,7 @@ export const sourceableFields = mysqlTable("sourceableFields", {
   points: int("points", { unsigned: true }),
   label: varchar("label", { length: 256 }),
   required: boolean("required").default(false).notNull(),
+  description: text("description"),
   blockId: bigint("blockId", { mode: "number", unsigned: true })
     .references(() => fields.id, { onDelete: "cascade" })
     .notNull(),

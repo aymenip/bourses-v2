@@ -16,7 +16,12 @@ export const createTypedField = async (
     const dbInstance = await db;
     const result = await dbInstance
       .insert(typedFields)
-      .values(createTypedFieldDTO)
+      .values({
+        ...createTypedFieldDTO,
+        ...(createTypedFieldDTO?.choices
+          ? { choices: createTypedFieldDTO.choices.join("[SEP]") }
+          : {}),
+      })
       .execute();
     const typedField = await getTypedFieldById(result[0].insertId);
     return typedField;
@@ -33,7 +38,12 @@ export const updateTypedField = async (
     const dbInstance = await db;
     const result = await dbInstance
       .update(typedFields)
-      .set(updateTypedFieldDTO)
+      .set({
+        ...updateTypedFieldDTO,
+        ...(updateTypedFieldDTO?.choices
+          ? { choices: updateTypedFieldDTO.choices.join("[SEP]") }
+          : {}),
+      })
       .where(
         and(
           eq(typedFields.id, updateTypedFieldDTO.id),

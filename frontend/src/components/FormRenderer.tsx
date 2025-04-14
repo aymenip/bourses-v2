@@ -14,6 +14,10 @@ import { sourceableFieldsEnum } from "@/enums";
 import { TField } from "@/types";
 import { useTranslation } from "react-i18next";
 import { TFullFormBlock } from "@/types/forms";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./ui/select";
+import i18n from "@/i18n";
+import { MultiSelector, MultiSelectorContent, MultiSelectorInput, MultiSelectorItem, MultiSelectorList, MultiSelectorTrigger } from "./ui/multi-select";
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 
 export const generateFieldName = (blockId: number, fieldId: number) =>
     `field_${blockId}_${fieldId}`;
@@ -24,11 +28,15 @@ const generateZodSchema = (fields: TField[]) => {
     fields.forEach(field => {
         const name = generateFieldName(field.blockId, field.id);
 
-        if (["text", "email", "url"].includes(field.type)) {
-            let rule = z.string();
+        if (["text", "email", "url", "select", "multiselect", "yes/no"].includes(field.type)) {
+            let rule = field.type !== "multiselect" ? z.string() : z.array(z.any());
             if (field.required) rule = rule.min(1, `${field.label} is required`);
-            if (field.type === "email") rule = rule.email(`${field.label} must be a valid email`);
-            if (field.type === "url") rule = rule.url(`${field.label} must be a valid URL`);
+            if (field.type === "email" && rule instanceof z.ZodString) {
+                rule = rule.email(`${field.label} must be a valid email`);
+            }
+            if (field.type === "url" && rule instanceof z.ZodString) {
+                rule = rule.url(`${field.label} must be a valid URL`);
+            }
             shape[name] = rule;
         } else {
             let rule = z.union([z.string(), z.number()]).refine(
@@ -45,19 +53,20 @@ const generateZodSchema = (fields: TField[]) => {
     return z.object(shape);
 };
 
-export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel = "submit", }: {
+export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel = "submit", isDraft = false }: {
     form: any;
     onSubmit: (data: Record<string, any>) => void;
     defaultValues?: Record<string, any>;
     submitLabel?: string;
+    isDraft?: boolean,
 }) {
     const [t] = useTranslation("translation");
     const allFields = useMemo(() => form?.blocks?.flatMap((block: TFullFormBlock) => block.fields.flat()) ?? [], [form]);
     const schema = useMemo(() => generateZodSchema(allFields), [allFields]);
 
     const { control, handleSubmit, formState: { errors } } = useForm<Record<string, any>>({
-        resolver: zodResolver(schema),
-        defaultValues,
+        resolver: isDraft ? undefined : zodResolver(schema),
+        defaultValues
     });
 
     const renderInput = (field: TField) => {
@@ -79,16 +88,92 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
                 <Controller
                     name={name}
                     control={control}
-                    render={({ field: controllerField }) =>
-                        ["text", "email", "url"].includes(field.type) ? (
-                            <Input {...controllerField} required={field.required} />
-                        ) : (
+                    render={({ field: controllerField }) => {
+                        const type = field.type;
+
+                        if (["text", "email", "url"].includes(type)) {
+                            return <Input {...controllerField} />;
+                        }
+
+                        if (type === "select") {
+                            return (
+                                <Select
+                                    {...controllerField}
+                                    dir={i18n.dir()}
+                                    onValueChange={controllerField.onChange}
+                                >
+                                    <SelectTrigger dir={i18n.dir()} >
+                                        <SelectValue dir={i18n.dir()} placeholder={field.label} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup dir={i18n.dir()}>
+                                            <SelectLabel dir={i18n.dir()}>{field.label}</SelectLabel>
+                                            {
+                                                field.choices?.map((choice) => <SelectItem dir={i18n.dir()} value={choice}>{choice}</SelectItem>)
+                                            }
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            );
+                        }
+
+                        if (type === "multiselect") {
+                            return (
+                                <MultiSelector
+                                    values={Array.isArray(controllerField.value) ? controllerField.value : []}
+
+                                    onValuesChange={(vals) => controllerField.onChange(vals)}
+                                    loop={false}
+                                    dir={i18n.dir()}
+                                >
+                                    <MultiSelectorTrigger dir={i18n.dir()}>
+                                        <MultiSelectorInput dir={i18n.dir()} placeholder={t("enter-choices")} />
+                                    </MultiSelectorTrigger>
+                                    <MultiSelectorContent dir={i18n.dir()}>
+                                        <MultiSelectorList dir={i18n.dir()}>
+                                            {field.choices?.map((choice, i) => (
+                                                <MultiSelectorItem key={i} value={choice}>
+                                                    {choice}
+                                                </MultiSelectorItem>
+                                            ))}
+                                        </MultiSelectorList>
+                                    </MultiSelectorContent>
+                                </MultiSelector>
+                            );
+                        }
+
+                        if (type === "yes/no") {
+                            return (
+                                <RadioGroup
+                                    dir={i18n.dir()}
+                                    value={controllerField.value}
+                                    onValueChange={(val) => controllerField.onChange(val)}
+                                    className="flex items-center gap-4"
+                                >
+                                    <div className="flex items-center gap-1">
+                                        <RadioGroupItem dir={i18n.dir()} value="yes" id="yes" />
+                                        <label htmlFor="yes" className="text-sm font-medium leading-none">
+                                            {t("yes")}
+                                        </label>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                        <RadioGroupItem value="no" id="no" />
+                                        <label htmlFor="no" className="text-sm font-medium leading-none">
+                                            {t("no")}
+                                        </label>
+                                    </div>
+                                </RadioGroup>
+                            );
+                        }
+
+                        // Fallback: for types like "certificate", "book", etc.
+                        return (
                             <SearchableInput
-                                target={field.type as sourceableFieldsEnum}
+                                target={type as sourceableFieldsEnum}
                                 onChange={(id) => controllerField.onChange(id)}
                             />
-                        )
-                    }
+                        );
+                    }}
                 />
 
                 {error && (
