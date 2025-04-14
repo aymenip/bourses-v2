@@ -52,7 +52,7 @@ function Dashboard() {
               </Link>
             ))
           ) : (
-            <Muted>{t("No new forms available.")}</Muted>
+            <Muted>{t("no-new-forms")}</Muted>
           )}
         </div>
       </div>

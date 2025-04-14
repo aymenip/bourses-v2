@@ -45,8 +45,9 @@ export function DataTableRowActions<TData>({
                 <DropdownMenuItem>
                     <Link to="/forms/edit/$id" params={{
                         id: row.getValue("id") as string
-                    }}></Link>
-                    {t("edit")}
+                    }}>
+                        {t("edit")}
+                    </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={deleteForm}>
