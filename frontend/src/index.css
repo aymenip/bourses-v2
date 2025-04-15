@@ -72,18 +72,14 @@
   }
 
   .header-item {
-    @apply w-full px-4 py-3 transition-all duration-150 text-sm font-medium 
+    @apply w-full p-3 transition-all duration-150 text-sm font-medium 
     rounded-lg hover:bg-zinc-100 dark:hover:bg-neutral-700 
-    hover:text-primary flex items-center gap-2 text-muted-foreground;
+    hover:text-primary flex items-center text-muted-foreground;
   }
 
   .header-item-active {
     @apply font-semibold text-primary bg-primary/10 dark:bg-primary/20 
     border border-primary/30 shadow-inner;
-  }
-
-  .neon-shadow {
-    @apply shadow-[0_0_4px_#fff,inset_0_0_4px_#fff,0_0_8px_#7c3aed,0_0_20px_#7c3aed];
   }
 
   .form {

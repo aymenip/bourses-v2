@@ -50,7 +50,6 @@ export const Login = async (
   req: express.Request,
   res: express.Response
 ): Promise<any> => {
-
   try {
     const loginUserDto: LoginUserDTO = req.body;
 
@@ -100,7 +99,6 @@ export const Login = async (
 
 export const Register = async (createUserDTO: CreateUserDTO): Promise<any> => {
   try {
- 
     if (!createUserDTO) {
       throw new Error();
     }
@@ -113,5 +111,30 @@ export const Register = async (createUserDTO: CreateUserDTO): Promise<any> => {
   } catch (error) {
     handleError(() => console.log(error));
     throw new Error();
+  }
+};
+
+export const GrantAccess = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+    const { id, password } = req.params;
+    if (!id || !password) {
+      return res.sendStatus(400);
+    }
+
+    const withPassword = true;
+    let user = await getUserById(parseInt(id), withPassword);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+    if (await bcrypt.compare(password, user.password)) {
+      return res.status(200).json(true);
+    }
+    return res.status(200).json(false);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
   }
 };

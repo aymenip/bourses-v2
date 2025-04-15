@@ -12,17 +12,20 @@ export const LoginResponseSchema = z.object({
   positionId: z.number(),
   position: z.string(),
   is_active: z.boolean(),
+  password_changed: z.boolean(),
   google_scholar: z.string().optional(),
   research_gate: z.string().optional(),
 });
 
 const AuthenticationContextSchema = z.object({
+  id: z.number().or(z.null()),
   token: z.string().or(z.null()),
   isAuthenticated: z.boolean(),
   role: z.string().or(z.null()),
   positionId: z.string().or(z.null()),
   position: z.string().or(z.null()),
   is_active: z.boolean().or(z.null()),
+  password_changed: z.boolean().or(z.null()),
   google_scholar: z.string().or(z.null()).optional(),
   research_gate: z.string().or(z.null()).optional(),
 });

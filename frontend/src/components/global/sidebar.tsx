@@ -81,15 +81,14 @@ function Sidebar({ role, is_active = true }: SidebarProps) {
                     routes.map((route: Route) => {
 
                         const exactMatch = getExactMatch(route.path);
-                        if (route.roles.includes(role) && is_active) return <Link key={route.name} to={route.path} className={cn("header-item", { "header-item-active": exactMatch })}>
+                        if (route.roles.includes(role) && is_active) return <Link key={route.name} to={route.path} className={cn("header-item ", { "header-item-active": exactMatch })}>
                             {
                                 () => <div className={cn("flex gap-2 items-center", { "justify-center": !isOpen })}>
                                     {
                                         !isOpen ? (
                                             <TooltipProvider delayDuration={1}>
                                                 <Tooltip >
-                                                    <TooltipTrigger className="flex items-center gap-x-1">
-                                                        {exactMatch && <span className="block w-1 h-3 rounded-full bg-primary/90  neon-shadow" />}
+                                                    <TooltipTrigger className="flex items-center ">
                                                         {route.icon}
                                                     </TooltipTrigger>
                                                     <TooltipContent>
@@ -99,7 +98,6 @@ function Sidebar({ role, is_active = true }: SidebarProps) {
                                             </TooltipProvider>
                                         ) : (
                                             <>
-                                                {exactMatch && <span className="block w-1 h-3 rounded-full bg-primary/90 neon-shadow" />}
                                                 {route.icon}
                                                 {isOpen && t(route.name)}
                                             </>

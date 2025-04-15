@@ -1,4 +1,5 @@
-import { DashboardIcon, PersonIcon, RulerSquareIcon } from "@radix-ui/react-icons";
+import { PersonIcon } from "@radix-ui/react-icons";
+import { LayoutDashboard, PencilRuler, GraduationCap, BriefcaseBusiness, Notebook, Newspaper, BookOpenText, Library, Shield } from "lucide-react";
 export type Route = {
     name: string,
     path: string,
@@ -9,67 +10,67 @@ export type Route = {
 export const routes: Route[] = [
     {
         name: "dashboard",
-        icon: <DashboardIcon />,
+        icon: <LayoutDashboard className="w-4 h-4" />,
         path: "/",
         roles: ["ADMIN"]
     },
     {
         name: "forms",
-        icon: <RulerSquareIcon />,
+        icon: <PencilRuler className="w-4 h-4" />,
         path: "/forms",
         roles: ["ADMIN"]
     },
     {
         name: "teachers",
-        icon: <PersonIcon />,
+        icon: <Notebook className="w-4 h-4" />,
         path: "/teachers",
         roles: ["ADMIN"]
     },
     {
         name: "students",
-        icon: <PersonIcon />,
+        icon: <GraduationCap className="w-4 h-4" />,
         path: "/students",
         roles: ["ADMIN"]
     },
     {
         name: "employees",
-        icon: <PersonIcon />,
+        icon: <BriefcaseBusiness className="w-4 h-4" />,
         path: "/employees",
         roles: ["ADMIN"]
     },
     {
         name: "usersDashboard",
-        icon: <DashboardIcon />,
+        icon: <LayoutDashboard className="w-4 h-4" />,
         path: "/users",
         roles: ["USER"]
     },
     {
         name: "usersConferences",
-        icon: <PersonIcon />,
+        icon: <PersonIcon className="w-4 h-4" />,
         path: "/users/conferences",
         roles: ["USER"]
     },
     {
         name: "usersArticles",
-        icon: <PersonIcon />,
+        icon: <Newspaper className="w-4 h-4" />,
         path: "/users/articles",
         roles: ["USER"]
     },
     {
         name: "usersBooks",
-        icon: <PersonIcon />,
+        icon: <BookOpenText className="w-4 h-4" />,
         path: "/users/books",
         roles: ["USER"]
     },
     {
         name: "usersTheses",
-        icon: <PersonIcon />,
+        icon: <Library className="w-4 h-4" />,
         path: "/users/theses",
         roles: ["USER"]
     },
     {
         name: "usersCertificates",
-        icon: <PersonIcon />,
+        icon: <Shield className="w-4 h-4" />,
         path: "/users/certificates",
         roles: ["USER"]
     },

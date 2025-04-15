@@ -64,7 +64,10 @@ export const getUserByEmail = async (
   }
 };
 
-export const getUserById = async (id: number): Promise<UserDTO | null> => {
+export const getUserById = async (
+  id: number,
+  withPassword?: boolean
+): Promise<UserDTO | null> => {
   try {
     const dbInstance = await db; // Ensure db instance is awaited once
     const result = await dbInstance
@@ -85,7 +88,7 @@ export const getUserById = async (id: number): Promise<UserDTO | null> => {
       user.dob,
       user.matrialStatus as MatrialStatus, // Ensure proper enum casting
       user.email,
-      (user.password = null),
+      (user.password = withPassword ? user.password : null),
       user.is_active,
       user.password_changed,
       user.createdAt,
