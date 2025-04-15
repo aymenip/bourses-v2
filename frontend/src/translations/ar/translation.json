@@ -159,5 +159,7 @@
   "status": "الحالة",
   "firstname": "الإسم الأول",
   "lastname": "الإسم الأخير",
-  "clear-filters": "إزالة الفلاتر"
+  "clear-filters": "إزالة الفلاتر",
+  "editSubmission": "تعديل الإرسال",
+  "update": "تحديث"
 }

@@ -159,5 +159,7 @@
   "status": "Status",
   "firstname": "First name",
   "lastname": "Last name",
-  "clear-filters": "Clear filters"
+  "clear-filters": "Clear filters",
+  "editSubmission": "Edit submission",
+  "update": "Update"
 }
