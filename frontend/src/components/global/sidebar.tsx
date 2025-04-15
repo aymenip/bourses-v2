@@ -115,7 +115,9 @@ function Sidebar({ role, is_active = true }: SidebarProps) {
                 <Button onClick={handleOpenClose} variant={"secondary"} size={"icon"}><MenuIcon /></Button>
                 <ModeToggle />
                 <LanguageToggle />
-                <PreferencesSettings />
+                <Link to="/users/settings">
+                    <PreferencesSettings />
+                </Link>
             </div>
 
         </motion.nav>

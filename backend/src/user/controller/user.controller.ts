@@ -8,7 +8,7 @@ import {
 import {
   getUserByEmail,
   getUserById,
-  updateMe,
+  updateUser,
 } from "../repository/user.repository";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -31,15 +31,51 @@ export const Me = async (
   }
 };
 
-export const UpdateMe = async (
+export const UpdateUser = async (
   req: express.Request,
   res: express.Response
 ): Promise<any> => {
   try {
-    const id = req.user.sub;
     const updateUserDTO: UpdateUserDTO = req.body;
-    const me = await updateMe(updateUserDTO, id);
-    return res.status(200).json(me);
+
+    const id = req.user?.sub;
+
+    updateUserDTO.id = id;
+
+    if (!updateUserDTO) {
+      return res.sendStatus(400);
+    }
+
+    if (updateUserDTO.new_password) {
+      updateUserDTO.new_password = await bcrypt.hash(
+        updateUserDTO.new_password,
+        10
+      );
+      updateUserDTO.password_changed = true;
+    }
+
+    const me = await updateUser(updateUserDTO);
+
+    const is_active =
+      !!me.password_changed && (!!me.google_scholar || !!me.research_gate);
+
+    const lastMe = await updateUser({ id: me.id, is_active: is_active });
+
+    const payload = {
+      sub: lastMe.id,
+      email: lastMe.email,
+      role: lastMe.roleId,
+      fullname: `${lastMe.firstname} ${lastMe.lastname}`,
+    };
+
+    const token = jwt.sign(payload, process.env.SECRET_KEY, {
+      expiresIn: process.env.EXPIRES_IN,
+    });
+
+    return res.status(200).json({
+      ...lastMe,
+      token: token,
+    });
   } catch (error) {
     handleError(() => console.log(error));
     return res.sendStatus(400);

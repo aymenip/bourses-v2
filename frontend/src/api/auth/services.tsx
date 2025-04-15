@@ -1,10 +1,10 @@
 import { TLogin, TLoginResponse, TAuthenticationContext, TUser } from "@/types";
 import { roleIdToRole } from "../utils";
 import { axiosInstance } from ".."
+import { TUpdateUser } from "@/types/user";
 
 export async function login(loginInput: TLogin) {
 
-    console.log('loginInput', loginInput)
 
     const response = await axiosInstance.post<TLoginResponse>(
         "user/login",
@@ -16,8 +16,29 @@ export async function login(loginInput: TLogin) {
     return response.data;
 }
 
+export async function userUpdate(updateUser: TUpdateUser) {
+    const token = authenticationContext().token;
+    if (!token) {
+        throw new Error();
+    }
+    const response = await axiosInstance.put<TLoginResponse>(
+        "user/update",
+        updateUser,
+        {
+            headers: {
+                Authorization: token,
+            },
+        }
+    );
+    if (response.data.id) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+    }
+    return response.data;
+}
+
 export async function me() {
     const token = authenticationContext().token;
+
     if (!token) {
         throw new Error();
     }
@@ -45,6 +66,8 @@ export async function grantAccess(password: string) {
 export function clearSotrage() {
     localStorage.removeItem("user");
 }
+
+
 
 export function authenticationContext(): TAuthenticationContext {
     if (localStorage.getItem("user") === null)

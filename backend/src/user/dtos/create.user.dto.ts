@@ -9,6 +9,10 @@ export class CreateUserDTO {
   password: string;
   positionId: number;
   roleId: number;
+  is_active?: boolean;
+  password_changed?: boolean;
+  research_gate?: string;
+  google_scholar?: string;
   constructor(
     firstname: string,
     lastname: string,
@@ -17,7 +21,11 @@ export class CreateUserDTO {
     email: string,
     password: string,
     positionId: number,
-    roleId: number
+    roleId: number,
+    is_active?: boolean,
+    password_changed?: boolean,
+    research_gate?: string,
+    google_scholar?: string
   ) {
     this.firstname = firstname;
     this.lastname = lastname;
@@ -27,5 +35,9 @@ export class CreateUserDTO {
     this.password = password;
     this.positionId = positionId;
     this.roleId = roleId;
+    this.is_active = is_active;
+    this.password_changed = password_changed;
+    this.research_gate = research_gate;
+    this.google_scholar = google_scholar;
   }
 }

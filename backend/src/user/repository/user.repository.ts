@@ -53,8 +53,8 @@ export const getUserByEmail = async (
         user.updatedAt,
         user.positionId,
         user.roleId,
-        user.google_scholar,
-        user.research_gate
+        user.research_gate,
+        user.google_scholar
       ),
       position: position.name, // Add the position field
     };
@@ -95,8 +95,8 @@ export const getUserById = async (
       user.updatedAt,
       user.positionId,
       user.roleId,
-      user.google_scholar,
-      user.research_gate
+      user.research_gate,
+      user.google_scholar
     );
   } catch (error) {
     console.error("Error fetching user by email:", error); // Log the error for debugging
@@ -104,23 +104,28 @@ export const getUserById = async (
   }
 };
 
-export const updateMe = async (
-  updateUserDTO: UpdateUserDTO,
-  id: number
-): Promise<UpdateUserDTO | null> => {
+export const updateUser = async (
+  updateUserDTO: UpdateUserDTO
+): Promise<UserDTO | null> => {
   try {
     const dbInstance = await db; // Ensure db is awaited once
     const result = await dbInstance
       .update(users)
-      .set(updateUserDTO)
-      .where(eq(users.id, id));
+      .set({
+        ...updateUserDTO,
+        ...(updateUserDTO.new_password
+          ? { password: updateUserDTO.new_password }
+          : {}),
+      })
+      .where(eq(users.id, updateUserDTO.id));
 
     if (result[0].affectedRows === 0) {
       return null; // No rows were updated
     }
 
     // Fetch the updated user to ensure the update was successful
-    const updatedUser = await getUserById(id);
+    const updatedUser = await getUserById(updateUserDTO.id);
+
     if (!updatedUser) {
       return null; // User no longer exists
     }

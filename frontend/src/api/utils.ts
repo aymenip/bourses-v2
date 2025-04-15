@@ -8,20 +8,6 @@ export function roleIdToRole(roleId: number | null) {
       return "USER";
   }
 }
-export function positionIdToPermission(positionId: number | null) {
-  switch (positionId) {
-    case 1:
-      return "mca";
-    case 2:
-      return "mcb";
-    case 3:
-      return "pro";
-    case 4:
-      return "phd";
-    default:
-      return "emp";
-  }
-}
 
 export function roleToRoute(role: string | null) {
   switch (role) {

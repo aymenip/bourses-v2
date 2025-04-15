@@ -1,5 +1,6 @@
 import {
-    useAuth
+    useAuth,
+    useUserUpdate
 } from "./auth/mutations"
 import {
     useCreateForm,
@@ -36,6 +37,7 @@ import {
 
 export {
     useAuth,
+    useUserUpdate,
     useCreateForm,
     useDeleteForm,
     useCreateTypedField,
