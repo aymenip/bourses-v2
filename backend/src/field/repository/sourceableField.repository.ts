@@ -80,3 +80,16 @@ export const getSourceableFieldById = async (
     return null; // Handle errors appropriately
   }
 };
+
+export const deleteSourceableField = async (id: number): Promise<void> => {
+  try {
+    const dbInstance = await db;
+    await dbInstance
+      .delete(sourceableFields)
+      .where(eq(sourceableFields.id, id))
+      .execute();
+  } catch (error) {
+    console.log(error);
+    throw new Error(CAE); // Handle errors appropriately
+  }
+};

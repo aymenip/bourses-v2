@@ -53,7 +53,6 @@ export const AddFormBlockButton: React.FC<AddFormBlockButtonProps> = () => {
     }, [isError, isPending, isSuccess])
     return (
         <div className='flex'>
-
             <Dialog>
                 <DialogTrigger asChild className='w-full'>
                     <Button

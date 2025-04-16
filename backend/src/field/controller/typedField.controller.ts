@@ -4,6 +4,7 @@ import { SW } from "../../utils/constants";
 import { CreateTypedFieldDTO } from "../../field/dtos/typedField";
 import {
   createTypedField,
+  deleteTypedField,
   updateTypedField,
 } from "../../field/repository/typedField.repository";
 import { UpdateTypedFieldDTO } from "../../field/dtos/typedField/update.typedField.dto";
@@ -40,6 +41,26 @@ export const UpdateTypedField = async (
     const updatedTypedField = await updateTypedField(updateTypedFieldDTO);
 
     return res.status(200).json(updatedTypedField);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
+
+export const DeleteTypedField = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ message: SW });
+    }
+
+    await deleteTypedField(parseInt(id));
+
+    return res.sendStatus(200);
   } catch (error) {
     handleError(() => console.log(error));
     return res.sendStatus(400);

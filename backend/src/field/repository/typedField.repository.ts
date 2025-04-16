@@ -90,3 +90,16 @@ export const getTypedFieldById = async (
     return null; // Handle errors appropriately
   }
 };
+
+export const deleteTypedField = async (id: number): Promise<void> => {
+  try {
+    const dbInstance = await db;
+    await dbInstance
+      .delete(typedFields)
+      .where(eq(typedFields.id, id))
+      .execute();
+  } catch (error) {
+    console.log(error);
+    throw new Error(CAE); // Handle errors appropriately
+  }
+};

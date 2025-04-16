@@ -43,7 +43,7 @@ export const FormTitleInput: React.FC<FormTitleInputProps> = () => {
     return (
         <div>
 
-            <div className='flex justify-end items-center'>
+            <div className='flex justify-end items-center relative'>
                 <Button disabled={title ? false : true} onClick={() => onSaveClick(title!)} className=' rounded-full absolute m-4'>
                     {t("save")}
                     <SymbolIcon className={cn("ltr:ml-2 rtl:mr-2", { "animate-spin": isPending })} />

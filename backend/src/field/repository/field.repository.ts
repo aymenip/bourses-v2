@@ -44,6 +44,18 @@ export const updateField = async (
   }
 };
 
+export const deleteField = async (id: number): Promise<void> => {
+  try {
+    const result = await (await db)
+      .delete(fields)
+      .where(eq(fields.id, id))
+      .execute();
+  } catch (error) {
+    console.log(error);
+    throw new Error(CAE); // Handle errors appropriately
+  }
+};
+
 /// GET FIELD BY ID
 export const getFieldById = async (id: number): Promise<FieldDTO | null> => {
   try {

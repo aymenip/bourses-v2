@@ -9,7 +9,9 @@ interface FormState {
   setCurrentForm: (newForm: TFullForm) => void;
   setCurrentFormTitle: (newTitle: string) => void;
   addBlockToCurrentForm: (newBlock: TFullFormBlock) => void;
+  deleteBlockFromCurrentForm: (id: number) => void;
   addFieldToBlock: (newField: TField, blockId: number) => void;
+  deleteFieldFromBlock: (fieldId: number, blockId: number) => void;
   changeCurrentFormAccess: (newFormAccess: TCreateFormAccess) => void;
 }
 
@@ -54,6 +56,21 @@ export const useFormStore = create<FormState>((set) => ({
         },
       };
     }),
+  deleteBlockFromCurrentForm: (id) =>
+    set((state) => {
+      if (!state.currentForm) return state;
+
+      const newBlocks = state.currentForm.blocks?.filter(
+        (block) => block.id !== id
+      );
+
+      return {
+        currentForm: {
+          ...state.currentForm,
+          blocks: newBlocks,
+        },
+      };
+    }),
   addFieldToBlock: (newField, blockId) =>
     set((state) => {
       if (!state.currentForm) return state;
@@ -68,6 +85,23 @@ export const useFormStore = create<FormState>((set) => ({
                   fields: block.fields.some((field) => field.id === newField.id)
                     ? block.fields
                     : [...block.fields, newField],
+                }
+              : block
+          ),
+        },
+      };
+    }),
+  deleteFieldFromBlock: (fieldId, blockId) =>
+    set((state) => {
+      if (!state.currentForm) return state;
+      return {
+        currentForm: {
+          ...state.currentForm,
+          blocks: state.currentForm.blocks?.map((block) =>
+            block.id === blockId
+              ? {
+                  ...block,
+                  fields: block.fields.filter((field) => field.id === fieldId),
                 }
               : block
           ),

@@ -57,6 +57,30 @@ export async function deleteForm(id: number): Promise<void> {
     });
     return response.data;
 }
+export async function deleteBlock(id: number): Promise<void> {
+    const token = authenticationContext().token;
+    if (!token) {
+        throw new Error();
+    }
+    const response = await axiosInstance.delete<void>(`/field/${id}`, {
+        headers: {
+            Authorization: token,
+        },
+    });
+    return response.data;
+}
+export async function deleteField(id: number, type: string): Promise<void> {
+    const token = authenticationContext().token;
+    if (!token) {
+        throw new Error();
+    }
+    const response = await axiosInstance.delete<void>(`/field/${type}/${id}`, {
+        headers: {
+            Authorization: token,
+        },
+    });
+    return response.data;
+}
 
 export async function createAFormBlock(createFormBlock: TCreateFormBlock): Promise<TFormBlock> {
     const token = authenticationContext().token;
