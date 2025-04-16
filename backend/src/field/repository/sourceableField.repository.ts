@@ -69,7 +69,7 @@ export const getSourceableFieldById = async (
 
     return new SourceabledFieldDTO(
       sourceableFieldData.id,
-      sourceableFieldData.source,
+      sourceableFieldData.type,
       sourceableFieldData.points,
       sourceableFieldData.label,
       sourceableFieldData.fieldId

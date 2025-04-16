@@ -2,10 +2,10 @@ export class CreateFieldDTO {
     label: string;
     formId: number;
     constructor(
-        title: string,
+        label: string,
         formId: number,
     ) {
-        this.label = title;
+        this.label = label;
         this.formId = formId;
     }
 }

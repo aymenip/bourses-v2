@@ -3,11 +3,13 @@ import {
 } from "./auth/mutations"
 import {
     useCreateForm,
-    useDeleteForm
+    useDeleteForm,
+    useCreateTypedField
 } from "./forms/mutations";
 
 export {
     useAuth,
     useCreateForm,
-    useDeleteForm
+    useDeleteForm,
+    useCreateTypedField
 }

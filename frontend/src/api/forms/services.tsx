@@ -1,6 +1,7 @@
 import { TCreateForm, TForm } from "@/types";
 import { axiosInstance } from ".."
 import { authenticationContext } from "../auth/services";
+import { TCreateFormBlock, TFormBlock, TSourceableField, TTypedField } from "@/types/forms";
 
 export async function forms(): Promise<TForm[]> {
     const token = authenticationContext().token;
@@ -40,7 +41,8 @@ export async function createAForm(createForm: TCreateForm): Promise<TForm> {
         headers: {
             Authorization: token,
         },
-    });
+    })
+    
     return response.data;
 }
 
@@ -57,3 +59,42 @@ export async function deleteForm(id: number): Promise<void> {
     return response.data;
 }
 
+export async function createAFormBlock(createFormBlock: TCreateFormBlock): Promise<TFormBlock> {
+    const token = authenticationContext().token;
+    if (!token) {
+        throw new Error();
+    }
+    const response = await axiosInstance.post<TFormBlock>("field/create", createFormBlock, {
+        headers: {
+            Authorization: token,
+        },
+    });
+    return response.data;
+}
+
+
+
+export async function createTypedField(typedField: TTypedField): Promise<TTypedField> {
+    const token = authenticationContext().token;
+    if (!token) {
+        throw new Error();
+    }
+    const response = await axiosInstance.post<TTypedField>(`field/typed/create`, {...typedField, fieldId: typedField.blockId}, {
+        headers: {
+            Authorization: token,
+        },
+    });
+    return response.data;
+}
+export async function createSourceableField(sourceableField: TSourceableField): Promise<TSourceableField> {
+    const token = authenticationContext().token;
+    if (!token) {
+        throw new Error();
+    }
+    const response = await axiosInstance.post<TSourceableField>(`field/sourceable/create`, {...sourceableField, fieldId: sourceableField.blockId}, {
+        headers: {
+            Authorization: token,
+        },
+    });
+    return response.data;
+}
