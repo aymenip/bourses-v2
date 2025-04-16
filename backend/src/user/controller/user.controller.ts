@@ -11,7 +11,7 @@ import {
   updateUser,
 } from "../repository/user.repository";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import jwt, { SignOptions } from "jsonwebtoken";
 import { handleError } from "../../utils/errors";
 import dotenv from "dotenv";
 
@@ -68,9 +68,13 @@ export const UpdateUser = async (
       fullname: `${lastMe.firstname} ${lastMe.lastname}`,
     };
 
-    const token = jwt.sign(payload, process.env.SECRET_KEY, {
-      expiresIn: process.env.EXPIRES_IN,
-    });
+    const token = jwt.sign(
+      payload as object, // Cast to object if payload is an object
+      process.env.SECRET_KEY as string, // Assert secret key is string
+      {
+        expiresIn: "1d", // or a number like 3600 (seconds)
+      }
+    );
 
     return res.status(200).json({
       ...lastMe,
@@ -110,9 +114,13 @@ export const Login = async (
       fullname: `${user.firstname} ${user.lastname}`,
     };
 
-    const token = jwt.sign(payload, process.env.SECRET_KEY, {
-      expiresIn: process.env.EXPIRES_IN,
-    });
+    const token = jwt.sign(
+      payload as object, // Cast to object if payload is an object
+      process.env.SECRET_KEY as string, // Assert secret key is string
+      {
+        expiresIn: "1d", // or a number like 3600 (seconds)
+      }
+    );
 
     const response: LoginUserOutputDTO = new LoginUserOutputDTO(
       token,

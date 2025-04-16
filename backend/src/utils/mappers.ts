@@ -10,7 +10,12 @@ export const mapCreateUserDTO = (req: express.Request): CreateUserDTO => {
     req.body.email,
     req.body.password,
     req.body.positionId,
-    req.body.roleId
+    req.body.roleId,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    req.body.notify_user
   );
 };
 

@@ -11,25 +11,26 @@ import { Button } from "../ui/button"
 import { motion, useAnimationControls } from "framer-motion"
 import { useEffect, useState } from "react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
+import { useMediaQuery } from "../../hooks/use-media-query"
 
 
 const containerVariants = {
     close: {
-        width: "5rem",
+        width: "5.1rem",
         transition: {
             type: "spring",
-            damping: 15,
-            duration: 0.5
+            damping: 18,
+            duration: 0.2
         }
     },
     open: {
         width: "16rem",
         transition: {
             type: "spring",
-            damping: 15,
-            duration: 0.5
+            damping: 18,
+            duration: 0.2
         }
-    }
+    },
 }
 
 type SidebarProps = {
@@ -40,6 +41,7 @@ type SidebarProps = {
 function Sidebar({ role, is_active = true }: SidebarProps) {
     const [t, _] = useTranslation("translation")
     const [isOpen, setIsOpen] = useState(false);
+    const isMobile = useMediaQuery("(max-width: 768px)");
     const containerControls = useAnimationControls();
     const location = useLocation();
     useEffect(() => {
@@ -50,9 +52,37 @@ function Sidebar({ role, is_active = true }: SidebarProps) {
         }
     }, [isOpen])
 
+    useEffect(() => {
+        if (isMobile) {
+            setIsOpen(false);
+        }
+    }, [isMobile]);
+
+    useEffect(() => {
+        if (isMobile) {
+            if (isOpen) {
+                containerControls.start("mobileOpen");
+            } else {
+                containerControls.start("mobileClose");
+            }
+        } else {
+            if (isOpen) {
+                containerControls.start("open");
+            } else {
+                containerControls.start("close");
+            }
+        }
+    }, [isOpen, isMobile]);
+
     const handleOpenClose = () => {
-        setIsOpen(!isOpen)
-    }
+        setIsOpen(!isOpen);
+    };
+
+    const handleCloseMobile = () => {
+        if (isMobile) {
+            setIsOpen(false);
+        }
+    };
     const getExactMatch = (path: string) => {
         const segments = location.pathname.split("/");
         const basePath = `/${segments[segments.length > 2 ? 2 : 1]}`;

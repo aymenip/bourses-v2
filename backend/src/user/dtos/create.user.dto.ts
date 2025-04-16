@@ -13,6 +13,7 @@ export class CreateUserDTO {
   password_changed?: boolean;
   research_gate?: string;
   google_scholar?: string;
+  notify_user?: boolean;
   constructor(
     firstname: string,
     lastname: string,
@@ -25,7 +26,8 @@ export class CreateUserDTO {
     is_active?: boolean,
     password_changed?: boolean,
     research_gate?: string,
-    google_scholar?: string
+    google_scholar?: string,
+    notify_user?: boolean
   ) {
     this.firstname = firstname;
     this.lastname = lastname;
@@ -39,5 +41,6 @@ export class CreateUserDTO {
     this.password_changed = password_changed;
     this.research_gate = research_gate;
     this.google_scholar = google_scholar;
+    this.notify_user = notify_user;
   }
 }

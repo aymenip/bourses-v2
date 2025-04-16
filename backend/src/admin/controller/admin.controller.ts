@@ -16,6 +16,7 @@ import { CreateUserDTO, JwtResponsePayload } from "../../user/dtos";
 import { Register } from "../../user/controller/user.controller";
 import { generateToken } from "../../utils/auth";
 import { mapCreateUserDTO, mapUpdateUserDTO } from "../../utils/mappers";
+import { notifyAccountCreated } from "../../utils/node-mailer";
 
 export const CreateAdmin = async (
   req: express.Request,
@@ -44,7 +45,16 @@ export const CreateAdmin = async (
         positionId: createUserDTO.positionId,
       };
     const token = await generateToken(rgisterResponsePayload);
-
+    if (createUserDTO.notify_user) {
+      (async () => {
+        await notifyAccountCreated(
+          createUserDTO.email,
+          createUserDTO.firstname,
+          createUserDTO.lastname,
+          createUserDTO.password
+        );
+      })();
+    }
     return res.status(200).json({ token: token });
   } catch (error) {
     handleError((msg) => console.log(msg), "An error occurred");
