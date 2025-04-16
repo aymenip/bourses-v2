@@ -1,6 +1,10 @@
-import { db } from "../../db/setup";
-import { documents, certificates } from "../../db/schema";
-import { CreateCertificateDTO, CertificateDTO, UpdateCertificateDTO } from "../dtos";
+import { db } from "../../conference/db/setup";
+import { documents, certificates } from "../../conference/db/schema";
+import {
+  CreateCertificateDTO,
+  CertificateDTO,
+  UpdateCertificateDTO,
+} from "../dtos";
 import { eq } from "drizzle-orm";
 import { deleteDocument } from "../../utils/uploads";
 
@@ -9,7 +13,6 @@ export const createCertificate = async (
   userId: number
 ): Promise<CreateCertificateDTO> => {
   try {
-
     const dbInstance = await db;
     const result = await dbInstance
       .insert(certificates)
@@ -71,7 +74,9 @@ export const getAllCertificates = async (): Promise<CertificateDTO[]> => {
   }
 };
 
-export const getCertificateById = async (id: number): Promise<CertificateDTO | null> => {
+export const getCertificateById = async (
+  id: number
+): Promise<CertificateDTO | null> => {
   try {
     const dbInstance = await db;
     const result = await dbInstance

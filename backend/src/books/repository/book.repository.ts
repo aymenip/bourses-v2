@@ -1,5 +1,5 @@
-import { db } from "../../db/setup";
-import { documents, books } from "../../db/schema";
+import { db } from "../../conference/db/setup";
+import { documents, books } from "../../conference/db/schema";
 import { CreateBookDTO, BookDTO, UpdateBookDTO } from "../dtos";
 import { eq } from "drizzle-orm";
 import { deleteDocument } from "../../utils/uploads";
@@ -9,7 +9,6 @@ export const createBook = async (
   userId: number
 ): Promise<CreateBookDTO> => {
   try {
-
     const dbInstance = await db;
     const result = await dbInstance
       .insert(books)
@@ -89,10 +88,7 @@ export const deleteBook = async (id: number): Promise<void> => {
   try {
     const dbInstance = await db;
     const deletedBook = await getBookById(id);
-    await dbInstance
-      .delete(books)
-      .where(eq(books.id, id))
-      .execute();
+    await dbInstance.delete(books).where(eq(books.id, id)).execute();
 
     try {
       // delete the document from the documents table

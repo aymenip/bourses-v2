@@ -1,5 +1,5 @@
-import { db } from "../../db/setup";
-import { documents, articles } from "../../db/schema";
+import { db } from "../../conference/db/setup";
+import { documents, articles } from "../../conference/db/schema";
 import { CreateArticleDTO, ArticleDTO, UpdateArticleDTO } from "../dtos";
 import { eq } from "drizzle-orm";
 import { deleteDocument } from "../../utils/uploads";
@@ -51,7 +51,7 @@ export const getAllArticlesForUser = async (
       .from(articles)
       .where(eq(articles.userId, userId))
       .execute();
-    const _articles: ArticleDTO[] = result.map(article => ({
+    const _articles: ArticleDTO[] = result.map((article) => ({
       ...article,
       classification: article.classification as Classification,
     }));
@@ -66,7 +66,7 @@ export const getAllArticles = async (): Promise<ArticleDTO[]> => {
   try {
     const dbInstance = await db;
     const result = await dbInstance.select().from(articles);
-    const _articles: ArticleDTO[] = result.map(article => ({
+    const _articles: ArticleDTO[] = result.map((article) => ({
       ...article,
       classification: article.classification as Classification,
     }));
@@ -77,7 +77,9 @@ export const getAllArticles = async (): Promise<ArticleDTO[]> => {
   }
 };
 
-export const getArticleById = async (id: number): Promise<ArticleDTO | null> => {
+export const getArticleById = async (
+  id: number
+): Promise<ArticleDTO | null> => {
   try {
     const dbInstance = await db;
     const result = await dbInstance
@@ -87,7 +89,10 @@ export const getArticleById = async (id: number): Promise<ArticleDTO | null> => 
       .execute();
     // Return the first user or null if none found
     return result.length > 0
-      ? { ...result[0], classification: result[0].classification as Classification }
+      ? {
+          ...result[0],
+          classification: result[0].classification as Classification,
+        }
       : null;
   } catch (error) {
     throw new Error("Failed to get Article"); // Handle errors appropriately
@@ -97,10 +102,7 @@ export const deleteArticle = async (id: number): Promise<void> => {
   try {
     const dbInstance = await db;
     const deletedArticle = await getArticleById(id);
-    await dbInstance
-      .delete(articles)
-      .where(eq(articles.id, id))
-      .execute();
+    await dbInstance.delete(articles).where(eq(articles.id, id)).execute();
 
     try {
       // delete the document from the documents table

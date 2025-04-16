@@ -1,5 +1,10 @@
-import { db } from "../../db/setup";
-import { forms, formSubmissions, positions, users } from "../../db/schema";
+import { db } from "../../conference/db/setup";
+import {
+  forms,
+  formSubmissions,
+  positions,
+  users,
+} from "../../conference/db/schema";
 import {
   CreateSubmissionDTO,
   SubmissionDTO,

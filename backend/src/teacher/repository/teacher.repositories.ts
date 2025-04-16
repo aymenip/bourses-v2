@@ -1,5 +1,5 @@
-import { db } from "../../db/setup";
-import { teachers, users } from "../../db/schema";
+import { db } from "../../conference/db/setup";
+import { teachers, users } from "../../conference/db/schema";
 import { eq } from "drizzle-orm";
 import { CreateTeacherDTO, TeacherDTO, UpdateTeacherDTO } from "../dtos";
 import { MatrialStatus } from "../../user/user.enums";

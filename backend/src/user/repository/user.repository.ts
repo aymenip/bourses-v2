@@ -1,5 +1,5 @@
-import { db } from "../../db/setup";
-import { positions, users } from "../../db/schema";
+import { db } from "../../conference/db/setup";
+import { positions, users } from "../../conference/db/schema";
 import { CreateUserDTO, UpdateUserDTO, UserDTO } from "../dtos";
 import { eq } from "drizzle-orm";
 import { CAE } from "../../utils/constants";
