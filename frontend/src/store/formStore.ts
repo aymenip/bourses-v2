@@ -20,14 +20,23 @@ export const useFormStore = create<FormState>((set) => ({
   lastChange: undefined,
   formAccess: undefined,
   setCurrentForm: (newForm) =>
-    set({
-      currentForm: { ...newForm, blocks: newForm.blocks ?? [] },
-      lastChange: new Date().toLocaleTimeString("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }),
+    set(() => {
+      const normalizedBlocks =
+        newForm.blocks?.map((block) => ({
+          ...block,
+          fields: block.fields.flat(), // Flatten nested arrays
+        })) ?? [];
+
+      return {
+        currentForm: { ...newForm, blocks: normalizedBlocks },
+        lastChange: new Date().toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        }),
+      };
     }),
+
   setCurrentFormTitle: (newTitle) =>
     set((state) => ({
       currentForm: {
@@ -60,17 +69,22 @@ export const useFormStore = create<FormState>((set) => ({
     set((state) => {
       if (!state.currentForm) return state;
 
-      const newBlocks = state.currentForm.blocks?.filter(
-        (block) => block.id !== id
-      );
+      const updatedBlocks =
+        state.currentForm.blocks?.filter((block) => block.id !== id) ?? [];
 
       return {
         currentForm: {
           ...state.currentForm,
-          blocks: newBlocks,
+          blocks: updatedBlocks,
         },
+        lastChange: new Date().toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        }),
       };
     }),
+
   addFieldToBlock: (newField, blockId) =>
     set((state) => {
       if (!state.currentForm) return state;
@@ -94,6 +108,7 @@ export const useFormStore = create<FormState>((set) => ({
   deleteFieldFromBlock: (fieldId, blockId) =>
     set((state) => {
       if (!state.currentForm) return state;
+
       return {
         currentForm: {
           ...state.currentForm,
@@ -101,11 +116,16 @@ export const useFormStore = create<FormState>((set) => ({
             block.id === blockId
               ? {
                   ...block,
-                  fields: block.fields.filter((field) => field.id === fieldId),
+                  fields: block.fields.filter((field) => field.id !== fieldId),
                 }
               : block
           ),
         },
+        lastChange: new Date().toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        }),
       };
     }),
   changeCurrentFormAccess: (newFormAccess) =>

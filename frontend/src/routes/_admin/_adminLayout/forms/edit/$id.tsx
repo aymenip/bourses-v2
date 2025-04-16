@@ -15,7 +15,7 @@ function EditForm() {
   const { data: formData, isSuccess } = useFullForm(Number(id));
   const setCurrentForm = useFormStore((state) => state.setCurrentForm);
   const currentForm = useFormStore((state) => state.currentForm);
-  console.log('currentForm', currentForm)
+
   useEffect(() => {
     if (formData && isSuccess) {
       setCurrentForm(formData);
