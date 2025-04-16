@@ -5,6 +5,7 @@ const googleScholarRegex =
 const researchGateRegex =
   /^https:\/\/(www\.)?researchgate\.net\/profile\/[\w-]+\/?$/;
 
+
 export const updateUserFormValuesSchema = (
   position: string,
   password_changed: boolean

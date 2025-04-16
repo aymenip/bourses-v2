@@ -72,11 +72,11 @@ export function DataTableToolbar<TData>({
                         title={t("status")}
                         options={[
                             {
-                                label: "Draft",
+                                label: t("draft"),
                                 value: "draft",
                             },
                             {
-                                label: "Submitted",
+                                label: t("submitted"),
                                 value: "submitted",
                             },
                         ]}

@@ -70,7 +70,7 @@ function Settings() {
       <Sidebar role={role!} is_active={is_active ?? undefined} />
       <div className='flex-1 h-screen overflow-x-hidden'>
         <div className="content-container">
-          <TopBar page_name="🔧settings" />
+          <TopBar page_name={t("⚙️settings")} />
           <div className='p-2 overflow-y-auto w-full md:max-w-[1200px]'>
 
             {

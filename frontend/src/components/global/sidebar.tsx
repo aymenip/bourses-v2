@@ -65,7 +65,7 @@ function Sidebar({ role, is_active = true }: SidebarProps) {
     return (
         <motion.nav
             variants={containerVariants}
-            initial={"close"}
+            initial={t("close")}
             animate={containerControls}
             className={
                 cn("header-background overflow-hidden",

@@ -32,7 +32,7 @@ function Dashboard() {
       {/* New Forms Panel */}
       <div className="md:col-span-5 bg-card shadow-md rounded-xl border border-border max-h-[600px] overflow-hidden pb-4">
         <div className="px-4 py-3 border-b border-border max-h-[700px] overflow-y-auto">
-          <H3>📝 {t("New Forms")}</H3>
+          <H3>📝 {t("new-forms")}</H3>
         </div>
         <div className="p-4 space-y-3 overflow-auto">
           {forms?.length ? (
@@ -90,7 +90,7 @@ function Dashboard() {
                           className="flex items-center gap-1"
                         >
                           <ReceiptText className="h-4 w-4" />
-                          <span className="text-xs">{t("Receipt")}</span>
+                          <span className="text-xs">{t("receipt")}</span>
                         </Link>
                       </Button>
                     )}
