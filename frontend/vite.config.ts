@@ -20,4 +20,5 @@ export default defineConfig(({ mode }) => ({
         : "http://localhost:3000/api"
     ),
   },
+  
 }))
