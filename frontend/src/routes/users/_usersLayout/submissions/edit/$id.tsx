@@ -23,28 +23,30 @@ function EditSubmissionPage() {
   const { data: form, isLoading: isFormLoading } = useFullForm(formId!, {
     enabled: !!formId,
   });
+
   const [status, setStatus] = useState<"draft" | "submitted">("draft");
-  const { mutate: updateSubmission } = useUpdateSubmission();
   const [t] = useTranslation("translation");
-
-
-
-  // ✅ Sync status when submission loads
-  if (submission && status !== submission.status) {
-    setStatus(submission.status);
-  }
+  const { mutate: updateSubmission } = useUpdateSubmission();
 
   const loading = isSubmissionLoading || isFormLoading || !form || !submission;
+  const isHydrated = submission && status !== submission.status;
+
+  // Safely update status after initial load
+  useState(() => {
+    if (isHydrated) {
+      setStatus(submission.status);
+    }
+  });
+
   if (loading) return <Loader />;
 
-  // ✅ Safe now to read submission/form
-  const rawData = typeof submission.data === 'string'
+  const rawData = typeof submission.data === "string"
     ? JSON.parse(submission.data)
     : submission.data;
 
   const defaultValues: Record<string, any> = {};
   form?.blocks?.forEach((block) => {
-    block.fields.flat().forEach(field => {
+    block.fields.flat().forEach((field) => {
       const key = generateFieldName(block.id, field.id);
       defaultValues[key] = rawData?.[field.label] ?? '';
     });
@@ -52,30 +54,39 @@ function EditSubmissionPage() {
 
   const handleSubmit = (formData: Record<string, any>) => {
     const updatedData: Record<string, any> = {};
-    form.blocks?.forEach(block => {
-      block.fields.flat().forEach(field => {
+    form.blocks?.forEach((block) => {
+      block.fields.flat().forEach((field) => {
         const key = generateFieldName(field.blockId, field.id);
         updatedData[field.label] = formData[key];
       });
     });
+
     updateSubmission({
       id: submission.id,
       formId: form.id,
       data: updatedData,
       status: status,
     });
+
     toast.success(t("submission-update-success"));
   };
 
   return (
     <div className="content-container">
-      <TopBar page_name="editSubmission" />
+      <TopBar page_name="edit-submission" />
       <div className="p-2">
-        <div className="flex justify-between mb-4">
+        <div className="flex justify-between mb-4 md:flex-row flex-col">
           <H2>{form.title}</H2>
-          <div className="flex items-center justify-center space-x-2 border px-2 rounded-sm shadow-sm">
-            <span className='w-[140px]'>{`${t("mode")}: ${t(status)}`}</span>
-            <Switch dir="ltr" onCheckedChange={() => setStatus(status === "draft" ? "submitted" : "draft")} id="status" />
+          <div className="flex items-center justify-center space-x-2 border px-2 py-2 md:py-0 w-fit rounded-sm shadow-sm">
+            <span className="w-[140px]">{`${t("mode")}: ${t(status)}`}</span>
+            <Switch
+              dir="ltr"
+              checked={status === "submitted"}
+              onCheckedChange={() =>
+                setStatus(status === "draft" ? "submitted" : "draft")
+              }
+              id="status"
+            />
           </div>
         </div>
         <FormRenderer

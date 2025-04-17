@@ -18,6 +18,8 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import i18n from "@/i18n";
 import { MultiSelector, MultiSelectorContent, MultiSelectorInput, MultiSelectorItem, MultiSelectorList, MultiSelectorTrigger } from "./ui/multi-select";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 export const generateFieldName = (blockId: number, fieldId: number) =>
     `field_${blockId}_${fieldId}`;
@@ -72,7 +74,6 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
     const renderInput = (field: TField) => {
         const name = generateFieldName(field.blockId, field.id);
         const error = errors[name]?.message as string | undefined;
-
         return (
             <div key={name} className="form-group space-y-1">
                 <Label className="flex items-center gap-1">
@@ -91,8 +92,8 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
                     render={({ field: controllerField }) => {
                         const type = field.type;
 
-                        if (["text", "email", "url"].includes(type)) {
-                            return <Input {...controllerField} />;
+                        if (["text", "email", "url", "number"].includes(type)) {
+                            return <Input type={type} {...controllerField} />;
                         }
 
                         if (type === "select") {
@@ -141,6 +142,13 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
                                 </MultiSelector>
                             );
                         }
+                        if (type === "date") {
+                            return (
+                                <Input
+                                    type="date"
+                                    {...controllerField}
+                                />);
+                        }
 
                         if (type === "yes/no") {
                             return (
@@ -184,22 +192,32 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
     };
 
     return (
-        <form className="form grid md:grid-cols-2 gap-2" onSubmit={handleSubmit(onSubmit)}>
-            {form.blocks?.map((block: TFullFormBlock) => (
-                <div key={block.id} className="border shadow-sm rounded-sm dark:bg-zinc-800 dark:border-zinc-700">
-                    <div className="p-2 bg-muted flex justify-between">
-                        <H4>{block.label}</H4>
-                        <Badge>{t("number-of-fields")} {block.fields.length}</Badge>
+        <div className="flex justify-center px-4">
+            <form
+                className="form flex flex-col gap-5 justify-center text-center max-w-[900px] w-full"
+                onSubmit={handleSubmit(onSubmit)}
+            >
+                {form.blocks?.map((block: TFullFormBlock) => (
+                    <div
+                        key={block.id}
+                        className="border shadow-sm rounded-sm dark:bg-zinc-800 dark:border-zinc-700"
+                    >
+                        <div className="p-2 bg-muted flex justify-between">
+                            <H4>{block.label}</H4>
+                            <Badge>
+                                {t("number-of-fields")} {block.fields.length}
+                            </Badge>
+                        </div>
+                        <div className="min-h-14 p-2 space-y-6 mb-10">
+                            {block.fields.flat().map(renderInput)}
+                        </div>
                     </div>
-                    <div className="min-h-14 p-2 space-y-6 mb-10">
-                        {block.fields.flat().map(renderInput)}
-                    </div>
-                </div>
-            ))}
-            <Button type="submit">
-                <SaveIcon className="mx-1 w-5 h-5" />
-                {t(submitLabel)}
-            </Button>
-        </form>
+                ))}
+                <Button type="submit">
+                    <SaveIcon className="mx-1 w-5 h-5" />
+                    {t(submitLabel)}
+                </Button>
+            </form>
+        </div>
     );
 }
