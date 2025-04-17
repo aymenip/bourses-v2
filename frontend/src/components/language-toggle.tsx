@@ -1,5 +1,3 @@
-import { Moon, Sun } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -26,7 +24,7 @@ export function LanguageToggle() {
           <img
             className="h-6 w-6 rounded"
             alt={`langauge-${selectedLanguage}`}
-            src={`http://localhost:3000/flags/${selectedLanguage}.svg`}
+            src={selectedLanguage === "ar" ? "/flags/ar.svg" : `/flags/en.svg`}
           />
           <span className="sr-only">Toggle language</span>
         </Button>

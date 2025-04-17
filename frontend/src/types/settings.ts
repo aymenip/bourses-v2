@@ -12,7 +12,7 @@ export const updateUserFormValuesSchema = (
   z
     .object({
       changePassword: z.boolean().optional(),
-      newPassword: z.string().min(8, "password-at-least-8").optional(),
+      newPassword: z.string().min(8, "at-least-8").optional(),
       confirmNewPassword: z.string().optional(),
       googleScholar: z
         .string()
@@ -24,6 +24,7 @@ export const updateUserFormValuesSchema = (
         .regex(researchGateRegex, "invalid-research-gate-url")
         .optional()
         .or(z.literal("")),
+      positionId: z.number().optional(),
     })
     .superRefine((data, ctx) => {
       const shouldValidatePassword = !password_changed || data.changePassword;

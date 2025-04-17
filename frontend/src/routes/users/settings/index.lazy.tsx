@@ -1,4 +1,5 @@
 import { useGrantAccess, useUserUpdate } from '@/api/auth/mutations'
+import { usePositions } from '@/api/positions/queries'
 import { authenticationContext } from '@/api/services'
 import Sidebar from '@/components/global/sidebar'
 import { TopBar } from '@/components/global/topBar'
@@ -6,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { MultiSelector, MultiSelectorTrigger } from '@/components/ui/multi-select'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { H4 } from '@/components/ui/typography'
 import { grantAccessSchema, TGrantAccess, TUpdateUserFormValues, updateUserFormValuesSchema } from '@/types/settings'
@@ -23,12 +26,14 @@ export const Route = createLazyFileRoute('/users/settings/')({
 })
 
 function Settings() {
-  const { role, is_active, position, password_changed, research_gate, google_scholar } = authenticationContext()
+  const { role, is_active, position, password_changed, research_gate, google_scholar, positionId } = authenticationContext()
   const { mutate: grantAccess, data: valid, isPending: isGrantPending, isSuccess: isGrantSuccess } = useGrantAccess();
   const { mutate: updateUser, isError: isUpdateError, isPending: isUpdatePending, isSuccess: isUpdateSuccess } = useUserUpdate()
+  const { data: positions } = usePositions();
   const [changePassword, setChangePassword] = useState(!password_changed);
 
-  const [t] = useTranslation("translation")
+
+  const [t, i18n] = useTranslation("translation")
 
   const grantAccessForm = useForm<TGrantAccess>({
     resolver: zodResolver(grantAccessSchema),
@@ -40,6 +45,7 @@ function Settings() {
       googleScholar: google_scholar || "",
       researchGate: research_gate || "",
       changePassword: !password_changed, // required if password never changed
+      positionId: parseInt(positionId!)
     },
   });
 
@@ -58,6 +64,7 @@ function Settings() {
       new_password: data.newPassword,
       password_changed: password_changed!,
       is_active: is_active!,
+      positionId: data.positionId,
     }
     updateUser(updateUserData);
     if (isUpdateSuccess) {
@@ -100,7 +107,7 @@ function Settings() {
                   {isGrantPending ? <Loader className='w-5 h-5 animate-spin' /> : "🔑"}
                 </Button>
                 {grantAccessForm.formState.errors.currentPassword && (
-                  <p className="text-red-500 col-span-6">{grantAccessForm.formState.errors.currentPassword.message}</p>
+                  <p className="text-red-500 col-span-6">{t(grantAccessForm.formState.errors.currentPassword.message || "")}</p>
                 )}
 
               </form>
@@ -153,12 +160,12 @@ function Settings() {
                             <div>
                               {updateUserForm.formState.errors.newPassword && (
                                 <p className='text-red-500 col-span-6'>
-                                  {updateUserForm.formState.errors.newPassword.message}
+                                  {t(updateUserForm.formState.errors.newPassword.message || "")}
                                 </p>
                               )}
                               {updateUserForm.formState.errors.confirmNewPassword && (
                                 <p className='text-red-500 col-span-6'>
-                                  {updateUserForm.formState.errors.confirmNewPassword.message}
+                                  {t(updateUserForm.formState.errors.confirmNewPassword.message || "")}
                                 </p>
                               )}
                             </div>
@@ -177,7 +184,7 @@ function Settings() {
                             {
                               updateUserForm.formState.errors.googleScholar && (<p className="text-red-500 col-span-6">
                                 {
-                                  updateUserForm.formState.errors.googleScholar.message
+                                  t(updateUserForm.formState.errors.googleScholar.message || "")
                                 }
                               </p>)
                             }
@@ -192,10 +199,31 @@ function Settings() {
                             {
                               updateUserForm.formState.errors.researchGate && (<p className="text-red-500 col-span-6">
                                 {
-                                  updateUserForm.formState.errors.researchGate.message
+                                  t(updateUserForm.formState.errors.researchGate.message || "")
                                 }
                               </p>)
                             }
+                          </div>
+                          <div className='form-group'>
+                            <Label>{t("position")}</Label>
+                            <Select
+                              {...updateUserForm.register("positionId")}
+                              dir={i18n.dir()}
+                              onValueChange={(value: string) => updateUserForm.setValue("positionId", parseInt(value))}
+                              defaultValue={positionId!.toString()}
+                            >
+                              <SelectTrigger dir={i18n.dir()} >
+                                <SelectValue dir={i18n.dir()} placeholder={t("select-new-position")} />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectGroup dir={i18n.dir()}>
+                                  <SelectLabel dir={i18n.dir()}>{t("select-new-position")}</SelectLabel>
+                                  {
+                                    positions!.map((position) => <SelectItem dir={i18n.dir()} value={position.id.toString()}>{t(position.name)}</SelectItem>)
+                                  }
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
                           </div>
                         </div>
 
