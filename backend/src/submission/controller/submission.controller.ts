@@ -11,6 +11,8 @@ import {
   updateSubmission,
 } from "../repository/submission.repository";
 import { CreateSubmissionDTO, UpdateSubmissionDTO } from "../dtos";
+import { notifySubmissionSent } from "../../utils/node-mailer";
+import { getFormById } from "../../form/repository/form.repository";
 
 export const CreateSubmission = async (
   req: express.Request,
@@ -31,6 +33,17 @@ export const CreateSubmission = async (
     }
 
     const createdSubmission = await createSubmission(createSubmissionDTO);
+
+    if (createdSubmission.status === "submitted") {
+      const formTitle = (await getFormById(createdSubmission.formId)).title;
+      (async () => {
+        await notifySubmissionSent(
+          req.user.email,
+          createdSubmission.data,
+          formTitle
+        );
+      })();
+    }
 
     return res.status(200).json(createdSubmission);
   } catch (error) {
