@@ -61,3 +61,5 @@ frontend/uploads
 ./frontend/.env
 ./frontend/.env.*.local
 ./frontend/uploads
+backend/.env
+backend/.env
