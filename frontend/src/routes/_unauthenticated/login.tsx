@@ -51,8 +51,8 @@ function Login() {
 
 
   return (
-    <div className="w-full h-[100vh] grid  grid-cols-2 place-content-center">
-      <div className="p-10 ltr:rounded-tr-3xl ltr:rounded-br-3xl rtl:rounded-tl-3xl rtl:rounded-bl-3xl  h-svh place-content-center z-50 bg-background w-svw md:max-w-screen-md">
+    <div className="w-full h-[100vh] grid  grid-cols-3 place-content-center">
+      <div className="p-10 ltr:rounded-tr-3xl ltr:rounded-br-3xl rtl:rounded-tl-3xl rtl:rounded-bl-3xl  h-svh place-content-center z-50 bg-background w-svw md:max-w-screen-md col-span-1">
         <div className="mb-10 pb-2 border-b-4 border-b-primary/50">
           <H1>Bourses V2</H1>
           <P>{t('login-message')}</P>
@@ -107,7 +107,10 @@ function Login() {
           </div>
         </form>
       </div>
-      <div className="h-svh bg-primary/5 absolute w-full "></div>
+      <div className='h-svh w-full flex relative col-span-2'>
+        <div className='absolute top-0 bottom-0 left-0 right-0 bg-background/90' />
+        <div className="flex-1 bg-[url('https://www.cu-aflou.dz/img/images/gallery/1.jpg')] bg-cover" />
+      </div>
     </div>
   )
 }

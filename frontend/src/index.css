@@ -87,7 +87,7 @@
   }
 
   .form-group {
-    @apply grid mb-2;
+    @apply grid mb-3 space-y-2;
   }
 
   .form-error {

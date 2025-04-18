@@ -2,11 +2,11 @@
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { BadgeAlert, SaveIcon } from "lucide-react";
+import { AlertCircle, BadgeAlert, LucideInfo, SaveIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchableInput } from "@/components/searchable-input";
 import { H4 } from "@/components/ui/typography";
@@ -19,6 +19,7 @@ import i18n from "@/i18n";
 import { MultiSelector, MultiSelectorContent, MultiSelectorInput, MultiSelectorItem, MultiSelectorList, MultiSelectorTrigger } from "./ui/multi-select";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { format, formatISO } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface FormRendererProps {
     form: TFullForm;
@@ -39,25 +40,25 @@ const generateZodSchema = (fields: TField[], t: (key: string) => string) => {
             switch (field.type) {
                 case "text":
                     schema = z.string({
-                        required_error: t("validation.required")
+                        required_error: t("input-required")
                     });
                     break;
 
                 case "email":
                     schema = z.string({
-                        required_error: t("validation.required")
+                        required_error: t("input-required")
                     }).email(t("validation.email"));
                     break;
 
                 case "url":
                     schema = z.string({
-                        required_error: t("validation.required")
+                        required_error: t("input-required")
                     }).url(t("validation.url"));
                     break;
 
                 case "number":
                     schema = z.number({
-                        required_error: t("validation.required"),
+                        required_error: t("input-required"),
                         invalid_type_error: t("validation.number")
                     }).or(z.string().pipe(z.coerce.number()));
                     break;
@@ -65,16 +66,16 @@ const generateZodSchema = (fields: TField[], t: (key: string) => string) => {
                 case "select":
                 case "yes/no":
                     schema = z.string({
-                        required_error: t("validation.required")
+                        required_error: t("input-required")
                     });
                     break;
 
                 case "multiselect": {
                     let arraySchema: z.ZodArray<z.ZodString> = z.array(z.string(), {
-                        required_error: t("validation.required")
+                        required_error: t("input-required")
                     });
                     if (field.required) {
-                        arraySchema = arraySchema.min(1, t("validation.required"));
+                        arraySchema = arraySchema.min(1, t("input-required"));
                     }
                     schema = arraySchema;
                     break;
@@ -85,7 +86,7 @@ const generateZodSchema = (fields: TField[], t: (key: string) => string) => {
                         z.string(),
                         z.date()
                     ], {
-                        required_error: t("validation.required"),
+                        required_error: t("input-required"),
                         invalid_type_error: t("validation.date")
                     });
                     break;
@@ -96,7 +97,7 @@ const generateZodSchema = (fields: TField[], t: (key: string) => string) => {
                 case "thesis":
                     // other searchable types
                     schema = z.string({
-                        required_error: t("validation.required")
+                        required_error: t("input-required")
                     });
                     break;
                 default:
@@ -104,7 +105,7 @@ const generateZodSchema = (fields: TField[], t: (key: string) => string) => {
                         z.string(),
                         z.number()
                     ], {
-                        required_error: t("validation.required")
+                        required_error: t("input-required")
                     });
             }
 
@@ -128,7 +129,30 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
         defaultValues
     });
 
+    const completion = useMemo(() => {
+        const totalFields = allFields.length;
+        const completed = Object.keys(methods.getValues()).filter(k => methods.getValues()[k]).length;
+        return Math.round((completed / totalFields) * 100);
+    }, [methods.watch()]);
+
     const { control, handleSubmit, formState: { errors } } = methods;
+
+    function FieldError({ error }: { error?: string }) {
+        return error ? (
+            <div className="flex items-center gap-1 text-red-500 text-sm mt-1 animate-shake">
+                <AlertCircle className="h-4 w-4" />
+                <span>{error}</span>
+            </div>
+        ) : null;
+    }
+    function FieldDescription({ description }: { description?: string }) {
+        return description ? (
+            <div className="flex items-center gap-1 text-blue-500/60 text-sm mt-1">
+                <LucideInfo className="h-4 w-4 " />
+                <span>{description}</span>
+            </div>
+        ) : null;
+    }
 
     const renderInput = useCallback((field: TField) => {
         const name = generateFieldName(field.blockId, field.id);
@@ -273,24 +297,31 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
                         }
                     }}
                 />
-
-                {error && (
-                    <p className="text-sm text-red-500" role="alert" aria-live="polite">
-                        {error}
-                    </p>
-                )}
+                <FieldDescription description={field.description} />
+                <FieldError error={errors[name]?.message} />
             </div>
         );
     }, [control, errors, t]);
 
+    const [currentBlock, setCurrentBlock] = useState(0);
     return (
         <FormProvider {...methods}>
+
             <div className="flex justify-center px-4">
                 <form
                     className="form flex flex-col gap-6 justify-center text-center max-w-[900px] w-full"
                     onSubmit={handleSubmit(onSubmit)}
                 >
-                    {form.blocks?.map((block: TFullFormBlock) => (
+                    <div className="w-full space-y-2 bg-gray-200 rounded-full h-2.5 mb-4">
+                        <div
+                            className="bg-primary h-2.5 rounded-full transition-all duration-500"
+                            style={{ width: `${completion}%` }}
+                        />
+                        <Badge variant={"secondary"}>
+                            {completion}%
+                        </Badge>
+                    </div>
+                    {/* {form.blocks?.map((block: TFullFormBlock) => (
                         <div
                             key={block.id}
                             className="border shadow-sm rounded-sm dark:bg-zinc-800 dark:border-zinc-700"
@@ -305,7 +336,40 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
                                 {block.fields.flat().map(renderInput)}
                             </div>
                         </div>
+                    ))} */}
+                    {form.blocks?.map((block, index) => (
+                        <div
+                            key={block.id}
+                            className={cn(
+                                index === currentBlock ? 'block' : 'hidden',
+                                "animate-fade-in"
+                            )}
+                        >
+                            <div
+                                key={block.id}
+                                className="border shadow-sm rounded-sm dark:bg-zinc-800 dark:border-zinc-700"
+                            >
+                                <div className="p-2 bg-muted flex justify-between">
+                                    <H4>{block.label}</H4>
+                                    <Badge>
+                                        {t("number-of-fields")} {block.fields.length}
+                                    </Badge>
+                                </div>
+                                <div className="p-4 space-y-4">
+                                    {block.fields.flat().map(renderInput)}
+                                </div>
+                            </div>
+                        </div>
                     ))}
+                    {/* Navigation controls */}
+                    <div className="flex justify-between">
+                        <Button type="button" onClick={() => setCurrentBlock(p => Math.max(0, p - 1))}>
+                            {t("previous")}
+                        </Button>
+                        <Button type="button" onClick={() => setCurrentBlock(p => Math.min(form.blocks!.length - 1, p + 1))}>
+                            {t("next")}
+                        </Button>
+                    </div>
                     <Button type="submit" className="self-center">
                         <SaveIcon className="mx-1 w-5 h-5" />
                         {t(submitLabel)}

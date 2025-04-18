@@ -39,7 +39,7 @@ function ReceiptPage() {
     });
 
     const imgData = canvas.toDataURL("image/png");
-
+  
     const pdf = new jsPDF("p", "mm", "a4");
 
     // Register custom font
