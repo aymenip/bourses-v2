@@ -1,8 +1,5 @@
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import { cairoFont } from "@/fonts/cairo-base64"; // adjust path if needed
 
-
+import html2pdf from 'html2pdf.js';
 import { createFileRoute } from "@tanstack/react-router";
 import { TopBar } from "@/components/global/topBar";
 import { Loader } from "@/components/global/loader";
@@ -28,37 +25,40 @@ function ReceiptPage() {
   );
   const [t] = useTranslation("translation");
   const receiptRef = useRef<HTMLDivElement>(null);
+  const handleDownloadPDF = () => {
+    const element = receiptRef.current;
+    if (!element) return;
+    const options = {
+      marging: 2,
+      filename: `${formTitle}-${id}.pdf`,
+      image: {
+        type: "jpeg",
+        quality: 1
+      },
+      html2canvas: {
+        scale: 2
+      },
+      jsPDF: {
+        unit: "mm",
+        format: "a4",
+        orientation: "portrait"
+      }
+    }
 
-  if (isLoading || isPending) return <Loader />;
+    document.documentElement.classList.remove("dark");
 
-  const handleDownloadPDF = async () => {
-    if (!receiptRef.current) return;
+    setTimeout(() => {
+      html2pdf()
+        .from(element)
+        .set(options)
+        .save()
+        .then(() => {
 
-    const canvas = await html2canvas(receiptRef.current, {
-      scale: 2,
-    });
-
-    const imgData = canvas.toDataURL("image/png");
-  
-    const pdf = new jsPDF("p", "mm", "a4");
-
-    // Register custom font
-    pdf.addFileToVFS("Cairo-Regular.ttf", cairoFont);
-    pdf.addFont("Cairo-Regular.ttf", "Cairo", "normal");
-    pdf.setFont("Cairo");
-
-    // Optional: reverse layout for RTL
-    pdf.setLanguage("ar");
-    pdf.setFontSize(12);
-
-    // Draw the image
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const ratio = canvas.height / canvas.width;
-    const imgHeight = pageWidth * ratio;
-
-    pdf.addImage(imgData, "PNG", 0, 0, pageWidth, imgHeight);
-    pdf.save(`${formTitle ?? "receipt"}-${id}.pdf`);
+          document.documentElement.classList.add("dark");
+        });
+    }, 100);
   };
+  if (isLoading || isPending) return <Loader />;
 
 
   return (
@@ -66,12 +66,12 @@ function ReceiptPage() {
       <TopBar page_name="submissionReceipt" />
       <div className="grid  place-content-center">
         <div
-          className="mt-5 mx-auto shadow-sm border w-fit min-w-[500px]"
+          className="mt-5 mx-auto shadow-sm border w-fit min-w-[500px] print:!bg-white print:!text-black"
           ref={receiptRef}
         >
-          <div className="px-2 py-4 bg-slate-100 dark:bg-zinc-900">
+          <div className="px-2 py-4 bg-slate-100 dark:bg-zinc-900 print:!bg-white print:!text-black">
             <h3>{t("registration-receipt")}</h3>
-            <Muted>{formTitle}</Muted>
+            <Muted className="print:!text-black">{formTitle}</Muted>
           </div>
           <div className="p-2">
             <Table>

@@ -19,8 +19,9 @@ import i18n from "@/i18n";
 import { MultiSelector, MultiSelectorContent, MultiSelectorInput, MultiSelectorItem, MultiSelectorList, MultiSelectorTrigger } from "./ui/multi-select";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { format, formatISO } from "date-fns";
-import { cn } from "@/lib/utils";
-
+import { cn, findFirstErrorBlock, hasErrorsInOtherBlocks } from "@/lib/utils";
+import { AutosaveIndicator } from "@/hooks/use-form-autosave";
+import { motion } from "framer-motion"
 interface FormRendererProps {
     form: TFullForm;
     onSubmit: (data: Record<string, unknown>) => void;
@@ -303,10 +304,10 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
         );
     }, [control, errors, t]);
 
+
     const [currentBlock, setCurrentBlock] = useState(0);
     return (
         <FormProvider {...methods}>
-
             <div className="flex justify-center px-4">
                 <form
                     className="form flex flex-col gap-6 justify-center text-center max-w-[900px] w-full"
@@ -321,22 +322,6 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
                             {completion}%
                         </Badge>
                     </div>
-                    {/* {form.blocks?.map((block: TFullFormBlock) => (
-                        <div
-                            key={block.id}
-                            className="border shadow-sm rounded-sm dark:bg-zinc-800 dark:border-zinc-700"
-                        >
-                            <div className="p-2 bg-muted flex justify-between">
-                                <H4>{block.label}</H4>
-                                <Badge>
-                                    {t("number-of-fields")} {block.fields.length}
-                                </Badge>
-                            </div>
-                            <div className="p-4 space-y-4">
-                                {block.fields.flat().map(renderInput)}
-                            </div>
-                        </div>
-                    ))} */}
                     {form.blocks?.map((block, index) => (
                         <div
                             key={block.id}
@@ -374,6 +359,7 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
                         <SaveIcon className="mx-1 w-5 h-5" />
                         {t(submitLabel)}
                     </Button>
+                    <AutosaveIndicator formKey={`${location.pathname.split("/").includes("new") ? "new" : "edit"}-${form.title}`} />
                 </form>
             </div>
         </FormProvider>

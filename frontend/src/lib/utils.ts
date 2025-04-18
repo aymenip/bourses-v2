@@ -1,4 +1,5 @@
-import { TFullForm } from "@/types/forms";
+import { generateFieldName } from "@/components/FormRenderer";
+import { TFullForm, TFullFormBlock } from "@/types/forms";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { z, ZodTypeAny } from "zod";
@@ -51,4 +52,35 @@ export function fullFormObjectToZodSchem(
   }
 
   return z.object(shape);
+}
+
+export function findFirstErrorBlock(errors: any, blocks?: TFullFormBlock[]) {
+  if (!blocks || !errors) return undefined;
+
+  for (let i = 0; i < blocks.length; i++) {
+    const block = blocks[i];
+    for (const field of block.fields) {
+      const fieldName = generateFieldName(block.id, field.id);
+      if (errors[fieldName]) {
+        return i;
+      }
+    }
+  }
+  return undefined;
+}
+
+export function hasErrorsInOtherBlocks(
+  errors: any,
+  currentBlock: number,
+  blocks?: TFullFormBlock[]
+) {
+  if (!blocks || !errors) return false;
+
+  return blocks.some((block, index) => {
+    if (index === currentBlock) return false;
+    return block.fields.some((field) => {
+      const fieldName = generateFieldName(block.id, field.id);
+      return errors[fieldName];
+    });
+  });
 }
