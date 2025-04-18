@@ -35,6 +35,7 @@ export const CreateSubmission = async (
     const createdSubmission = await createSubmission(createSubmissionDTO);
 
     if (createdSubmission.status === "submitted") {
+    
       const formTitle = (await getFormById(createdSubmission.formId)).title;
       (async () => {
         await notifySubmissionSent(
