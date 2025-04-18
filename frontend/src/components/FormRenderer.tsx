@@ -18,8 +18,6 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import i18n from "@/i18n";
 import { MultiSelector, MultiSelectorContent, MultiSelectorInput, MultiSelectorItem, MultiSelectorList, MultiSelectorTrigger } from "./ui/multi-select";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
 
 export const generateFieldName = (blockId: number, fieldId: number) =>
     `field_${blockId}_${fieldId}`;
@@ -106,7 +104,7 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
                                     <SelectTrigger dir={i18n.dir()} >
                                         <SelectValue dir={i18n.dir()} placeholder={field.label} />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent showSearch searchPlaceholder={t("search")}>
                                         <SelectGroup dir={i18n.dir()}>
                                             <SelectLabel dir={i18n.dir()}>{field.label}</SelectLabel>
                                             {
