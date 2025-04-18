@@ -1,7 +1,7 @@
-import { db } from "../../conference/db/setup"; // Database instance
+import { db } from "../../db/setup"; // Database instance
 import { eq } from "drizzle-orm";
 import { CreateDocumentDTO, DocumentDTO } from "../dtos";
-import { documents } from "../../conference/db/schema";
+import { documents } from "../../db/schema";
 
 export const createDocument = async (
   createDocumentDTO: CreateDocumentDTO

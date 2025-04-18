@@ -1,5 +1,5 @@
-import { db } from "../../conference/db/setup";
-import { typedFields } from "../../conference/db/schema";
+import { db } from "../../db/setup";
+import { typedFields } from "../../db/schema";
 import { eq } from "drizzle-orm";
 import { CAE } from "../../utils/constants";
 import { and } from "drizzle-orm";

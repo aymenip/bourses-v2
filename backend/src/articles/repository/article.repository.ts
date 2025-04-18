@@ -1,5 +1,5 @@
-import { db } from "../../conference/db/setup";
-import { documents, articles } from "../../conference/db/schema";
+import { db } from "../../db/setup";
+import { documents, articles } from "../../db/schema";
 import { CreateArticleDTO, ArticleDTO, UpdateArticleDTO } from "../dtos";
 import { eq } from "drizzle-orm";
 import { deleteDocument } from "../../utils/uploads";

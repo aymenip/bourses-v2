@@ -1,5 +1,5 @@
-import { db } from "../../conference/db/setup";
-import { documents, certificates } from "../../conference/db/schema";
+import { db } from "../../db/setup";
+import { documents, certificates } from "../../db/schema";
 import {
   CreateCertificateDTO,
   CertificateDTO,

@@ -264,9 +264,7 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
                                     <SearchableInput
                                         target={field.type as sourceableFieldsEnum}
                                         onChange={(idWithTarget) => {
-                                            // Extract just the ID part if needed
-                                            const id = idWithTarget.split(' ')[0];
-                                            controllerField.onChange(id); // or just id if you prefer
+                                            controllerField.onChange(idWithTarget);
                                         }}
                                         value={controllerField.value as string | undefined}
                                         aria-invalid={!!error}

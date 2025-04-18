@@ -1,5 +1,5 @@
-import { db } from "../../conference/db/setup";
-import { admins, users } from "../../conference/db/schema";
+import { db } from "../../db/setup";
+import { admins, users } from "../../db/schema";
 import { eq } from "drizzle-orm";
 import { CreateAdminDTO, AdminDTO, UpdateAdminDTO } from "../dtos";
 import { MatrialStatus } from "../../user/user.enums";

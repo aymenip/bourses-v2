@@ -1,11 +1,11 @@
-import { db } from "../../conference/db/setup";
+import { db } from "../../db/setup";
 import {
   fields,
   forms,
   formsAccess,
   sourceableFields,
   typedFields,
-} from "../../conference/db/schema";
+} from "../../db/schema";
 import { CreateFormDTO, FormDTO, UpdateFormDTO } from "../dtos";
 import { eq } from "drizzle-orm";
 import { CAE } from "../../utils/constants";

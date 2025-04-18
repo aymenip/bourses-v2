@@ -1,5 +1,5 @@
-import { db } from "../../conference/db/setup";
-import { formsAccess } from "../../conference/db/schema";
+import { db } from "../../db/setup";
+import { formsAccess } from "../../db/schema";
 import { eq, inArray } from "drizzle-orm";
 import { CreateFormAccessDTO } from "../dtos/form-access";
 import { and } from "drizzle-orm";

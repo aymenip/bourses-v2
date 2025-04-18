@@ -1,5 +1,5 @@
-import { db } from "../../conference/db/setup";
-import { roles } from "../../conference/db/schema";
+import { db } from "../../db/setup";
+import { roles } from "../../db/schema";
 import { CreateRoleDTO, RoleDTO } from "../dtos";
 import { eq } from "drizzle-orm";
 

@@ -1,5 +1,5 @@
-import { db } from "../db/setup";
-import { documents, conferences } from "../db/schema";
+import { db } from "../../db/setup";
+import { documents, conferences } from "../../db/schema";
 import {
   CreateConferenceDTO,
   ConferenceDTO,

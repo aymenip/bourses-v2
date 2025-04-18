@@ -1,5 +1,5 @@
-import { db } from "../../conference/db/setup";
-import { positions } from "../../conference/db/schema";
+import { db } from "../../db/setup";
+import { positions } from "../../db/schema";
 import { eq } from "drizzle-orm";
 import { CreatePositionDTO, UpdatePositionDTO } from "position/dtos";
 
