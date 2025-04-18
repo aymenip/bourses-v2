@@ -1,3 +1,5 @@
+backend/.env
+.gitignore
 # Logs
 logs
 *.log
@@ -62,4 +64,5 @@ frontend/uploads
 ./frontend/.env.*.local
 ./frontend/uploads
 backend/.env
-backend/.env
+
+
