@@ -8,11 +8,15 @@ import { useTranslation } from "react-i18next";
 
 interface SearchableInputProps {
     target?: sourceableFieldsEnum;
-    mutipleSelect?: boolean;
-    onChange: (idWithTarget: string) => void; // Callback for when an item is selected
+    value?: string | number; // Add value prop
+    onChange: (idWithTarget: string) => void;
+    "aria-invalid"?: boolean;
 }
 
-export function SearchableInput({ target = "article", mutipleSelect = false, onChange }: SearchableInputProps) {
+export function SearchableInput({ target = "article",
+    value,
+    onChange,
+    "aria-invalid": ariaInvalid }: SearchableInputProps) {
     const [t, i18n] = useTranslation("translation");
     const [selectedItem, setSelectedItem] = useState<string | null>(null);
     const [isDialogOpen, setDialogOpen] = useState(false);
@@ -35,6 +39,20 @@ export function SearchableInput({ target = "article", mutipleSelect = false, onC
     const { data: theses } = useThesesForUser({
         enabled: target === "thesis"
     });
+
+    useEffect(() => {
+        if (value) {
+            // Assuming value is in format "123 article" or similar
+            const [id, itemType] = String(value).split(' ');
+            if (id && itemType) {
+                // Find the matching item and set as selected
+                const items = data.find(item => item.id === Number(id));
+                if (items) {
+                    setSelectedItem(items.title);
+                }
+            }
+        }
+    }, [value, data]);
 
     // Set the appropriate data based on the target prop using useEffect
     useEffect(() => {
