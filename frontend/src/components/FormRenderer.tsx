@@ -308,7 +308,7 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
     const [currentBlock, setCurrentBlock] = useState(0);
     return (
         <FormProvider {...methods}>
-            <div className="flex justify-center px-4">
+            <div>
                 <form
                     className="form flex flex-col gap-6 justify-center text-center max-w-[900px] w-full"
                     onSubmit={handleSubmit(onSubmit)}

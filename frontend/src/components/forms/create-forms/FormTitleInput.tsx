@@ -22,7 +22,6 @@ export const FormTitleInput: React.FC<FormTitleInputProps> = () => {
 
     const onSaveClick = (newTitle: string) => {
         createForm({ ...currentForm, title: newTitle })
-
     };
 
     useEffect(() => {

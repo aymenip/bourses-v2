@@ -7,8 +7,8 @@ import { ExitIcon } from "@radix-ui/react-icons";
 export const Profile = () => {
     const { data: user, isError, isLoading } = useUser();
     return <div>
-        <div className='md:p-2 ltr:ml-auto rtl:mr-auto md:min-w-[300px] flex justify-between items-center md:space-x-5 md:bg-gray-100/50 md:rounded-lg md:dark:bg-foreground/5'>
-            <div className="hidden md:grid md:grid-cols-5">
+        <div className='p-2 ltr:ml-auto rtl:mr-auto min-w-[300px] flex justify-between items-center space-x-5 bg-gray-100/50 rounded-lg dark:bg-foreground/5'>
+            <div className="grid grid-cols-5">
                 <div className='col-span-1 grid content-center'>
                     <Avatar>
                         <AvatarImage

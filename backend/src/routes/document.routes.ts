@@ -19,6 +19,7 @@ if (!fs.existsSync(UPLOADS_DIR)) {
 // Multer storage configuration for 'thesis' documents
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
+    
     cb(null, UPLOADS_DIR); // Save files in 'uploads/thesis/'
   },
   filename: function (req, file, cb) {

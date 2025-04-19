@@ -1,7 +1,7 @@
 import { useGrantAccess, useUserUpdate } from '@/api/auth/mutations'
 import { usePositions } from '@/api/positions/queries'
 import { authenticationContext } from '@/api/services'
-import Sidebar from '@/components/global/sidebar'
+import Sidebar from '@/components/global/sidebar/sidebar'
 import { TopBar } from '@/components/global/topBar'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'

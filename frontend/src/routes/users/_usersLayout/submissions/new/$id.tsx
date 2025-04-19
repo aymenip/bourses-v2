@@ -38,8 +38,8 @@ function NewSubmissionPage() {
   return (
     <div className="content-container">
       <TopBar page_name="new-submissions" />
-      <div className="p-2">
-        <div className="flex justify-between mb-4 md:flex-row flex-col">
+      <div className="p-2 max-w-[900px] mx-auto">
+        <div className="flex justify-between mb-4 md:flex-row flex-col ">
           <H2>{form.title}</H2>
           <div className="flex items-center justify-center space-x-2 border px-2 py-2 md:py-0 w-fit rounded-sm shadow-sm">
             <span className='w-[140px]'>{`${t("mode")}: ${t(status)}`}</span>

@@ -1,5 +1,7 @@
 import express from "express";
 import teacher from "./teacher.routes";
+import student from "./student.routes";
+import employee from "./employee.routes";
 import position from "./position.routes";
 import user from "./user.routes";
 import role from "./role.routes";
@@ -19,6 +21,8 @@ export default (): express.Router => {
   admin(router);
   user(router);
   teacher(router);
+  student(router);
+  employee(router);
   position(router);
   role(router);
   form(router);

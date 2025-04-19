@@ -38,50 +38,13 @@ type SidebarProps = {
     is_active?: boolean
 }
 
-function Sidebar({ role, is_active = true }: SidebarProps) {
+
+function DesktopSidebar({ role, is_active = true }: SidebarProps) {
     const [t, _] = useTranslation("translation")
     const [isOpen, setIsOpen] = useState(false);
-    const isMobile = useMediaQuery("(max-width: 768px)");
     const containerControls = useAnimationControls();
-    const location = useLocation();
-    useEffect(() => {
-        if (isOpen) {
-            containerControls.start("open")
-        } else {
-            containerControls.start("close")
-        }
-    }, [isOpen])
-
-    useEffect(() => {
-        if (isMobile) {
-            setIsOpen(false);
-        }
-    }, [isMobile]);
-
-    useEffect(() => {
-        if (isMobile) {
-            if (isOpen) {
-                containerControls.start("mobileOpen");
-            } else {
-                containerControls.start("mobileClose");
-            }
-        } else {
-            if (isOpen) {
-                containerControls.start("open");
-            } else {
-                containerControls.start("close");
-            }
-        }
-    }, [isOpen, isMobile]);
-
     const handleOpenClose = () => {
         setIsOpen(!isOpen);
-    };
-
-    const handleCloseMobile = () => {
-        if (isMobile) {
-            setIsOpen(false);
-        }
     };
     const getExactMatch = (path: string) => {
         const segments = location.pathname.split("/");
@@ -91,7 +54,6 @@ function Sidebar({ role, is_active = true }: SidebarProps) {
 
         return false;
     };
-
     return (
         <motion.nav
             variants={containerVariants}
@@ -154,4 +116,4 @@ function Sidebar({ role, is_active = true }: SidebarProps) {
     )
 }
 
-export default Sidebar
+export default DesktopSidebar

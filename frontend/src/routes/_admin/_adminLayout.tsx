@@ -1,5 +1,5 @@
 import { authenticationContext } from '@/api/services'
-import Sidebar from '@/components/global/sidebar'
+import Sidebar from '@/components/global/sidebar/sidebar'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_admin/_adminLayout')({
