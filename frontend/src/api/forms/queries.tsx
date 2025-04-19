@@ -4,10 +4,11 @@ import { form, forms, getFormsForUser, getFullForm } from "./services";
 
 
 
-export function useForms() {
+export function useForms(options?: { enabled: boolean }) {
     return useQuery({
         queryKey: ["forms"],
         queryFn: forms,
+        enabled: options?.enabled ?? true,
     })
 }
 

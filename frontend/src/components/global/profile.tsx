@@ -6,7 +6,7 @@ import { ExitIcon } from "@radix-ui/react-icons";
 
 export const Profile = () => {
     const { data: user, isError, isLoading } = useUser();
-    return <div>
+    return <div className="w-full md:w-fit">
         <div className='p-2 ltr:ml-auto rtl:mr-auto min-w-[300px] flex justify-between items-center space-x-5 bg-gray-100/50 rounded-lg dark:bg-foreground/5'>
             <div className="grid grid-cols-5">
                 <div className='col-span-1 grid content-center'>

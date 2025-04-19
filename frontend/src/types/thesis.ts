@@ -5,7 +5,7 @@ export const ThesisSchema = z.object({
   documentId: z.number({ required_error: "required-input" }),
   title: z.string({ required_error: "required-input" }).min(1),
   isSupervisor: z.boolean(),
-  year: z.date({ required_error: "required-input" }),
+  year: z.string({ required_error: "required-input" }),
   type: z.enum(["phd", "master", "license"], {
     required_error: "required-input",
   }),
@@ -18,8 +18,13 @@ export const CreateThesisSchema = ThesisSchema.omit({
   id: true,
   createdAt: true,
   updatedAt: true,
-  userId: true
+  userId: true,
+});
+
+export const UpdateThesisSchema = CreateThesisSchema.partial().extend({
+  id: z.number(),
 });
 
 export type TThesis = z.infer<typeof ThesisSchema>;
 export type TCreateThesis = z.infer<typeof CreateThesisSchema>;
+export type TUpdateThesis = z.infer<typeof UpdateThesisSchema>;

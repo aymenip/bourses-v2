@@ -108,7 +108,7 @@ function EditArticle() {
       <div className="px-10 py-6 flex justify-center">
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full max-w-4xl bg-white shadow-lg rounded-xl p-8 space-y-6"
+          className="w-full max-w-4xl bg-white dark:bg-foreground/5 border border-foreground/10 shadow-lg rounded-xl p-8 space-y-6"
         >
           <div>
             <Label>{t('attach-file')}</Label>

@@ -14,6 +14,9 @@ import {
 import { useTranslation } from "react-i18next";
 import { useDeleteForm } from "@/api/mutations";
 import { Link } from "@tanstack/react-router";
+import { useForms } from "@/api/queries";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>;
@@ -25,11 +28,20 @@ export function DataTableRowActions<TData>({
     // const task = taskSchema.parse(row.original);
     const [t, i18n] = useTranslation("translation")
     const { mutate, isSuccess } = useDeleteForm();
+    const { refetch } = useForms({
+        enabled: false,
+    });
     const deleteForm = () => {
         const id = parseInt(row.getValue("id"));
         mutate(id);
-
     }
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success(t("deleted-success"));
+            refetch();
+        }
+    }, [isSuccess]);
+
     return (
         <DropdownMenu dir={i18n.dir()}>
             <DropdownMenuTrigger asChild>
@@ -43,14 +55,12 @@ export function DataTableRowActions<TData>({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
                 <DropdownMenuItem>
-                    <Link to="/forms/edit/$id" params={{
-                        id: row.getValue("id") as string
-                    }}>
+                    <Link className="w-full" to="/forms/edit/$id" params={{ id: row.getValue("id") as string }}>
                         {t("edit")}
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={deleteForm}>
+                <DropdownMenuItem className="text-red-500" onClick={deleteForm}>
                     {t("delete")}
                 </DropdownMenuItem>
             </DropdownMenuContent>

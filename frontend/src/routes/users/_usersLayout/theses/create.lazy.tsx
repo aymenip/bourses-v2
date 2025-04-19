@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { format } from "date-fns";
 import { useCreateThesis } from '@/api/theses/mutations';
+import Note from '@/components/Note';
 
 
 export const Route = createLazyFileRoute('/users/_usersLayout/theses/create')({
@@ -27,7 +28,7 @@ function CreateThesis() {
   const form = useForm<TCreateThesis>({
     resolver: zodResolver(CreateThesisSchema),
     defaultValues: {
-      year: new Date(),
+      year: format(new Date(), "yyyy-mm-dd"),
       documentId: 0, // Ensure it's null initially
       title: '',
       isSupervisor: true,
@@ -133,6 +134,7 @@ function CreateThesis() {
           className='form flex-1 py-6 px-4 border max-w-[1200px]'
           onSubmit={form.handleSubmit(onSubmit)}
         >
+          <Note />
           <div className='form-group'>
             <Label>{t("attach-file")}</Label>
             <FilesUploader files={files} onValueChange={setFiles} dropzoneOptions={dropZoneConfig} />
@@ -169,8 +171,10 @@ function CreateThesis() {
                     render={({ field }) => (
                       <Input
                         type="date"
-                        value={format(new Date(field.value), "yyyy-MM-dd")}
-                        onChange={(e) => field.onChange(new Date(e.target.value))}
+                        value={format(new Date(field.value), 'yyyy-MM-dd')}
+                        onChange={(e) =>
+                          field.onChange(format(new Date(e.target.value), 'yyyy-MM-dd'))
+                        }
                         className='w-fit'
                       />
                     )}

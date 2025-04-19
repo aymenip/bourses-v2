@@ -15,6 +15,7 @@ import { useDeleteThesis } from "@/api/theses/mutations";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { useThesesForUser } from "@/api/queries";
+import { Link } from "@tanstack/react-router";
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>;
@@ -35,7 +36,7 @@ export function DataTableRowActions<TData>({
     }
     useEffect(() => {
         if (isSuccess) {
-            toast.success(t("thesis-deleted"));
+            toast.success(t("deleted-success"));
             refetch();
         }
     }, [isSuccess]);
@@ -52,9 +53,18 @@ export function DataTableRowActions<TData>({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
-                <DropdownMenuItem>{t("edit")}</DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Link className="w-full" to="/users/theses/edit/$id" params={{ id: row.getValue("id") as string }}>
+                        {t("edit")}
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Link className="w-full" to="/users/theses/$id" params={{ id: row.getValue("id") as string }}>
+                        {t("consult")}
+                    </Link>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={deleteThesis}>
+                <DropdownMenuItem className="text-red-500" onClick={deleteThesis}>
                     {t("delete")}
                 </DropdownMenuItem>
             </DropdownMenuContent>

@@ -82,21 +82,6 @@ export const columns: ColumnDef<TConference>[] = [
         },
     },
     {
-        accessorKey: "classification",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title={i18n.t("classification")} />
-        ),
-        cell: ({ row }) => {
-            return (
-                <div className="flex space-x-2">
-                    <span className="max-w-[500px] truncate font-medium capitalize">
-                        {(row.getValue("classification") as string).split(",").map((author: string) => (<Badge variant={"default"}>{author}</Badge>))}
-                    </span>
-                </div>
-            );
-        },
-    },
-    {
         accessorKey: "date",
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title={i18n.t("date")} />

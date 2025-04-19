@@ -1,7 +1,6 @@
 import { Download, LoaderIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { useDocument } from "@/api/documents/queries";
-import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -16,13 +15,12 @@ export const DocumentDownloadButton = ({ documentId }: { documentId: number }) =
         setFetchDocument(true);
         await refetch(); // Fetch document only when clicked
     };
-
     return (
         <Button variant="outline" onClick={handleDownloadClick}>
             {fetchDocument && document?.path ? (
-                <Link href={`${document.path}`} download>
+                <a href={`${document.path}`} target="_blank">
                     {isPending ? <LoaderIcon className="animate-spin" /> : <Download />}
-                </Link>
+                </a>
             ) : (
                 t("download")
             )}

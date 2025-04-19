@@ -14,6 +14,7 @@ import { toast } from 'sonner'
 import { format } from 'date-fns'
 import { CreateBookSchema, TCreateBook } from '@/types/book'
 import { useCreateBook } from '@/api/books/mutations'
+import Note from '@/components/Note'
 
 export const Route = createLazyFileRoute('/users/_usersLayout/books/create')({
   component: CreateBook,
@@ -136,6 +137,7 @@ function CreateBook() {
           className="form flex-1 py-6 px-4 border max-w-[1200px]"
           onSubmit={form.handleSubmit(onSubmit)}
         >
+          <Note />
           <div className="form-group">
             <Label>{t('attach-file')}</Label>
             <FilesUploader

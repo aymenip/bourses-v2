@@ -18,6 +18,8 @@ import {
 } from '@/types/conferences'
 import { useCreateConference } from '@/api/mutations'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { CircleAlert } from 'lucide-react'
+import Note from '@/components/Note'
 
 export const Route = createLazyFileRoute(
   '/users/_usersLayout/conferences/create',
@@ -148,6 +150,7 @@ function CreateConference() {
           className="form flex-1 py-6 px-4 border max-w-[1200px]"
           onSubmit={form.handleSubmit(onSubmit)}
         >
+          <Note />
           <div className="form-group">
             <Label>{t('attach-file')}</Label>
             <FilesUploader
@@ -202,7 +205,7 @@ function CreateConference() {
                   </div>
                 )}
               </div>
-              <div className="flex gap-4">
+              <div className="flex gap-4 flex-col md:flex-row">
                 <div className="form-group flex-1  flex flex-col">
                   <Label>{t('conferenceName')}</Label>
                   <Input
@@ -220,7 +223,7 @@ function CreateConference() {
                   )}
                 </div>
 
-                <div className="form-group col-span-3  flex flex-col">
+                <div className="form-group flex flex-col ">
                   <Label>{t('date')}</Label>
                   <Controller
                     control={form.control}
@@ -234,7 +237,7 @@ function CreateConference() {
                             format(new Date(e.target.value), 'yyyy-MM-dd'),
                           )
                         }
-                        className="w-fit"
+                        className="w-full md:w-fit"
                       />
                     )}
                   />
@@ -247,26 +250,6 @@ function CreateConference() {
                     </div>
                   )}
                 </div>
-              </div>
-
-              <div className="form-group">
-                <Label>{t("classification")}</Label>
-                <Controller
-                  control={form.control}
-                  name="classification"
-                  render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange} dir={i18n.dir()}>
-                      <SelectTrigger>
-                        <SelectValue placeholder={t("select-classification")} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="A">{t("A")}</SelectItem>
-                        <SelectItem value="B">{t("B")}</SelectItem>
-                        <SelectItem value="C">{t("C")}</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
               </div>
               <Button
                 type="submit"

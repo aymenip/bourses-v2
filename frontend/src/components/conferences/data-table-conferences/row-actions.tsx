@@ -13,8 +13,9 @@ import {
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { useCertificatesForUser } from "@/api/queries";
-import { useDeleteCertificate } from "@/api/mutations";
+import { useConferencesForUser } from "@/api/queries";
+import { useDeleteConference } from "@/api/mutations";
+import { Link } from "@tanstack/react-router";
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>;
@@ -25,17 +26,17 @@ export function DataTableRowActions<TData>({
 }: DataTableRowActionsProps<TData>) {
     // const task = taskSchema.parse(row.original);
     const [t, i18n] = useTranslation("translation")
-    const { mutate, isSuccess } = useDeleteCertificate();
-    const { refetch } = useCertificatesForUser({
+    const { mutate, isSuccess } = useDeleteConference()
+    const { refetch } = useConferencesForUser({
         enabled: false,
     });
-    const deleteCertificate = () => {
+    const deleteConference = () => {
         const id = parseInt(row.getValue("id"));
         mutate(id);
     }
     useEffect(() => {
         if (isSuccess) {
-            toast.success(t("certificate-deleted"));
+            toast.success(t("deleted-success"));
             refetch();
         }
     }, [isSuccess]);
@@ -52,9 +53,18 @@ export function DataTableRowActions<TData>({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
-                <DropdownMenuItem>{t("edit")}</DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Link className="w-full" to="/users/conferences/edit/$id" params={{ id: row.getValue("id") as string }}>
+                        {t("edit")}
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Link className="w-full" to="/users/conferences/$id" params={{ id: row.getValue("id") as string }}>
+                        {t("consult")}
+                    </Link>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={deleteCertificate}>
+                <DropdownMenuItem className="text-red-500" onClick={deleteConference}>
                     {t("delete")}
                 </DropdownMenuItem>
             </DropdownMenuContent>

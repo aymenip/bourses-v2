@@ -73,6 +73,24 @@ export const GetAllThesesForUser = async (
   }
 };
 
+export const GetThesisById = async (
+  req: express.Request,
+  res: express.Response
+): Promise<any> => {
+  try {
+    const userId = req.user?.sub;
+    const { id } = req.params;
+    const isAdmin = req.user.isAdmin;
+    const thesis = await getThesisById(parseInt(id));
+    if (thesis.userId !== userId && !isAdmin) return res.status(401);
+    return res.status(200).json(thesis);
+  } catch (error) {
+    handleError(() => console.log(error));
+    return res.sendStatus(400);
+  }
+};
+
+
 export const GetAllTheses = async (
   req: express.Request,
   res: express.Response

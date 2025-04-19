@@ -75,27 +75,30 @@ function EditSubmissionPage() {
     <div className="content-container">
       <TopBar page_name="edit-submission" />
       <div className="p-2">
-        <div className="flex justify-between mb-4 md:flex-row flex-col">
-          <H2>{form.title}</H2>
-          <div className="flex items-center justify-center space-x-2 border px-2 py-2 md:py-0 w-fit rounded-sm shadow-sm">
-            <span className="w-[140px]">{`${t("mode")}: ${t(status)}`}</span>
-            <Switch
-              dir="ltr"
-              checked={status === "submitted"}
-              onCheckedChange={() =>
-                setStatus(status === "draft" ? "submitted" : "draft")
-              }
-              id="status"
-            />
+        <div className="p-2 max-w-[900px] mx-auto">
+          <div className="flex justify-between mb-4 md:flex-row flex-col">
+            <H2>{form.title}</H2>
+            <div className="flex items-center justify-center space-x-2 border px-2 py-2 md:py-0 w-fit rounded-sm shadow-sm">
+              <span className="w-[140px]">{`${t("mode")}: ${t(status)}`}</span>
+              <Switch
+                dir="ltr"
+                checked={status === "submitted"}
+                onCheckedChange={() =>
+                  setStatus(status === "draft" ? "submitted" : "draft")
+                }
+                id="status"
+              />
+            </div>
           </div>
+          <FormRenderer
+            form={form}
+            onSubmit={handleSubmit}
+            defaultValues={defaultValues}
+            submitLabel="update"
+            isDraft={status === "draft"}
+          />
         </div>
-        <FormRenderer
-          form={form}
-          onSubmit={handleSubmit}
-          defaultValues={defaultValues}
-          submitLabel="update"
-          isDraft={status === "draft"}
-        />
+
       </div>
     </div>
   );

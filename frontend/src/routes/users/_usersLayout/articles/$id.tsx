@@ -10,6 +10,7 @@ import { H2 } from '@/components/ui/typography';
 import { Separator } from '@/components/ui/separator';
 import { useArticle } from '@/api/articles/queries';
 import { useDocument } from '@/api/documents/queries';
+import Detail from '@/components/Detail';
 
 export const Route = createFileRoute('/users/_usersLayout/articles/$id')({
   component: Article,
@@ -93,13 +94,15 @@ function Article() {
                 }
               />
               <div>
-                <Detail label={t("document")} value="" />
-                <Link to={document?.path} target="_blank">
-                  <Button size="sm" variant="secondary" className="mt-2">
-                    <Eye className="w-4 h-4 mr-2" />
-                    {t("view-document")}
-                  </Button>
-                </Link>
+                <Detail label={t("document")} value={
+                  <Link to={document?.path} target="_blank">
+                    <Button size="sm" variant="secondary" className="mt-2">
+                      <Eye className="w-4 h-4 mr-2" />
+                      {t("view-document")}
+                    </Button>
+                  </Link>
+                } />
+
               </div>
             </div>
           </div>
@@ -109,18 +112,3 @@ function Article() {
   );
 }
 
-function Detail({ label, value }: { label: string; value: string | number }) {
-  const isEmpty = value === "—" || value === "N/A" || value === "" || value === null;
-
-  return (
-    <div className="space-y-1">
-      <p className="text-sm text-muted-foreground">{label}</p>
-      <p
-        className={`text-base font-medium ${isEmpty ? "text-zinc-400 italic" : "text-foreground"
-          } break-words`}
-      >
-        {value || "—"}
-      </p>
-    </div>
-  );
-}

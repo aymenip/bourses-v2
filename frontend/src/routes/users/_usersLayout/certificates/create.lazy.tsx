@@ -14,6 +14,7 @@ import { toast } from 'sonner'
 import { format } from 'date-fns'
 import { CreateCertificateSchema, TCreateCertificate } from '@/types/certificates'
 import { useCreateCertificate } from '@/api/mutations'
+import Note from '@/components/Note'
 
 export const Route = createLazyFileRoute(
   '/users/_usersLayout/certificates/create',
@@ -138,6 +139,7 @@ function CreateCertificate() {
           className="form flex-1 py-6 px-4 border max-w-[1200px]"
           onSubmit={form.handleSubmit(onSubmit)}
         >
+          <Note />
           <div className="form-group">
             <Label>{t('attach-file')}</Label>
             <FilesUploader

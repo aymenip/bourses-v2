@@ -20,6 +20,7 @@ export const CreateConferenceSchema = ConferenceSchema.omit({
   userId: true,
 });
 
+
 export const UpdateConferenceSchema = CreateConferenceSchema.partial().extend({
   id: z.number(),
 });

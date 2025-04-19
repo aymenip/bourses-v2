@@ -19,9 +19,8 @@ import i18n from "@/i18n";
 import { MultiSelector, MultiSelectorContent, MultiSelectorInput, MultiSelectorItem, MultiSelectorList, MultiSelectorTrigger } from "./ui/multi-select";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { format, formatISO } from "date-fns";
-import { cn, findFirstErrorBlock, hasErrorsInOtherBlocks } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { AutosaveIndicator } from "@/hooks/use-form-autosave";
-import { motion } from "framer-motion"
 interface FormRendererProps {
     form: TFullForm;
     onSubmit: (data: Record<string, unknown>) => void;
@@ -162,7 +161,9 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
         return (
             <div key={name} className="form-group space-y-2 mb-4">
                 <Label className="flex items-center gap-1">
-                    {field.label}
+                    <span className="text-lg rtl:text-right ltr:text-left">
+                        {field.label}
+                    </span>
                     {field.required && <BadgeAlert className="h-4 w-4 text-red-400" />}
                     {field.points > 0 && (
                         <Badge className="bg-green-100 dark:bg-green-900 text-green-900 dark:text-green-100 ltr:ml-auto rtl:mr-auto border-green-200 dark:border-green-700" variant="outline">
@@ -348,10 +349,10 @@ export function FormRenderer({ form, onSubmit, defaultValues = {}, submitLabel =
                     ))}
                     {/* Navigation controls */}
                     <div className="flex justify-between">
-                        <Button type="button" onClick={() => setCurrentBlock(p => Math.max(0, p - 1))}>
+                        <Button variant={"outline"} type="button" onClick={() => setCurrentBlock(p => Math.max(0, p - 1))}>
                             {t("previous")}
                         </Button>
-                        <Button type="button" onClick={() => setCurrentBlock(p => Math.min(form.blocks!.length - 1, p + 1))}>
+                        <Button variant={"outline"} type="button" onClick={() => setCurrentBlock(p => Math.min(form.blocks!.length - 1, p + 1))}>
                             {t("next")}
                         </Button>
                     </div>

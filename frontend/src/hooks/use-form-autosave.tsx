@@ -54,27 +54,41 @@ export function AutosaveIndicator({ formKey }: { formKey: string }) {
     if (!isDraftAvailable) return null;
 
     return (
-        <div className="flex items-center gap-2 text-sm  p-2 bg-accent/90 rounded text-white/90">
-            {lastSaved ? (
-                <>
+        <div className="flex justify-between items-center gap-2 text-sm  p-2 bg-accent/90 rounded text-white/90">
+            <div className='flex items-centers gap-x-1'>
+                <span>
                     <Clock className="h-4 w-4 text-yellow-500" />
-                    <span>{t("autosaved")} {formatDistanceToNow(lastSaved, { locale: i18n.dir() === "rtl" ? arDZ : enUS })} {t("ago")}</span>
-                </>
-            ) : (
-                <>
-                    <Clock className="h-4 w-4 text-yellow-500" />
-                    <span>{t("recovered-unsaved-progress")}</span>
-                </>
-            )}
-            <Button
-                variant="ghost"
-                size="sm"
-                className="ml-auto"
-                onClick={clearDraft}
-            >
-                <Trash2 className="h-4 w-4 mr-1" />
-                {t("clear-draft")}
-            </Button>
+                </span>
+                {lastSaved ? (
+                    <>
+                        <span>
+                            {
+                                i18n.dir() === "rtl" ? <>
+                                    {t("autosaved")} {t("ago")} {formatDistanceToNow(lastSaved, { locale: arDZ })}
+                                </> : <>
+                                    {t("autosaved")}  {formatDistanceToNow(lastSaved, { locale: enUS })} {t("ago")}
+                                </>
+                            }
+
+                        </span>
+                    </>
+                ) : (
+                    <>
+                        <span> {t("recovered-unsaved-progress")}</span>
+                    </>
+                )}
+            </div>
+            <div>
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    className="ml-auto"
+                    onClick={clearDraft}
+                >
+                    <Trash2 className="h-4 w-4 mx-1" />
+                    {t("clear-draft")}
+                </Button>
+            </div>
         </div>
     );
 }

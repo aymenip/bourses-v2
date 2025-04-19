@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { useDeleteBook } from "@/api/books/mutations";
 import { useBooksForUser } from "@/api/queries";
+import { Link } from "@tanstack/react-router";
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>;
@@ -35,7 +36,7 @@ export function DataTableRowActions<TData>({
     }
     useEffect(() => {
         if (isSuccess) {
-            toast.success(t("book-deleted"));
+            toast.success(t("deleted-success"));
             refetch();
         }
     }, [isSuccess]);
@@ -52,9 +53,25 @@ export function DataTableRowActions<TData>({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
-                <DropdownMenuItem>{t("edit")}</DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Link className="w-full" to="/users/books/edit/$id" params={{
+                        id: (row.getValue("id") as string)
+                    }}>
+
+                        {t("edit")}
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Link className="w-full" to="/users/books/$id" params={{
+                        id: (row.getValue("id") as string)
+                    }}>
+
+                        {t("consult")}
+                    </Link>
+
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={deleteBook}>
+                <DropdownMenuItem className="text-red-500" onClick={deleteBook}>
                     {t("delete")}
                 </DropdownMenuItem>
             </DropdownMenuContent>

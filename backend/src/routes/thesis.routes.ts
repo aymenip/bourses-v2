@@ -4,6 +4,7 @@ import {
   DeleteThesis,
   GetAllTheses,
   GetAllThesesForUser,
+  GetThesisById,
   UpdateThesis,
 } from "../thesis/controller/thesis.controller";
 import { isAdmin, verifyToken } from "../middlewares/auth.middleware";
@@ -14,4 +15,5 @@ export default (router: express.Router) => {
   router.get("/thesis/user", verifyToken, GetAllThesesForUser);
   router.delete("/thesis/:id", verifyToken, DeleteThesis);
   router.get("/thesis/all", verifyToken, isAdmin, GetAllTheses);
+  router.get("/thesis/:id", verifyToken, GetThesisById);
 };
